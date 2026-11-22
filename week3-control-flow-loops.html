@@ -1,0 +1,2758 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>هفته سوم جاوا — ساختارهای کنترلی، شرط‌ها و حلقه‌های تکرار</title>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+
+<style>
+/* ============================================================
+   متغیرهای رنگی — تم روشن
+============================================================ */
+:root {
+    --bg: #ffffff;
+    --bg-soft: #f8fafc;
+    --bg-card: #ffffff;
+    --text: #1e293b;
+    --text-soft: #475569;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --primary: #4f46e5;
+    --primary-soft: #eef2ff;
+
+    --sec-1: #2563eb;
+    --sec-2: #059669;
+    --sec-3: #d97706;
+    --sec-4: #7c3aed;
+    --sec-5: #e11d48;
+    --sec-6: #0891b2;
+    --sec-7: #c026d3;
+    --sec-8: #ea580c;
+    --sec-9: #0d9488;
+    --sec-10: #65a30d;
+
+    --code-bg: #0f172a;
+    --code-head: #1e293b;
+    --code-text: #e2e8f0;
+
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, .06);
+    --shadow-md: 0 6px 20px rgba(15, 23, 42, .08);
+}
+
+/* ============================================================
+   تم تاریک
+============================================================ */
+[data-theme="dark"] {
+    --bg: #0b1220;
+    --bg-soft: #111a2e;
+    --bg-card: #131d35;
+    --text: #e6ecf6;
+    --text-soft: #a9b6cc;
+    --muted: #7f8ba5;
+    --border: #25324d;
+    --border-strong: #34425f;
+    --primary: #818cf8;
+    --primary-soft: #1e2a4a;
+
+    --sec-1: #60a5fa;
+    --sec-2: #34d399;
+    --sec-3: #fbbf24;
+    --sec-4: #c084fc;
+    --sec-5: #fb7185;
+    --sec-6: #22d3ee;
+    --sec-7: #e879f9;
+    --sec-8: #fb923c;
+    --sec-9: #2dd4bf;
+    --sec-10: #a3e635;
+
+    --code-bg: #060c18;
+    --code-head: #0f172a;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, .4);
+    --shadow-md: 0 6px 20px rgba(0, 0, 0, .5);
+}
+
+/* ============================================================
+   پایه
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Vazirmatn', Tahoma, system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.95;
+    font-size: 16px;
+    transition: background-color .25s ease, color .25s ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ============================================================
+   هدر
+============================================================ */
+.hero {
+    padding: 20px 0 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.hero-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-badge {
+    display: inline-block;
+    font-size: .78rem;
+    font-weight: 700;
+    padding: 5px 15px;
+    border-radius: 999px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.theme-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border-strong);
+    background: var(--bg-card);
+    color: var(--text);
+    font-family: inherit;
+    font-size: .8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s ease;
+    white-space: nowrap;
+}
+
+.theme-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.theme-btn .theme-icon { font-size: 1rem; line-height: 1; }
+
+.hero-title {
+    font-size: clamp(1.4rem, 3.8vw, 1.9rem);
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: -.4px;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.hero-subtitle {
+    font-size: .92rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.hero-desc {
+    font-size: .95rem;
+    color: var(--text-soft);
+    line-height: 2;
+    text-align: justify;
+    margin-bottom: 18px;
+}
+
+.goal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-inline-start: 4px solid var(--primary);
+    border-radius: 12px;
+    padding: 14px 18px;
+    box-shadow: var(--shadow-sm);
+    font-size: .93rem;
+    line-height: 1.9;
+    color: var(--text-soft);
+    text-align: justify;
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.goal strong { color: var(--primary); font-weight: 800; }
+
+/* ============================================================
+   فهرست مطالب
+============================================================ */
+.toc {
+    margin: 32px 0 10px;
+    padding: 24px 26px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow-sm);
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.toc-title {
+    font-size: 1.02rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+}
+
+.toc-title::before {
+    content: "";
+    width: 5px;
+    height: 20px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #38bdf8, #a855f7);
+}
+
+.toc-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 10px;
+}
+
+.toc-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .87rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.toc-link:hover {
+    border-color: var(--tc, var(--primary));
+    color: var(--tc, var(--primary));
+    transform: translateX(-3px);
+    background: var(--bg-card);
+}
+
+.toc-link .num {
+    flex: 0 0 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--tc, var(--primary));
+    color: #fff;
+    font-weight: 800;
+    font-size: .82rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .15);
+}
+
+/* ============================================================
+   بخش‌ها
+============================================================ */
+.section { margin: 44px 0; scroll-margin-top: 20px; }
+
+.sec-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+}
+
+.sec-num {
+    flex: 0 0 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 15px;
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 800;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+    background: var(--tc, var(--primary));
+}
+
+.sec-head h2 {
+    font-size: clamp(1.15rem, 3vw, 1.4rem);
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 2px;
+    text-align: right;
+}
+
+.sec-head p {
+    color: var(--muted);
+    font-size: .82rem;
+    margin: 0;
+    text-align: right;
+}
+
+.section.s1 { --tc: var(--sec-1); }
+.section.s2 { --tc: var(--sec-2); }
+.section.s3 { --tc: var(--sec-3); }
+.section.s4 { --tc: var(--sec-4); }
+.section.s5 { --tc: var(--sec-5); }
+.section.s6 { --tc: var(--sec-6); }
+.section.s7 { --tc: var(--sec-7); }
+.section.s8 { --tc: var(--sec-8); }
+.section.s9 { --tc: var(--sec-9); }
+.section.s10 { --tc: var(--sec-10); }
+
+/* ============================================================
+   زیرعنوان‌ها
+============================================================ */
+h3 {
+    font-size: 1.08rem;
+    font-weight: 800;
+    margin: 28px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    text-align: right;
+}
+
+h3::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--tc, var(--primary));
+    box-shadow: 0 0 0 4px var(--primary-soft);
+    flex-shrink: 0;
+}
+
+h4 {
+    font-size: .95rem;
+    font-weight: 800;
+    margin: 20px 0 8px;
+    color: var(--tc, var(--primary));
+    text-align: right;
+}
+
+p { margin-bottom: 14px; color: var(--text-soft); text-align: justify; }
+
+/* ============================================================
+   لیست‌های دستی
+============================================================ */
+ol.steps {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+}
+
+ol.steps > li {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+    color: var(--text-soft);
+    font-size: .94rem;
+    line-height: 1.85;
+}
+
+ol.steps > li:last-child { border-bottom: none; }
+
+ol.steps .step-num {
+    flex: 0 0 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--primary-soft);
+    color: var(--tc, var(--primary));
+    font-size: .82rem;
+    font-weight: 800;
+    margin-top: 3px;
+}
+
+ol.steps .step-body { flex: 1; }
+
+ul.dot-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0;
+}
+
+ul.dot-list > li {
+    position: relative;
+    padding-right: 22px;
+    margin-bottom: 8px;
+    color: var(--text-soft);
+    font-size: .94rem;
+    line-height: 1.85;
+}
+
+ul.dot-list > li::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 11px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--tc, var(--primary));
+}
+
+/* ============================================================
+   ۵ نوع جعبه رنگی
+============================================================ */
+.def-box, .tip-box, .warn-box, .info-box, .danger-box {
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: .93rem;
+    line-height: 1.9;
+    color: var(--text-soft);
+}
+
+.def-box { background: var(--primary-soft); border-inline-start: 4px solid var(--primary); }
+.tip-box { background: rgba(16, 185, 129, .08); border-inline-start: 4px solid #10b981; }
+.warn-box { background: rgba(245, 158, 11, .10); border-inline-start: 4px solid #f59e0b; }
+.info-box { background: rgba(59, 130, 246, .08); border-inline-start: 4px solid #3b82f6; }
+.danger-box { background: rgba(239, 68, 68, .08); border-inline-start: 4px solid #ef4444; }
+
+[data-theme="dark"] .tip-box { background: rgba(16, 185, 129, .12); }
+[data-theme="dark"] .warn-box { background: rgba(245, 158, 11, .12); }
+[data-theme="dark"] .info-box { background: rgba(59, 130, 246, .12); }
+[data-theme="dark"] .danger-box { background: rgba(239, 68, 68, .12); }
+
+.def-box strong { color: var(--primary); font-weight: 700; }
+.tip-box strong { color: #059669; font-weight: 700; }
+.warn-box strong { color: #b45309; font-weight: 700; }
+.info-box strong { color: #1d4ed8; font-weight: 700; }
+.danger-box strong { color: #b91c1c; font-weight: 700; }
+
+.def-box > strong:first-child,
+.tip-box > strong:first-child,
+.warn-box > strong:first-child,
+.info-box > strong:first-child,
+.danger-box > strong:first-child {
+    display: block;
+    margin-bottom: 5px;
+    font-size: .87rem;
+    font-weight: 800;
+}
+
+/* ============================================================
+   بلوک کد + دکمه کپی
+============================================================ */
+.code-block {
+    background: var(--code-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 16px 0;
+    border: 1px solid #1e293b;
+    box-shadow: var(--shadow-md);
+    position: relative;
+}
+
+.code-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 16px;
+    background: var(--code-head);
+    border-bottom: 1px solid #334155;
+}
+
+.code-lang {
+    font-family: 'JetBrains Mono', Consolas, monospace;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.code-lang::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #f59e0b;
+    box-shadow: 15px 0 0 #10b981, 30px 0 0 #ef4444;
+    margin-inline-end: 30px;
+}
+
+.copy-btn {
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: .72rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    background: #334155;
+    border: 1px solid #475569;
+    padding: 4px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.copy-btn:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+.copy-btn:active { transform: scale(.96); }
+
+pre {
+    padding: 18px 20px;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    font-size: .85rem;
+    line-height: 1.8;
+    tab-size: 4;
+    -webkit-overflow-scrolling: touch;
+}
+
+pre code {
+    font-family: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace;
+    color: var(--code-text);
+    white-space: pre;
+}
+
+pre::-webkit-scrollbar { height: 8px; }
+pre::-webkit-scrollbar-track { background: #1e293b; }
+pre::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+
+.tok-kw  { color: #c084fc; font-weight: 600; }
+.tok-str { color: #86efac; }
+.tok-num { color: #fbbf24; }
+.tok-com { color: #64748b; font-style: italic; }
+.tok-fn  { color: #7dd3fc; }
+
+/* ============================================================
+   کد درون خطی
+============================================================ */
+:not(pre) > code {
+    font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+    background: var(--bg-soft);
+    color: #be185d;
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: .85em;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    white-space: nowrap;
+    display: inline-block;
+    direction: ltr;
+    vertical-align: middle;
+}
+
+[data-theme="dark"] :not(pre) > code {
+    background: rgba(244, 114, 182, .12);
+    color: #f9a8d4;
+    border-color: rgba(244, 114, 182, .25);
+}
+
+/* ============================================================
+   جدول
+============================================================ */
+.table-wrap {
+    overflow-x: auto;
+    margin: 16px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+    min-width: 480px;
+}
+
+thead th {
+    background: var(--bg-soft);
+    padding: 12px 14px;
+    text-align: right;
+    font-weight: 800;
+    color: var(--text);
+    font-size: .84rem;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+}
+
+tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-soft);
+    text-align: right;
+    vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-soft); }
+td code { font-size: .82em; }
+
+/* ============================================================
+   کارت گرید
+============================================================ */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+}
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow-sm);
+    transition: all .22s ease;
+}
+
+.card:hover {
+    border-color: var(--tc, var(--primary));
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.card h4 {
+    margin: 0 0 6px;
+    font-size: .92rem;
+    color: var(--tc, var(--primary));
+}
+
+.card p { font-size: .87rem; margin: 0; line-height: 1.8; text-align: right; }
+
+/* ============================================================
+   آکاردئون
+============================================================ */
+details {
+    margin: 12px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-card);
+    overflow: hidden;
+}
+
+details.acc-guide { --acc-color: var(--primary); --acc-bg: var(--primary-soft); }
+details.acc-mistakes { --acc-color: #d97706; --acc-bg: rgba(245, 158, 11, .10); }
+details.acc-qa { --acc-color: #059669; --acc-bg: rgba(16, 185, 129, .08); }
+
+[data-theme="dark"] details.acc-mistakes { --acc-bg: rgba(245, 158, 11, .14); }
+[data-theme="dark"] details.acc-qa { --acc-bg: rgba(16, 185, 129, .12); }
+
+details summary {
+    cursor: pointer;
+    padding: 13px 18px;
+    font-size: .9rem;
+    font-weight: 800;
+    color: var(--acc-color);
+    background: var(--acc-bg);
+    list-style: none;
+    user-select: none;
+    transition: background .2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+.chev {
+    flex-shrink: 0;
+    color: var(--acc-color);
+    transition: transform .3s ease;
+    transform: rotate(0deg);
+    display: block;
+}
+
+details[open] .chev { transform: rotate(-90deg); }
+
+summary:hover { filter: brightness(.96); }
+
+.details-content {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+}
+
+.details-content > *:last-child { margin-bottom: 0; }
+.details-content ol.steps { margin: 0; }
+.details-content ul.dot-list { margin: 0; }
+
+details.acc-qa .details-content {
+    border-inline-start: 3px solid #ef4444;
+    background: rgba(239, 68, 68, .03);
+    padding-inline-start: 16px;
+}
+
+[data-theme="dark"] details.acc-qa .details-content {
+    background: rgba(239, 68, 68, .08);
+}
+
+details.acc-qa .details-content p {
+    margin: 0;
+    font-size: .92rem;
+    line-height: 1.9;
+    text-align: justify;
+}
+
+details.acc-qa .details-content p strong {
+    color: #dc2626;
+    font-weight: 800;
+    margin-inline-end: 4px;
+}
+
+/* ============================================================
+   کارت تمرین
+============================================================ */
+.ex-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .25s ease, background-color .25s ease;
+}
+
+.ex-card:hover { box-shadow: var(--shadow-md); }
+
+.ex-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.ex-badge {
+    font-size: .72rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.ex-badge.project { background: rgba(225, 29, 72, .12); color: #e11d48; }
+.ex-badge.homework { background: rgba(37, 99, 235, .12); color: #2563eb; }
+
+[data-theme="dark"] .ex-badge.project { background: rgba(251, 113, 133, .18); color: #fb7185; }
+[data-theme="dark"] .ex-badge.homework { background: rgba(96, 165, 250, .18); color: #60a5fa; }
+
+.ex-head h3 {
+    margin: 0;
+    font-size: 1rem;
+    flex: 1;
+    min-width: 200px;
+    text-align: right;
+}
+
+.ex-head h3::before { display: none; }
+
+.ex-desc {
+    font-size: .92rem;
+    color: var(--text-soft);
+    line-height: 1.9;
+    margin-bottom: 12px;
+    text-align: justify;
+}
+
+/* ============================================================
+   کادر الگوریتم
+============================================================ */
+.algo {
+    background: var(--bg-soft);
+    border: 1px dashed var(--tc, var(--primary));
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 14px 0;
+}
+
+.algo ol { margin: 0; padding-inline-start: 20px; }
+
+.algo li {
+    font-size: .9rem;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+    line-height: 1.8;
+}
+
+.algo li:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   نوار جمع‌بندی
+============================================================ */
+.cheat {
+    background: linear-gradient(135deg, var(--primary-soft), rgba(14, 165, 233, .06));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin: 24px 0;
+}
+
+.cheat h3 { margin-top: 0; }
+.cheat ul.dot-list { margin-bottom: 0; }
+
+/* ============================================================
+   فلوچارت
+============================================================ */
+.flowchart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin: 22px 0;
+    padding: 22px 18px;
+    background: var(--bg-soft);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+}
+
+.fc-shape {
+    padding: 9px 20px;
+    font-size: .85rem;
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+    min-width: 140px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    direction: rtl;
+}
+
+.fc-oval {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 999px;
+    padding-inline: 26px;
+}
+
+.fc-process {
+    background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+    border-radius: 8px;
+}
+
+.fc-io {
+    background: linear-gradient(135deg, #10b981, #14b8a6);
+    transform: skewX(-12deg);
+    border-radius: 6px;
+}
+
+.fc-io > span { display: inline-block; transform: skewX(12deg); }
+
+.fc-decision {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0% 50%);
+    min-width: 160px;
+    min-height: 70px;
+    padding: 14px 30px;
+}
+
+.fc-arrow { color: var(--muted); line-height: 0; padding: 2px 0; }
+
+/* ============================================================
+   فوتر
+============================================================ */
+.site-footer {
+    margin-top: 70px;
+    padding: 24px 0;
+    background: #f1f5f9;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    color: #64748b;
+    font-size: .85rem;
+}
+
+[data-theme="dark"] .site-footer {
+    background: #0a0f1c;
+    border-top-color: #1e293b;
+    color: #94a3b8;
+}
+
+.site-footer p { text-align: center; margin: 0; color: inherit; }
+.site-footer strong { color: #334155; }
+[data-theme="dark"] .site-footer strong { color: #e2e8f0; }
+
+/* ============================================================
+   دکمه بازگشت به بالا
+============================================================ */
+#toTop {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    padding: 12px 20px 12px 16px;
+    border-radius: 999px;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    font-family: inherit;
+    font-size: .85rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(79, 70, 229, .35);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: all .3s ease;
+    z-index: 90;
+}
+
+#toTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+#toTop:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(79, 70, 229, .45);
+}
+
+#toTop svg { flex-shrink: 0; display: block; }
+
+/* ============================================================
+   رسپانسیو
+============================================================ */
+@media (max-width: 640px) {
+    body { font-size: 15px; }
+    .container { padding: 0 14px; }
+    .hero { padding: 14px 0 20px; }
+    .hero-top { margin-bottom: 12px; }
+    .hero-title { font-size: 1.24rem; }
+    .hero-subtitle { font-size: .83rem; margin-bottom: 12px; }
+    .hero-desc { font-size: .9rem; margin-bottom: 14px; }
+    .goal { padding: 12px 14px; font-size: .88rem; }
+    .theme-btn { padding: 6px 10px; font-size: .74rem; }
+    .theme-btn .theme-label { display: none; }
+    .toc { padding: 18px; }
+    .toc-list { grid-template-columns: 1fr; }
+    .sec-head { gap: 12px; padding-bottom: 14px; }
+    .sec-num { flex-basis: 44px; height: 44px; font-size: 1.1rem; border-radius: 12px; }
+    .ex-card { padding: 16px 16px; }
+    pre { padding: 14px 16px; font-size: .78rem; }
+    .fc-shape { min-width: 120px; font-size: .8rem; }
+    .fc-decision { min-width: 140px; min-height: 62px; padding: 12px 24px; }
+    #toTop { bottom: 16px; right: 16px; padding: 12px; width: 44px; height: 44px; justify-content: center; }
+    #toTop .toTop-text { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     هدر
+============================================================ -->
+<header class="hero">
+    <div class="container">
+        <div class="hero-top">
+            <span class="hero-badge">هفته سوم</span>
+            <button class="theme-btn" id="themeBtn" aria-label="تغییر تم">
+                <span class="theme-icon" id="themeIcon">🌙</span>
+                <span class="theme-label" id="themeLabel">تم تاریک</span>
+            </button>
+        </div>
+        <h1 class="hero-title">ساختارهای کنترلی، شرط‌ها و حلقه‌های تکرار</h1>
+        <p class="hero-subtitle">جزوه آموزشی زبان برنامه‌نویسی جاوا — دوره مقدماتی</p>
+        <p class="hero-desc">
+            در این هفته برنامه‌های ما از حالت خطی و مستقیم خارج می‌شوند. یاد می‌گیریم چطور به برنامه
+            قدرت تصمیم‌گیری بدهیم تا بر اساس شرایط مختلف، مسیرهای متفاوتی را انتخاب کند. سپس با
+            حلقه‌ها آشنا می‌شویم تا کارهای تکراری را بدون نوشتن کد تکراری انجام دهیم. این دو مهارت،
+            ستون اصلی هر برنامه‌ای هستند که بعد از این هفته بنویسید.
+        </p>
+        <div class="goal">
+            <strong>هدف هفته:</strong>
+            بخشیدن قدرت تصمیم‌گیری به برنامه بر اساس شرایط مختلف و تکرار فرایندها جهت حل مسائل
+            تکرارشونده. در پایان این هفته باید بتوانید برای هر مسئله، ساختار کنترلی مناسب (شرط یا
+            حلقه) را انتخاب کرده و به‌درستی پیاده‌سازی کنید.
+        </div>
+    </div>
+</header>
+
+<!-- ============================================================
+     فهرست
+============================================================ -->
+<div class="container">
+    <nav class="toc">
+        <div class="toc-title">فهرست مطالب</div>
+        <div class="toc-list">
+            <a class="toc-link" href="#s1" style="--tc: var(--sec-1)">
+                <span class="num">۱</span> if و if-else
+            </a>
+            <a class="toc-link" href="#s2" style="--tc: var(--sec-2)">
+                <span class="num">۲</span> نردبان else-if
+            </a>
+            <a class="toc-link" href="#s3" style="--tc: var(--sec-3)">
+                <span class="num">۳</span> شروط تودرتو
+            </a>
+            <a class="toc-link" href="#s4" style="--tc: var(--sec-4)">
+                <span class="num">۴</span> ساختار switch
+            </a>
+            <a class="toc-link" href="#s5" style="--tc: var(--sec-6)">
+                <span class="num">۵</span> حلقه while و do-while
+            </a>
+            <a class="toc-link" href="#s6" style="--tc: var(--sec-7)">
+                <span class="num">۶</span> حلقه for و تودرتو
+            </a>
+            <a class="toc-link" href="#s7" style="--tc: var(--sec-8)">
+                <span class="num">۷</span> break و continue
+            </a>
+            <a class="toc-link" href="#exercises" style="--tc: var(--sec-5)">
+                <span class="num">۸</span> تمرین‌ها و راهنما
+            </a>
+            <a class="toc-link" href="#qa" style="--tc: var(--sec-9)">
+                <span class="num">۹</span> پرسش و پاسخ
+            </a>
+            <a class="toc-link" href="#summary" style="--tc: var(--sec-10)">
+                <span class="num">۱۰</span> جمع‌بندی
+            </a>
+        </div>
+    </nav>
+</div>
+
+<!-- ============================================================
+     بخش ۱ — if و if-else
+============================================================ -->
+<section class="section s1" id="s1">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۱</span>
+            <div>
+                <h2>دستور شرطی if و if-else</h2>
+                <p>اولین ابزار تصمیم‌گیری در برنامه</p>
+            </div>
+        </div>
+
+        <h3>چرا برنامه به شرط نیاز دارد؟</h3>
+        <p>
+            تا اینجا برنامه‌های ما خط‌به‌خط از بالا به پایین اجرا می‌شدند. یعنی هر دستور، بدون توجه به
+            شرایط، دقیقاً یک بار اجرا می‌شد. اما برنامه‌های واقعی باید بتوانند بر اساس موقعیت تصمیم
+            بگیرند. اگر موجودی حساب کافی بود پول برداشت کن، اگر رمز اشتباه بود خطا بده، اگر سن کاربر
+            کمتر از ۱۸ سال بود اجازه ثبت‌نام نده. به این توانایی، <strong>تصمیم‌گیری</strong> می‌گوییم
+            و ابزار آن در جاوا، دستور <code>if</code> است.
+        </p>
+
+        <h3>ساختار if ساده</h3>
+        <p>
+            ساده‌ترین شکل تصمیم‌گیری. اگر شرط درست باشد، بدنه اجرا می‌شود؛ اگر غلط باشد، بدنه کاملاً
+            نادیده گرفته می‌شود و اجرا از خط بعدی ادامه می‌یابد.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">if</span> (condition) {
+    <span class="tok-com">// runs only when the condition is true</span>
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> score = <span class="tok-num">15</span>;
+
+<span class="tok-kw">if</span> (score &gt;= <span class="tok-num">10</span>) {
+    System.out.println(<span class="tok-str">"Passed"</span>);
+}
+System.out.println(<span class="tok-str">"Program continues..."</span>);</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>نکته مهم درباره شرط</strong>
+            شرط داخل پرانتز باید حتماً یک عبارت <code>boolean</code> باشد؛ یعنی چیزی که نتیجه‌اش
+            <code>true</code> یا <code>false</code> است. برخلاف زبان‌هایی مثل C که عدد صفر را
+            معادل غلط و بقیه اعداد را معادل درست می‌دانند، در جاوا نوشتن <code>if (1)</code> خطای
+            کامپایل می‌دهد. شرط باید دقیقاً از نوع <code>boolean</code> باشد.
+        </div>
+
+        <h3>ساختار if-else دوطرفه</h3>
+        <p>
+            وقتی دو مسیر ممکن داریم و در هر حالت دقیقاً یکی از آن‌ها باید اجرا شود، از
+            <code>if-else</code> استفاده می‌کنیم. بخش <code>else</code> یعنی «هر چیزی که شرط if
+            نبود».
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">if</span> (condition) {
+    <span class="tok-com">// path A: condition is true</span>
+} <span class="tok-kw">else</span> {
+    <span class="tok-com">// path B: condition is false</span>
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> number = <span class="tok-num">7</span>;
+
+<span class="tok-kw">if</span> (number % <span class="tok-num">2</span> == <span class="tok-num">0</span>) {
+    System.out.println(<span class="tok-str">"Even"</span>);
+} <span class="tok-kw">else</span> {
+    System.out.println(<span class="tok-str">"Odd"</span>);
+}</code></pre>
+        </div>
+
+        <h3>نمای فلوچارت</h3>
+        <p>اگر ساختار if-else را به شکل فلوچارت ببینید، تصمیم‌گیری واضح‌تر می‌شود:</p>
+
+        <div class="flowchart">
+            <div class="fc-shape fc-oval">شروع</div>
+            <div class="fc-arrow">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+                    <path d="M7 0 V16 M1 11 L7 19 L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="fc-shape fc-decision">شرط</div>
+            <div class="fc-arrow">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+                    <path d="M7 0 V16 M1 11 L7 19 L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="fc-shape fc-process">دستور مسیر درست</div>
+            <div class="fc-arrow">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+                    <path d="M7 0 V16 M1 11 L7 19 L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="fc-shape fc-oval">پایان</div>
+        </div>
+
+        <h3>دو اشتباه رایج</h3>
+
+        <div class="danger-box">
+            <strong>اشتباه ۱: سمی‌کالن اضافه بعد از پرانتز if</strong>
+            اگر بعد از پرانتز شرط یک <code>;</code> بگذارید، دستور if همان‌جا تمام می‌شود و بلوک
+            بعدی مستقل از شرط اجرا می‌شود. این کار باعث می‌شود شرط شما هیچ اثری نداشته باشد و
+            همیشه دستور داخل بلوک اجرا شود. هرگز بعد از پرانتز if سمی‌کالن نگذارید.
+        </div>
+
+        <div class="danger-box">
+            <strong>اشتباه ۲: استفاده از <code>=</code> به‌جای <code>==</code></strong>
+            عملگر <code>=</code> برای انتساب مقدار است و <code>==</code> برای مقایسه. اگر در شرط
+            بنویسید <code>if (x = 5)</code>، کامپایلر خطا می‌دهد چون نتیجه انتساب از نوع متغیر
+            است، نه <code>boolean</code>. همیشه در شرط از <code>==</code> استفاده کنید.
+        </div>
+
+        <div class="tip-box">
+            <strong>همیشه از آکولاد استفاده کنید</strong>
+            برای یک خط دستور، آکولاد اختیاری است. اما استاندارد حرفه‌ای جاوا این است که همیشه از
+            <code>{ }</code> استفاده کنید. این کار جلوی باگ‌های عجیب در ویرایش‌های بعدی کد را می‌گیرد.
+            مثلاً اگر بعداً بخواهید یک خط دیگر به بدنه اضافه کنید، بدون آکولاد آن خط بیرون از شرط
+            قرار می‌گیرد و برنامه رفتار اشتباه پیدا می‌کند.
+        </div>
+
+        <h3>مثال‌های کاربردی</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — بررسی سن</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> age = <span class="tok-num">20</span>;
+
+<span class="tok-kw">if</span> (age &gt;= <span class="tok-num">18</span>) {
+    System.out.println(<span class="tok-str">"You can register"</span>);
+} <span class="tok-kw">else</span> {
+    System.out.println(<span class="tok-str">"Must be at least 18"</span>);
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — بررسی صفر</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> number = <span class="tok-num">0</span>;
+
+<span class="tok-kw">if</span> (number != <span class="tok-num">0</span>) {
+    System.out.println(<span class="tok-num">100</span> / number);
+} <span class="tok-kw">else</span> {
+    System.out.println(<span class="tok-str">"Cannot divide by zero"</span>);
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — بررسی رمز عبور</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>String password = <span class="tok-str">"1234"</span>;
+
+<span class="tok-kw">if</span> (password.equals(<span class="tok-str">"1234"</span>)) {
+    System.out.println(<span class="tok-str">"Access granted"</span>);
+} <span class="tok-kw">else</span> {
+    System.out.println(<span class="tok-str">"Wrong password"</span>);
+}</code></pre>
+        </div>
+
+        <div class="warn-box">
+            <strong>مقایسه رشته‌ها با equals، نه ==</strong>
+            برای مقایسه محتوای رشته‌ها از <code>equals</code> استفاده کنید، نه <code>==</code>.
+            در هفته چهارم به تفصیل توضیح داده می‌شود که چرا این دو متفاوت هستند، اما فعلاً فقط این
+            را به خاطر بسپارید: هر وقت می‌خواهید دو رشته را از نظر محتوا مقایسه کنید، از
+            <code>equals</code> استفاده کنید.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۲ — نردبان else-if
+============================================================ -->
+<section class="section s2" id="s2">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۲</span>
+            <div>
+                <h2>ساختار نردبانی else-if</h2>
+                <p>وقتی بیش از دو حالت ممکن داریم</p>
+            </div>
+        </div>
+
+        <h3>چرا به else-if نیاز داریم؟</h3>
+        <p>
+            فرض کنید می‌خواهید برای نمره یک دانشجو سطح تعیین کنید: بالای ۱۷ عالی، بین ۱۴ تا ۱۷ خوب،
+            بین ۱۰ تا ۱۴ متوسط و پایین‌تر از ۱۰ مردود. با یک <code>if-else</code> ساده فقط دو حالت
+            را می‌شود پوشش داد. برای بیش از دو حالت، از ساختار نردبانی <code>else-if</code> استفاده
+            می‌کنیم.
+        </p>
+
+        <h3>ساختار کلی</h3>
+        <p>
+            در این ساختار، کامپیوتر از بالا شروع می‌کند و به محض رسیدن به اولین شرط درست، بدنه آن را
+            اجرا کرده و از کل نردبان خارج می‌شود. شرط‌های بعدی حتی بررسی نمی‌شوند.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">if</span> (condition1) {
+    <span class="tok-com">// case 1</span>
+} <span class="tok-kw">else if</span> (condition2) {
+    <span class="tok-com">// case 2</span>
+} <span class="tok-kw">else if</span> (condition3) {
+    <span class="tok-com">// case 3</span>
+} <span class="tok-kw">else</span> {
+    <span class="tok-com">// none of the above</span>
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — تعیین سطح نمره</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">double</span> grade = <span class="tok-num">16.5</span>;
+
+<span class="tok-kw">if</span> (grade &gt;= <span class="tok-num">17</span>) {
+    System.out.println(<span class="tok-str">"A"</span>);
+} <span class="tok-kw">else if</span> (grade &gt;= <span class="tok-num">14</span>) {
+    System.out.println(<span class="tok-str">"B"</span>);
+} <span class="tok-kw">else if</span> (grade &gt;= <span class="tok-num">10</span>) {
+    System.out.println(<span class="tok-str">"C"</span>);
+} <span class="tok-kw">else</span> {
+    System.out.println(<span class="tok-str">"F"</span>);
+}</code></pre>
+        </div>
+
+        <h3>ترتیب شرط‌ها اهمیت حیاتی دارد</h3>
+        <p>
+            اگر در مثال بالا شرط <code>grade &gt;= 10</code> را قبل از <code>grade &gt;= 17</code>
+            بنویسید، نمره ۱۸ هم در شرط اول درست است و هم هرگز به شاخه «عالی» نمی‌رسد. همیشه
+            شرط‌های <strong>محدودتر</strong> را بالاتر بنویسید و شرط‌های <strong>کلی‌تر</strong> را
+            پایین‌تر.
+        </p>
+
+        <div class="warn-box">
+            <strong>ترتیب شرط‌ها را اشتباه نگیرید</strong>
+            ساختار else-if یک زنجیره است و به محض رسیدن به اولین شرط درست، از آن خارج می‌شود. اگر
+            شرط کلی‌تر را بالاتر بنویسید، شرط‌های بعدی هرگز شانس اجرا پیدا نمی‌کنند. همیشه از
+            محدودترین به کلی‌ترین حرکت کنید.
+        </div>
+
+        <h3>else-if را با ifهای مستقل اشتباه نگیرید</h3>
+        <p>
+            اگر به‌جای <code>else if</code>، چند <code>if</code> پشت‌سرهم بنویسید، همه شرط‌ها
+            جداگانه بررسی می‌شوند. این کار ممکن است باعث شود چند پیام متناقض چاپ شود. مثلاً اگر
+            برای نمره ۱۸، هم شرط «قبول» (نمره ≥ ۱۰) و هم شرط «عالی» (نمره ≥ ۱۷) را با ifهای
+            مستقل بنویسید، هر دو پیام چاپ می‌شوند که منطقی نیست.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — اشتباه رایج</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> score = <span class="tok-num">18</span>;
+
+<span class="tok-com">// Wrong: both messages will print</span>
+<span class="tok-kw">if</span> (score &gt;= <span class="tok-num">10</span>) System.out.println(<span class="tok-str">"Passed"</span>);
+<span class="tok-kw">if</span> (score &gt;= <span class="tok-num">17</span>) System.out.println(<span class="tok-str">"Excellent"</span>);
+
+<span class="tok-com">// Correct: only one message will print</span>
+<span class="tok-kw">if</span> (score &gt;= <span class="tok-num">17</span>) {
+    System.out.println(<span class="tok-str">"Excellent"</span>);
+} <span class="tok-kw">else if</span> (score &gt;= <span class="tok-num">10</span>) {
+    System.out.println(<span class="tok-str">"Passed"</span>);
+}</code></pre>
+        </div>
+
+        <h3>مثال کاربردی: تخفیف پلکانی فروشگاه</h3>
+        <p>
+            فرض کنید یک فروشگاه برای خریدهای بالاتر از یک مبلغ مشخص، تخفیف در نظر می‌گیرد. این
+            سناریو دقیقاً ساختار نردبانی می‌خواهد.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">double</span> amount = <span class="tok-num">750000</span>;
+<span class="tok-kw">double</span> finalAmount;
+
+<span class="tok-kw">if</span> (amount &gt;= <span class="tok-num">1000000</span>) {
+    finalAmount = amount * <span class="tok-num">0.8</span>;   <span class="tok-com">// 20% off</span>
+} <span class="tok-kw">else if</span> (amount &gt;= <span class="tok-num">500000</span>) {
+    finalAmount = amount * <span class="tok-num">0.9</span>;   <span class="tok-com">// 10% off</span>
+} <span class="tok-kw">else</span> {
+    finalAmount = amount;             <span class="tok-com">// no discount</span>
+}
+
+System.out.println(<span class="tok-str">"Final amount: "</span> + finalAmount);</code></pre>
+        </div>
+
+        <div class="tip-box">
+            <strong>توصیه</strong>
+            هر وقت بیش از دو حالت دارید، اول با خودتان بنویسید کدام شرط «محدودتر» است و کدام
+            «کلی‌تر». از محدودترین شروع کنید و به کلی‌ترین برسید. این کار جلوی بسیاری از باگ‌های
+            منطقی را می‌گیرد.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۳ — شروط تودرتو
+============================================================ -->
+<section class="section s3" id="s3">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۳</span>
+            <div>
+                <h2>شروط تودرتو</h2>
+                <p>فیلترهای چندمرحله‌ای روی داده‌ها</p>
+            </div>
+        </div>
+
+        <h3>شروط تودرتو چیست؟</h3>
+        <p>
+            وقتی یک <code>if</code> یا <code>else</code> داخل بدنه یک <code>if</code> دیگر قرار
+            می‌گیرد، به آن شرط تودرتو می‌گوییم. نکته کلیدی این است که <strong>شرط داخلی فقط زمانی
+            بررسی می‌شود که شرط بیرونی درست باشد</strong>. این ساختار مثل فیلترهای پشت‌سرهم عمل
+            می‌کند: اول مجوز ورود، بعد بررسی مدارک.
+        </p>
+
+        <h3>مثال: احراز هویت دومرحله‌ای</h3>
+        <p>
+            فرض کنید می‌خواهید برای صدور سیم‌کارت، دو شرط را بررسی کنید: اول اینکه سن کاربر بالای
+            ۱۸ سال باشد، دوم اینکه کارت ملی همراه داشته باشد. با شرط تودرتو، ترتیب این دو بررسی
+            مشخص می‌شود.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> age = <span class="tok-num">21</span>;
+<span class="tok-kw">boolean</span> hasNationalCard = <span class="tok-kw">true</span>;
+
+<span class="tok-kw">if</span> (age &gt;= <span class="tok-num">18</span>) {
+    <span class="tok-com">// inner condition is checked only if age &gt;= 18</span>
+    <span class="tok-kw">if</span> (hasNationalCard) {
+        System.out.println(<span class="tok-str">"Registration complete."</span>);
+    } <span class="tok-kw">else</span> {
+        System.out.println(<span class="tok-str">"National card required."</span>);
+    }
+} <span class="tok-kw">else</span> {
+    System.out.println(<span class="tok-str">"Must be at least 18."</span>);
+}</code></pre>
+        </div>
+
+        <h3>ریشه منطقی شرط تودرتو</h3>
+        <p>
+            شرط تودرتو در واقع همان ترکیب دو شرط با <code>AND</code> منطقی است، اما در برخی موارد
+            خواناتر است. اگر بخواهیم همان مثال بالا را با <code>&amp;&amp;</code> بنویسیم، می‌شود
+            <code>if (age &gt;= 18 &amp;&amp; hasNationalCard)</code>. تفاوت این است که در ساختار
+            تودرتو می‌توانید برای هر شرط پیام خطای متفاوتی بدهید، اما در <code>&amp;&amp;</code>
+            فقط یک پیام کلی می‌توانید چاپ کنید.
+        </p>
+
+        <div class="info-box">
+            <strong>کِی از شرط تودرتو استفاده کنیم؟</strong>
+            وقتی می‌خواهید برای هر فیلتر، پیام خطای متفاوتی بدهید. مثلاً اگر سن کم بود بگویید «سن
+            شما کافی نیست» و اگر کارت ملی نبود بگویید «لطفاً کارت ملی همراه داشته باشید». با
+            <code>&amp;&amp;</code> فقط می‌توانید یک پیام کلی مثل «شرایط احراز هویت کامل نیست»
+            بدهید. انتخاب روش درست، به کیفیت تجربه کاربری برنامه برمی‌گردد.
+        </div>
+
+        <h3>مثال: تصمیم فروشگاه بر اساس موجودی و بودجه</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> stock = <span class="tok-num">5</span>;
+<span class="tok-kw">int</span> budget = <span class="tok-num">100000</span>;
+<span class="tok-kw">int</span> price = <span class="tok-num">45000</span>;
+
+<span class="tok-kw">if</span> (stock &gt; <span class="tok-num">0</span>) {
+    <span class="tok-kw">if</span> (budget &gt;= price) {
+        System.out.println(<span class="tok-str">"Order placed successfully"</span>);
+    } <span class="tok-kw">else</span> {
+        System.out.println(<span class="tok-str">"Insufficient budget"</span>);
+    }
+} <span class="tok-kw">else</span> {
+    System.out.println(<span class="tok-str">"Product out of stock"</span>);
+}</code></pre>
+        </div>
+
+        <h3>نکات مهم درباره شرط تودرتو</h3>
+
+        <ul class="dot-list">
+            <li><strong>تو رفتگی (indent):</strong> هر سطح تودرتو را با فاصله مناسب مشخص کنید تا سلسله‌مراتب شرط‌ها دیده شود.</li>
+            <li><strong>تعداد لایه‌ها:</strong> بیش از دو یا سه سطح تودرتو، خوانایی کد را بسیار پایین می‌آورد. اگر نیاز به لایه‌های بیشتر شد، احتمالاً باید منطق را با متدها یا ساختارهای دیگر بشکنید.</li>
+            <li><strong>else به کدام if برمی‌گردد؟</strong> در زبان‌های خانواده C، هر <code>else</code> به نزدیک‌ترین <code>if</code> قبل از خودش تعلق دارد. برای جلوگیری از ابهام، همیشه از آکولاد استفاده کنید.</li>
+        </ul>
+
+        <div class="warn-box">
+            <strong>دام else معلق</strong>
+            اگر آکولادها را حذف کنید، ممکن است <code>else</code> به <code>if</code> اشتباهی
+            وصل شود. همیشه از آکولاد استفاده کنید تا ساختار دقیقاً همان‌طور که قصد دارید اجرا شود.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۴ — switch
+============================================================ -->
+<section class="section s4" id="s4">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۴</span>
+            <div>
+                <h2>ساختار switch</h2>
+                <p>مقایسه یک متغیر با چند مقدار ثابت</p>
+            </div>
+        </div>
+
+        <h3>کِی از switch استفاده کنیم؟</h3>
+        <p>
+            وقتی می‌خواهید <strong>یک متغیر واحد</strong> را با چند مقدار ثابت مقایسه کنید (مثل
+            منوی انتخاب)، <code>switch</code> خواناتر و مرتب‌تر از زنجیره طولانی <code>if-else</code>
+            است. به جای نوشتن چند <code>if</code> پشت‌سرهم، یک ساختار تمیز و شبیه به منو دارید.
+        </p>
+
+        <h3>ساختار سنتی switch</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">switch</span> (variable) {
+    <span class="tok-kw">case</span> value1:
+        <span class="tok-com">// code</span>
+        <span class="tok-kw">break</span>;
+    <span class="tok-kw">case</span> value2:
+        <span class="tok-com">// code</span>
+        <span class="tok-kw">break</span>;
+    <span class="tok-kw">default</span>:
+        <span class="tok-com">// runs when no case matches</span>
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — منوی ساده</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> choice = <span class="tok-num">2</span>;
+
+<span class="tok-kw">switch</span> (choice) {
+    <span class="tok-kw">case</span> <span class="tok-num">1</span>:
+        System.out.println(<span class="tok-str">"Buy credit"</span>);
+        <span class="tok-kw">break</span>;
+    <span class="tok-kw">case</span> <span class="tok-num">2</span>:
+        System.out.println(<span class="tok-str">"Check balance"</span>);
+        <span class="tok-kw">break</span>;
+    <span class="tok-kw">case</span> <span class="tok-num">3</span>:
+        System.out.println(<span class="tok-str">"Internet packages"</span>);
+        <span class="tok-kw">break</span>;
+    <span class="tok-kw">default</span>:
+        System.out.println(<span class="tok-str">"Invalid choice"</span>);
+}</code></pre>
+        </div>
+
+        <h3>قوانین و محدودیت‌ها</h3>
+
+        <ul class="dot-list">
+            <li><strong>انواع مجاز:</strong> <code>byte</code>، <code>short</code>، <code>char</code>، <code>int</code>، <code>String</code> (از جاوا ۷ به بعد) و <code>enum</code>. انواع <code>long</code>، <code>float</code>، <code>double</code> و <code>boolean</code> مجاز نیستند.</li>
+            <li><strong>فقط تساوی:</strong> در <code>case</code> فقط مقدار ثابت قابل مقایسه است. نمی‌توانید بازه بنویسید (مثل <code>case x &gt; 10:</code>) یا شرط بولی بگذارید.</li>
+            <li><strong>break:</strong> پس از اجرای هر case، دستور <code>break</code> از switch خارج می‌شود. اگر فراموش شود، اجرا به caseهای بعدی «نفوذ» می‌کند.</li>
+            <li><strong>default:</strong> اختیاری است اما توصیه می‌شود. برای حالتی است که هیچ case مطابقت نداشته باشد.</li>
+        </ul>
+
+        <div class="danger-box">
+            <strong>پدیده Fall-through (نفوذ)</strong>
+            اگر <code>break</code> را فراموش کنید، پس از اجرای case جاری، caseهای بعدی هم پشت‌سرهم
+            اجرا می‌شوند. این رفتار در ابتدا عجیب به نظر می‌رسد، اما یک قاعده مشخص در جاواست. برای
+            جلوگیری از آن، همیشه پس از هر case دستور <code>break</code> را بنویسید.
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — نمونه fall-through</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> day = <span class="tok-num">1</span>;
+
+<span class="tok-kw">switch</span> (day) {
+    <span class="tok-kw">case</span> <span class="tok-num">1</span>:
+        System.out.println(<span class="tok-str">"Saturday"</span>);   <span class="tok-com">// prints</span>
+        <span class="tok-com">// missing break → falls through</span>
+    <span class="tok-kw">case</span> <span class="tok-num">2</span>:
+        System.out.println(<span class="tok-str">"Sunday"</span>);     <span class="tok-com">// also prints!</span>
+        <span class="tok-kw">break</span>;
+    <span class="tok-kw">default</span>:
+        System.out.println(<span class="tok-str">"Invalid"</span>);
+}</code></pre>
+        </div>
+
+        <h3>نفوذ عمدی: گروه‌بندی caseها</h3>
+        <p>
+            گاهی نبودن break عمدی است. اگر بخواهید چند مقدار، یک کد مشترک را اجرا کنند، می‌توانید
+            caseها را خالی پشت هم بگذارید. این تکنیک رایج است و در کد حرفه‌ای زیاد دیده می‌شود.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">switch</span> (day) {
+    <span class="tok-kw">case</span> <span class="tok-num">5</span>:
+    <span class="tok-kw">case</span> <span class="tok-num">6</span>:
+        System.out.println(<span class="tok-str">"Weekend"</span>);
+        <span class="tok-kw">break</span>;
+    <span class="tok-kw">default</span>:
+        System.out.println(<span class="tok-str">"Workday"</span>);
+}</code></pre>
+        </div>
+
+        <h3>switch مدرن (از جاوا ۱۴ به بعد)</h3>
+        <p>
+            از نسخه ۱۴ جاوا، سینتکس جدیدی برای switch معرفی شد که مشکلات نسخه سنتی را حل می‌کند.
+            در این نسخه، هر case با <code>-&gt;</code> نوشته می‌شود، هیچ نفوذی بین caseها وجود
+            ندارد و نیازی به break نیست.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — switch مدرن</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> choice = <span class="tok-num">2</span>;
+
+<span class="tok-kw">switch</span> (choice) {
+    <span class="tok-kw">case</span> <span class="tok-num">1</span> -&gt; System.out.println(<span class="tok-str">"Buy credit"</span>);
+    <span class="tok-kw">case</span> <span class="tok-num">2</span> -&gt; System.out.println(<span class="tok-str">"Check balance"</span>);
+    <span class="tok-kw">case</span> <span class="tok-num">3</span> -&gt; System.out.println(<span class="tok-str">"Internet packages"</span>);
+    <span class="tok-kw">default</span> -&gt; System.out.println(<span class="tok-str">"Invalid choice"</span>);
+}</code></pre>
+        </div>
+
+        <h3>چند مقدار در یک case</h3>
+        <p>
+            در نسخه مدرن می‌توان چند مقدار را با کاما در یک case گروه کرد. این کار بسیار خواناتر از
+            نوشتن چند case خالی پشت سر هم است.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — گروه‌بندی caseها</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> month = <span class="tok-num">2</span>;
+
+<span class="tok-kw">switch</span> (month) {
+    <span class="tok-kw">case</span> <span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span> -&gt; System.out.println(<span class="tok-str">"Spring"</span>);
+    <span class="tok-kw">case</span> <span class="tok-num">4</span>, <span class="tok-num">5</span>, <span class="tok-num">6</span> -&gt; System.out.println(<span class="tok-str">"Summer"</span>);
+    <span class="tok-kw">case</span> <span class="tok-num">7</span>, <span class="tok-num">8</span>, <span class="tok-num">9</span> -&gt; System.out.println(<span class="tok-str">"Autumn"</span>);
+    <span class="tok-kw">case</span> <span class="tok-num">10</span>, <span class="tok-num">11</span>, <span class="tok-num">12</span> -&gt; System.out.println(<span class="tok-str">"Winter"</span>);
+    <span class="tok-kw">default</span> -&gt; System.out.println(<span class="tok-str">"Invalid month"</span>);
+}</code></pre>
+        </div>
+
+        <h3>switch به‌عنوان یک عبارت (Switch Expression)</h3>
+        <p>
+            بزرگ‌ترین مزیت نسخه مدرن این است که <code>switch</code> می‌تواند خودش یک مقدار تولید
+            کند و آن را مستقیماً به یک متغیر نسبت دهید. دیگر نیازی به متغیر موقت و break نیست.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — switch به‌عنوان عبارت</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> month = <span class="tok-num">2</span>;
+
+String season = <span class="tok-kw">switch</span> (month) {
+    <span class="tok-kw">case</span> <span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span> -&gt; <span class="tok-str">"Spring"</span>;
+    <span class="tok-kw">case</span> <span class="tok-num">4</span>, <span class="tok-num">5</span>, <span class="tok-num">6</span> -&gt; <span class="tok-str">"Summer"</span>;
+    <span class="tok-kw">case</span> <span class="tok-num">7</span>, <span class="tok-num">8</span>, <span class="tok-num">9</span> -&gt; <span class="tok-str">"Autumn"</span>;
+    <span class="tok-kw">case</span> <span class="tok-num">10</span>, <span class="tok-num">11</span>, <span class="tok-num">12</span> -&gt; <span class="tok-str">"Winter"</span>;
+    <span class="tok-kw">default</span> -&gt; <span class="tok-str">"Invalid month"</span>;
+};
+
+System.out.println(season);   <span class="tok-com">// Spring</span></code></pre>
+        </div>
+
+        <h3>if-else یا switch؟</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ویژگی</th>
+                        <th>if / else-if</th>
+                        <th>switch</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>نوع مقایسه</td><td>هر عبارت بولی</td><td>فقط تساوی با مقدار ثابت</td></tr>
+                    <tr><td>انواع داده</td><td>همه انواع</td><td>byte، short، char، int، String، enum</td></tr>
+                    <tr><td>پشتیبانی از بازه</td><td>دارد</td><td>ندارد</td></tr>
+                    <tr><td>خوانایی در چند حالت ثابت</td><td>کمتر</td><td>بیشتر</td></tr>
+                    <tr><td>نیاز به break</td><td>ندارد</td><td>در نسخه سنتی دارد</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tip-box">
+            <strong>توصیه</strong>
+            در کد جدید، سینتکس مدرن switch را ترجیح دهید چون خواناتر و ایمن‌تر است. اما سینتکس
+            سنتی را هم بشناسید، چون در پروژه‌های قدیمی و بسیاری از کتابخانه‌ها همچنان استفاده می‌شود.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۵ — while و do-while
+============================================================ -->
+<section class="section s6" id="s5">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۵</span>
+            <div>
+                <h2>حلقه‌های while و do-while</h2>
+                <p>تکرار دستورات تا زمانی که شرط برقرار است</p>
+            </div>
+        </div>
+
+        <h3>چرا به حلقه نیاز داریم؟</h3>
+        <p>
+            تصور کنید باید عبارت «سلام» را ۱۰۰ بار چاپ کنید. نوشتن ۱۰۰ خط دستور، نه عملی است و نه
+            خوانا. کامپیوترها برای همین کارهای تکراری ساخته شده‌اند. به ساختاری که یک تکه کد را
+            بارها تکرار می‌کند، <strong>حلقه</strong> می‌گوییم. ساده‌ترین حلقه، <code>while</code>
+            است.
+        </p>
+
+        <h3>ساختار while</h3>
+        <p>
+            حلقه <code>while</code> ابتدا شرط را بررسی می‌کند. اگر درست بود، بدنه را اجرا می‌کند. بعد
+            دوباره به شرط برمی‌گردد و همین کار را تکرار می‌کند تا زمانی که شرط غلط شود.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">while</span> (condition) {
+    <span class="tok-com">// repeated code</span>
+    <span class="tok-com">// update the counter so the loop can finish</span>
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> i = <span class="tok-num">1</span>;
+
+<span class="tok-kw">while</span> (i &lt;= <span class="tok-num">5</span>) {
+    System.out.println(i);
+    i++;   <span class="tok-com">// don't forget this</span>
+}</code></pre>
+        </div>
+
+        <div class="warn-box">
+            <strong>حلقه بی‌نهایت</strong>
+            اگر متغیر شرط را داخل حلقه به‌روزرسانی نکنید (مثلاً <code>i++</code> را فراموش کنید)،
+            شرط همیشه درست می‌ماند و برنامه قفل می‌شود. هرگز بعد از پرانتز while سمی‌کالن نگذارید،
+            چون در آن صورت حلقه روی یک دستور خالی اجرا می‌شود و بدنه بعدی بی‌ربط خواهد بود.
+        </div>
+
+        <h3>مثال‌های کاربردی while</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — شمارش معکوس</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> count = <span class="tok-num">5</span>;
+
+<span class="tok-kw">while</span> (count &gt; <span class="tok-num">0</span>) {
+    System.out.println(count);
+    count--;
+}
+System.out.println(<span class="tok-str">"Liftoff!"</span>);</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — جمع اعداد تا صفر</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>Scanner sc = <span class="tok-kw">new</span> Scanner(System.in);
+<span class="tok-kw">int</span> sum = <span class="tok-num">0</span>;
+<span class="tok-kw">int</span> number = -<span class="tok-num">1</span>;
+
+<span class="tok-kw">while</span> (number != <span class="tok-num">0</span>) {
+    System.out.print(<span class="tok-str">"Enter a number (0 to stop): "</span>);
+    number = sc.nextInt();
+    sum += number;
+}
+
+System.out.println(<span class="tok-str">"Sum = "</span> + sum);</code></pre>
+        </div>
+
+        <h3>ویژگی کلیدی while</h3>
+        <p>
+            چون شرط قبل از ورود به حلقه بررسی می‌شود، اگر از همان ابتدا غلط باشد، بدنه هیچ‌وقت
+            اجرا نمی‌شود. یعنی حلقه <code>while</code> ممکن است <strong>صفر بار</strong> اجرا شود.
+            این ویژگی برای مواردی مناسب است که «شاید اصلاً نیازی به تکرار نباشد».
+        </p>
+
+        <h3>حلقه do-while</h3>
+        <p>
+            گاهی می‌خواهیم بدنه حلقه <strong>حداقل یک بار</strong> اجرا شود، حتی اگر شرط از همان
+            ابتدا غلط باشد. مثلاً در یک منو، کاربر باید حتماً یک بار منو را ببیند، حتی اگر بخواهد
+            بلافاصله خارج شود. برای این حالت از <code>do-while</code> استفاده می‌کنیم.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">do</span> {
+    <span class="tok-com">// runs at least once</span>
+} <span class="tok-kw">while</span> (condition);   <span class="tok-com">// semicolon is required here</span></code></pre>
+        </div>
+
+        <h3>مقایسه while و do-while</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ویژگی</th>
+                        <th>while</th>
+                        <th>do-while</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>زمان بررسی شرط</td><td>قبل از هر دور</td><td>بعد از هر دور</td></tr>
+                    <tr><td>حداقل تعداد اجرا</td><td>۰ بار</td><td>۱ بار</td></tr>
+                    <tr><td>سمی‌کالن انتهایی</td><td>ندارد</td><td>الزامی است</td></tr>
+                    <tr><td>کاربرد رایج</td><td>تکرار تا برقراری شرط</td><td>منو، اعتبارسنجی ورودی</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>مثال: منوی تعاملی</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — منو با do-while</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>Scanner sc = <span class="tok-kw">new</span> Scanner(System.in);
+<span class="tok-kw">int</span> choice;
+
+<span class="tok-kw">do</span> {
+    System.out.println(<span class="tok-str">"1) Show balance"</span>);
+    System.out.println(<span class="tok-str">"2) Deposit"</span>);
+    System.out.println(<span class="tok-str">"0) Exit"</span>);
+    System.out.print(<span class="tok-str">"Choice: "</span>);
+    choice = sc.nextInt();
+
+    <span class="tok-kw">switch</span> (choice) {
+        <span class="tok-kw">case</span> <span class="tok-num">1</span> -&gt; System.out.println(<span class="tok-str">"Balance: ..."</span>);
+        <span class="tok-kw">case</span> <span class="tok-num">2</span> -&gt; System.out.println(<span class="tok-str">"Deposited."</span>);
+        <span class="tok-kw">case</span> <span class="tok-num">0</span> -&gt; System.out.println(<span class="tok-str">"Goodbye!"</span>);
+        <span class="tok-kw">default</span> -&gt; System.out.println(<span class="tok-str">"Invalid option"</span>);
+    }
+} <span class="tok-kw">while</span> (choice != <span class="tok-num">0</span>);</code></pre>
+        </div>
+
+        <h3>مثال: اعتبارسنجی ورودی</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — دریافت سن معتبر</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>Scanner sc = <span class="tok-kw">new</span> Scanner(System.in);
+<span class="tok-kw">int</span> age;
+
+<span class="tok-kw">do</span> {
+    System.out.print(<span class="tok-str">"Age (1 to 100): "</span>);
+    age = sc.nextInt();
+} <span class="tok-kw">while</span> (age &lt; <span class="tok-num">1</span> || age &gt; <span class="tok-num">100</span>);</code></pre>
+        </div>
+
+        <div class="tip-box">
+            <strong>انتخاب درست بین while و do-while</strong>
+            اگر شک دارید که «شاید اصلاً نیازی به تکرار نباشد»، از <code>while</code> استفاده کنید.
+            اگر «حداقل یک بار باید اجرا شود» (مثل منو یا اعتبارسنجی اولیه)، از
+            <code>do-while</code> استفاده کنید. انتخاب درست، خوانایی کد را بیشتر می‌کند و به
+            خواننده می‌گوید قصد برنامه‌نویس چه بوده است.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۶ — for و تودرتو
+============================================================ -->
+<section class="section s7" id="s6">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۶</span>
+            <div>
+                <h2>حلقه for و حلقه‌های تودرتو</h2>
+                <p>وقتی تعداد تکرارها از قبل مشخص است</p>
+            </div>
+        </div>
+
+        <h3>ساختار for</h3>
+        <p>
+            اگر از قبل بدانید کاری دقیقاً چند بار تکرار می‌شود، <code>for</code> جمع‌وجورترین
+            انتخاب است. در آن، سه بخش «شروع»، «شرط» و «گام» در یک خط نوشته می‌شوند و کد شما بسیار
+            خواناتر می‌شود.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">for</span> (initialization; condition; update) {
+    <span class="tok-com">// repeated code</span>
+}</code></pre>
+        </div>
+
+        <ul class="dot-list">
+            <li><strong>شروع:</strong> متغیر شمارنده یک بار ساخته می‌شود (مثلاً <code>int i = 1</code>).</li>
+            <li><strong>شرط:</strong> قبل از هر دور بررسی می‌شود (مثلاً <code>i &lt;= 5</code>).</li>
+            <li><strong>گام:</strong> بعد از هر دور اجرا می‌شود (مثلاً <code>i++</code>).</li>
+        </ul>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — شمارش ۱ تا ۵</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">for</span> (<span class="tok-kw">int</span> i = <span class="tok-num">1</span>; i &lt;= <span class="tok-num">5</span>; i++) {
+    System.out.println(i);
+}</code></pre>
+        </div>
+
+        <h3>انعطاف‌های رایج</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — شمارش معکوس</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">for</span> (<span class="tok-kw">int</span> i = <span class="tok-num">5</span>; i &gt;= <span class="tok-num">1</span>; i--) {
+    System.out.println(i);
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — گام دو تا دو تا</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">for</span> (<span class="tok-kw">int</span> i = <span class="tok-num">2</span>; i &lt;= <span class="tok-num">20</span>; i += <span class="tok-num">2</span>) {
+    System.out.println(i);
+}</code></pre>
+        </div>
+
+        <h3>مثال: جمع اعداد ۱ تا ۱۰</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> sum = <span class="tok-num">0</span>;
+
+<span class="tok-kw">for</span> (<span class="tok-kw">int</span> i = <span class="tok-num">1</span>; i &lt;= <span class="tok-num">10</span>; i++) {
+    sum += i;
+}
+
+System.out.println(<span class="tok-str">"Sum = "</span> + sum);   <span class="tok-com">// 55</span></code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>دامنه متغیر شمارنده</strong>
+            متغیری که در بخش شروع <code>for</code> تعریف می‌شود، فقط داخل همان حلقه معتبر است.
+            بعد از پایان حلقه به آن دسترسی ندارید. اگر بعداً به مقدار نهایی آن نیاز دارید، آن را
+            <em>قبل از</em> حلقه تعریف کنید.
+        </div>
+
+        <h3>حلقه‌های تودرتو</h3>
+        <p>
+            حلقه تودرتو یعنی یک حلقه درون حلقه دیگر. مثل عقربه‌های ساعت: به ازای هر یک دور عقربه
+            ساعت‌شمار، عقربه دقیقه‌شمار شصت دور کامل می‌زند. به همین ترتیب،
+            <strong>حلقه درونی برای هر تک‌تک دورهای حلقه بیرونی به‌طور کامل اجرا می‌شود</strong>.
+            این الگو برای رسم جدول و شکل‌های ستاره‌ای کاربرد دارد.
+        </p>
+
+        <h3>مثال: مستطیل ستاره‌ای ۳ در ۵</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">for</span> (<span class="tok-kw">int</span> row = <span class="tok-num">1</span>; row &lt;= <span class="tok-num">3</span>; row++) {
+
+    <span class="tok-kw">for</span> (<span class="tok-kw">int</span> col = <span class="tok-num">1</span>; col &lt;= <span class="tok-num">5</span>; col++) {
+        System.out.print(<span class="tok-str">"* "</span>);
+    }
+    System.out.println();   <span class="tok-com">// move to the next line</span>
+}</code></pre>
+        </div>
+
+        <p>
+            خروجی این کد به این شکل است:
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Output</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>* * * * *
+* * * * *
+* * * * *</code></pre>
+        </div>
+
+        <h3>مثال: مثلث قائم‌الزاویه</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">for</span> (<span class="tok-kw">int</span> i = <span class="tok-num">1</span>; i &lt;= <span class="tok-num">4</span>; i++) {
+    <span class="tok-kw">for</span> (<span class="tok-kw">int</span> j = <span class="tok-num">1</span>; j &lt;= i; j++) {
+        System.out.print(<span class="tok-str">"* "</span>);
+    }
+    System.out.println();
+}</code></pre>
+        </div>
+
+        <p>خروجی این کد مثلثی است که در هر سطر، یک ستاره بیشتر از سطر قبل دارد:</p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Output</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>*
+* *
+* * *
+* * * *</code></pre>
+        </div>
+
+        <div class="tip-box">
+            <strong>تفاوت print و println</strong>
+            برای چاپ ستون‌های یک سطر از <code>System.out.print</code> استفاده کنید (بدون رفتن به
+            خط بعد). در پایان هر سطر با <code>System.out.println()</code> به خط بعد بروید. اشتباه
+            در این دو، شکل خروجی را کاملاً خراب می‌کند.
+        </div>
+
+        <div class="warn-box">
+            <strong>break فقط از حلقه درونی خارج می‌شود</strong>
+            اگر داخل حلقه درونی <code>break</code> بزنید، فقط همان حلقه درونی متوقف می‌شود و حلقه
+            بیرونی به دور بعدی خود ادامه می‌دهد. برای خروج از چند سطح، به تکنیک‌های پیشرفته‌تر مثل
+            برچسب (label) نیاز دارید که در سطح مقدماتی ضروری نیست.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۷ — break و continue
+============================================================ -->
+<section class="section s8" id="s7">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۷</span>
+            <div>
+                <h2>کنترل رفتار حلقه با break و continue</h2>
+                <p>ترمز و پرش در وسط حلقه</p>
+            </div>
+        </div>
+
+        <h3>چرا به break و continue نیاز داریم؟</h3>
+        <p>
+            گاهی لازم است بدون منتظر ماندن برای پایان طبیعی حلقه، رفتار آن را کنترل کنیم. دو دستور
+            ساده برای این کار وجود دارد: <code>break</code> و <code>continue</code>. این دو دستور
+            به شما اجازه می‌دهند حلقه را دقیقاً همان‌طور که می‌خواهید هدایت کنید.
+        </p>
+
+        <ul class="dot-list">
+            <li><strong><code>break</code> (خروج فوری):</strong> حلقه را همان لحظه تمام می‌کند و اجرا به اولین خط بعد از حلقه می‌رود.</li>
+            <li><strong><code>continue</code> (رد کردن دور فعلی):</strong> بقیه خطوط دور جاری را نادیده می‌گیرد و فوراً به دور بعدی می‌رود.</li>
+        </ul>
+
+        <h3>مثال: break برای پیدا کردن یک عدد</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">for</span> (<span class="tok-kw">int</span> i = <span class="tok-num">1</span>; i &lt;= <span class="tok-num">10</span>; i++) {
+    <span class="tok-kw">if</span> (i == <span class="tok-num">7</span>) {
+        <span class="tok-kw">break</span>;   <span class="tok-com">// stop the loop entirely</span>
+    }
+    System.out.println(i);   <span class="tok-com">// prints 1 to 6</span>
+}</code></pre>
+        </div>
+
+        <h3>مثال: continue برای رد کردن یک عدد</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">for</span> (<span class="tok-kw">int</span> i = <span class="tok-num">1</span>; i &lt;= <span class="tok-num">5</span>; i++) {
+    <span class="tok-kw">if</span> (i == <span class="tok-num">3</span>) {
+        <span class="tok-kw">continue</span>;   <span class="tok-com">// skip this iteration only</span>
+    }
+    System.out.println(i);   <span class="tok-com">// prints 1, 2, 4, 5</span>
+}</code></pre>
+        </div>
+
+        <h3>الگوی حلقه بی‌نهایت با شرط خروج</h3>
+        <p>
+            یکی از الگوهای رایج، استفاده از <code>while (true)</code> به‌همراه یک شرط داخلی است که
+            با <code>break</code> از حلقه خارج می‌شود. این الگو زمانی مفید است که تعداد دفعات تکرار
+            از قبل مشخص نیست و بر اساس ورودی کاربر تعیین می‌شود.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>Scanner sc = <span class="tok-kw">new</span> Scanner(System.in);
+
+<span class="tok-kw">while</span> (<span class="tok-kw">true</span>) {
+    System.out.print(<span class="tok-str">"Enter a number (0 to exit): "</span>);
+    <span class="tok-kw">int</span> n = sc.nextInt();
+
+    <span class="tok-kw">if</span> (n == <span class="tok-num">0</span>) {
+        <span class="tok-kw">break</span>;   <span class="tok-com">// leave the infinite loop</span>
+    }
+
+    System.out.println(<span class="tok-str">"Square: "</span> + (n * n));
+}</code></pre>
+        </div>
+
+        <div class="danger-box">
+            <strong>تله continue در while</strong>
+            اگر <code>continue</code> را قبل از به‌روزرسانی شمارنده بزنید، حلقه ممکن است هرگز پایان
+            نیابد. مثلاً در حلقه‌ای که <code>i++</code> در انتهای بدنه است، اگر پیش از <code>i++</code>
+            از <code>continue</code> استفاده کنید، <code>i</code> هیچ‌وقت زیاد نمی‌شود و شرط همیشه
+            درست می‌ماند. در حلقه <code>for</code> این مشکل کمتر پیش می‌آید، چون بخش گام
+            (<code>i++</code>) حتی با continue هم اجرا می‌شود.
+        </div>
+
+        <h3>مقایسه break و continue</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>دستور</th>
+                        <th>تأثیر</th>
+                        <th>کِی استفاده کنیم</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>break</code></td>
+                        <td>حلقه را کاملاً متوقف می‌کند و به خط بعد از حلقه می‌رود</td>
+                        <td>وقتی «دیگر هیچ دوری لازم نیست»؛ مثلاً پیدا شدن مقدار جستجو شده</td>
+                    </tr>
+                    <tr>
+                        <td><code>continue</code></td>
+                        <td>فقط دور فعلی را رد می‌کند و به دور بعدی می‌رود</td>
+                        <td>وقتی «فقط این دور را نادیده بگیر»؛ مثلاً رد کردن اعداد منفی در محاسبه</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>مثال کاربردی: جمع نمرات بدون احتساب نمرات منفی</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>Scanner sc = <span class="tok-kw">new</span> Scanner(System.in);
+<span class="tok-kw">double</span> total = <span class="tok-num">0</span>;
+
+<span class="tok-kw">for</span> (<span class="tok-kw">int</span> i = <span class="tok-num">1</span>; i &lt;= <span class="tok-num">4</span>; i++) {
+    System.out.print(<span class="tok-str">"Grade for student "</span> + i + <span class="tok-str">": "</span>);
+    <span class="tok-kw">double</span> score = sc.nextDouble();
+
+    <span class="tok-kw">if</span> (score &lt; <span class="tok-num">0</span>) {
+        System.out.println(<span class="tok-str">"Negative score ignored."</span>);
+        <span class="tok-kw">continue</span>;
+    }
+
+    total += score;
+}
+
+System.out.println(<span class="tok-str">"Total: "</span> + total);</code></pre>
+        </div>
+
+        <div class="tip-box">
+            <strong>قاعده انتخاب</strong>
+            «این دور را نادیده بگیر و برو بعدی» ← <code>continue</code>. «دیگر هیچ دوری اجرا نشود» ←
+            <code>break</code>. اگر این دو جمله را به خاطر بسپارید، همیشه انتخاب درستی خواهید داشت.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۸ — تمرین‌ها
+============================================================ -->
+<section class="section s5" id="exercises">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۸</span>
+            <div>
+                <h2>تمرین‌ها و راهنما</h2>
+                <p>دو پروژه کلاسی و دو تمرین منزل برای تثبیت مطالب</p>
+            </div>
+        </div>
+
+        <!-- پروژه ۱: ورود به بانک -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge project">پروژه کلاسی ۱</span>
+                <h3>شبیه‌سازی ورود به سیستم بانکی</h3>
+            </div>
+
+            <p class="ex-desc">
+                برنامه‌ای بنویسید که از کاربر رمز عبور بگیرد. کاربر سه شانس برای وارد کردن رمز
+                صحیح دارد. اگر هر سه بار اشتباه وارد کرد، حساب قفل می‌شود و پیام مناسب نمایش داده
+                می‌شود. اگر رمز درست بود، بلافاصله پیام خوش‌آمدگویی نمایش داده شود و برنامه پایان
+                یابد.
+            </p>
+
+            <div class="algo">
+                <strong style="display:block;margin-bottom:6px;color:var(--tc);">منطق کلی</strong>
+                <ol>
+                    <li>رمز صحیح از قبل در برنامه مشخص است (مثلاً <code>1234</code>).</li>
+                    <li>کاربر حداکثر سه بار می‌تواند رمز وارد کند.</li>
+                    <li>اگر رمز درست بود، پیام موفقیت و خروج از حلقه.</li>
+                    <li>اگر سه بار اشتباه شد، پیام قفل حساب.</li>
+                </ol>
+            </div>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">یک شیء <code>Scanner</code> بسازید و یک متغیر ثابت برای رمز صحیح تعریف کنید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">یک متغیر <code>boolean loggedIn = false</code> تعریف کنید تا وضعیت ورود موفق را ثبت کند.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">یک حلقه <code>for</code> بنویسید که حداکثر سه بار اجرا شود (از ۱ تا ۳).</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">در هر دور، رمز را از کاربر بگیرید و با رمز صحیح مقایسه کنید. اگر رمز از نوع <code>int</code> است، با <code>==</code> مقایسه کنید. اگر <code>String</code> است، با <code>equals</code>.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">اگر رمز درست بود، <code>loggedIn = true</code> کنید، پیام موفقیت چاپ کنید و با <code>break</code> از حلقه خارج شوید.</div></li>
+                        <li><span class="step-num">۶</span><div class="step-body">اگر رمز اشتباه بود، پیام خطا و تعداد شانس باقی‌مانده را چاپ کنید.</div></li>
+                        <li><span class="step-num">۷</span><div class="step-body">بعد از پایان حلقه، اگر <code>loggedIn</code> هنوز <code>false</code> است، پیام قفل حساب را چاپ کنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>مقایسه رشته‌ها با <code>==</code>:</strong> اگر رمز را از نوع <code>String</code> گرفتید، حتماً از <code>equals</code> استفاده کنید. <code>==</code> آدرس حافظه را مقایسه می‌کند و ممکن است نتیجه اشتباه بدهد.</li>
+                        <li><strong>فراموش کردن <code>break</code> بعد از ورود موفق:</strong> اگر بعد از ورود موفق <code>break</code> نزنید، حلقه ادامه می‌یابد و از کاربر دوباره رمز می‌خواهد. این رفتار با منطق برنامه در تضاد است.</li>
+                        <li><strong>شمارش اشتباه شانس‌ها:</strong> اگر حلقه را از ۰ تا ۲ بنویسید یا شرط را <code>&lt;</code> به‌جای <code>&lt;=</code> بگذارید، تعداد شانس‌ها درست نخواهد بود. دقیقاً روی سه بار اجرا تست کنید.</li>
+                        <li><strong>چاپ پیام قفل حساب حتی وقتی کاربر موفق شده:</strong> اگر متغیر <code>loggedIn</code> را بعد از <code>break</code> بررسی نکنید، ممکن است پیام قفل هم چاپ شود. ترتیب منطق را دقیق بررسی کنید.</li>
+                        <li><strong>خطای ورودی در <code>nextInt</code>:</strong> اگر کاربر به‌جای عدد، حرف وارد کند، برنامه با خطای ورودی متوقف می‌شود. برای این تمرین، ورودی صحیح را فرض کنید.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <!-- پروژه ۲: حدس عدد -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge project">پروژه کلاسی ۲</span>
+                <h3>بازی حدس عدد</h3>
+            </div>
+
+            <p class="ex-desc">
+                برنامه یک عدد تصادفی بین ۱ تا ۱۰۰ انتخاب می‌کند. کاربر باید با راهنمایی‌های
+                «بزرگ‌تر است» یا «کوچک‌تر است» آن را حدس بزند. برنامه تعداد شانس‌های مشخصی (مثلاً
+                هفت بار) به کاربر می‌دهد. اگر کاربر در این فرصت‌ها عدد را پیدا کرد، برنده می‌شود.
+                در غیر این صورت، برنامه عدد صحیح را اعلام می‌کند.
+            </p>
+
+            <div class="algo">
+                <strong style="display:block;margin-bottom:6px;color:var(--tc);">منطق کلی</strong>
+                <ol>
+                    <li>برنامه یک عدد تصادفی بین ۱ تا ۱۰۰ تولید می‌کند.</li>
+                    <li>کاربر هفت شانس دارد.</li>
+                    <li>در هر شانس، اگر حدس درست بود، برنده می‌شود.</li>
+                    <li>اگر حدس کمتر بود، راهنمایی «بزرگ‌تر» و اگر بیشتر بود، «کوچک‌تر».</li>
+                    <li>اگر شانس‌ها تمام شد، عدد صحیح اعلام می‌شود.</li>
+                </ol>
+            </div>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">برای تولید عدد تصادفی، از <code>(int)(Math.random() * 100) + 1</code> استفاده کنید. این عبارت یک عدد بین ۱ تا ۱۰۰ می‌دهد.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">یک متغیر <code>boolean won = false</code> تعریف کنید تا وضعیت برد را ثبت کند.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">یک حلقه <code>for</code> بنویسید که هفت بار اجرا شود (از ۱ تا ۷).</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">در هر دور، شماره شانس و عدد حدس را از کاربر بگیرید.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">اگر حدس برابر عدد مخفی بود، پیام برد و <code>won = true</code> و <code>break</code>.</div></li>
+                        <li><span class="step-num">۶</span><div class="step-body">اگر حدس کمتر بود، پیام «عدد بزرگ‌تری حدس بزن».</div></li>
+                        <li><span class="step-num">۷</span><div class="step-body">اگر حدس بیشتر بود، پیام «عدد کوچک‌تری حدس بزن».</div></li>
+                        <li><span class="step-num">۸</span><div class="step-body">بعد از حلقه، اگر <code>won</code> هنوز <code>false</code> است، پیام باخت و عدد صحیح را چاپ کنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>تولید عدد تصادفی خارج از بازه:</strong> اگر بنویسید <code>(int)(Math.random() * 100)</code>، عدد می‌تواند صفر شود. برای شروع از ۱، حتماً <code>+ 1</code> را اضافه کنید.</li>
+                        <li><strong>برعکس بودن راهنمایی‌ها:</strong> اگر حدس کوچک‌تر از عدد مخفی بود، باید بگویید «عدد بزرگ‌تر»؛ نه برعکس. این رایج‌ترین اشتباه در این بازی است. با یک عدد نمونه (مثلاً ۵۰) مسیر را ذهنی بررسی کنید.</li>
+                        <li><strong>فراموش کردن <code>break</code> بعد از برد:</strong> اگر بعد از برد حلقه را متوقف نکنید، بازی ادامه می‌یابد و ممکن است پیام‌های بیشتری چاپ شود که منطقی نیست.</li>
+                        <li><strong>چاپ نکردن عدد صحیح در صورت باخت:</strong> اگر کاربر نتوانست حدس بزند، باید عدد صحیح اعلام شود تا کاربر از نتیجه مطلع شود. این جزو تجربه بازیکن است.</li>
+                        <li><strong>محدوده نامشخص:</strong> بهتر است در ابتدای هر دور، بازه فعلی (مثلاً «بین ۳۰ تا ۵۰») را نمایش دهید تا بازی جذاب‌تر و آسان‌تر شود.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <!-- تمرین ۱: جدول ضرب -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۱</span>
+                <h3>نمایش جدول ضرب یک عدد</h3>
+            </div>
+
+            <p class="ex-desc">
+                برنامه‌ای بنویسید که یک عدد صحیح از کاربر دریافت کند و جدول ضرب آن عدد را از ۱ تا
+                ۱۰ در خروجی نمایش دهد. خروجی باید مرتب و هم‌تراز باشد. اگر کاربر عدد ۰ وارد کرد،
+                برنامه با پیام مناسب خاتمه یابد.
+            </p>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">یک شیء <code>Scanner</code> بسازید و عدد را با <code>nextInt</code> دریافت کنید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">اگر عدد وارد شده صفر بود، پیام مناسب چاپ کنید و با <code>return</code> یا پایان برنامه، ادامه ندهید.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">یک حلقه <code>for</code> از ۱ تا ۱۰ بنویسید.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">در هر دور، حاصل‌ضرب را در قالبی مثل <code>عدد × i = نتیجه</code> چاپ کنید.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">برای هم‌ترازی، از <code>System.out.printf</code> استفاده کنید. مثلاً <code>%d × %d = %d%n</code> با عرض ثابت مثل <code>%3d</code> برای هر عدد.</div></li>
+                        <li><span class="step-num">۶</span><div class="step-body">در پایان، <code>sc.close()</code> را صدا بزنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>نبود هم‌ترازی در خروجی:</strong> اگر از <code>println</code> ساده استفاده کنید، ستون‌ها ناهماهنگ می‌شوند. با <code>printf</code> و عرض ثابت (مثلاً <code>%3d</code>)، خروجی مرتب می‌شود.</li>
+                        <li><strong>فراموش کردن بررسی صفر:</strong> اگر صفر را بررسی نکنید، برنامه جدول ضرب صفر را چاپ می‌کند که طبق صورت تمرین درست نیست.</li>
+                        <li><strong>استفاده از <code>nextDouble</code> به‌جای <code>nextInt</code>:</strong> عدد ورودی یک عدد صحیح است. اگر از <code>nextDouble</code> استفاده کنید، ممکن است نتیجه اعشاری شود و با جدول ضرب هماهنگ نباشد.</li>
+                        <li><strong>چاپ نکردن پیام مناسب برای صفر:</strong> پیام باید واضح باشد، مثلاً «جدول ضرب برای صفر تعریف نشده است».</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <!-- تمرین ۲: اعداد اول -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۲</span>
+                <h3>یافتن اعداد اول بین ۱ تا ۱۰۰۰</h3>
+            </div>
+
+            <p class="ex-desc">
+                برنامه‌ای بنویسید که همه اعداد اول بین ۱ تا ۱۰۰۰ را پیدا کرده و چاپ کند. عدد اول
+                عددی است که فقط بر ۱ و خودش بخش‌پذیر باشد. عدد ۱ اول نیست. عدد ۲ تنها عدد اول زوج است.
+            </p>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">یک حلقه <code>for</code> بیرونی از ۲ تا ۱۰۰۰ بنویسید (عدد ۱ اول نیست).</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">داخل حلقه بیرونی، یک متغیر <code>boolean isPrime = true</code> تعریف کنید.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">یک حلقه درونی از ۲ تا <strong>ریشه دوم عدد</strong> بنویسید. شرط حلقه را می‌توانید <code>d * d &lt;= n</code> بنویسید تا از <code>Math.sqrt</code> استفاده نکنید.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">در هر دور حلقه درونی، بررسی کنید آیا عدد بر <code>d</code> بخش‌پذیر است. اگر بود، <code>isPrime = false</code> کنید و با <code>break</code> از حلقه درونی خارج شوید.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">بعد از پایان حلقه درونی، اگر <code>isPrime</code> هنوز <code>true</code> است، عدد را چاپ کنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>تعریف <code>isPrime</code> بیرون از حلقه بیرونی:</strong> اگر متغیر <code>isPrime</code> را بیرون از حلقه بیرونی تعریف کنید، مقدار آن بین اعداد مختلف حفظ می‌شود و نتیجه اشتباه می‌شود. باید برای هر عدد، از نو مقدار بگیرد.</li>
+                        <li><strong>بررسی تا خود عدد:</strong> اگر حلقه درونی را تا خود عدد بزنید، برنامه برای اعداد بزرگ کند می‌شود. بررسی تا ریشه دوم کافی است و بسیار سریع‌تر است.</li>
+                        <li><strong>شروع حلقه درونی از ۱:</strong> اگر از ۱ شروع کنید، همه اعداد بر ۱ بخش‌پذیرند و هیچ عددی اول تشخیص داده نمی‌شود. حتماً از ۲ شروع کنید.</li>
+                        <li><strong>فراموش کردن <code>break</code> در حلقه درونی:</strong> بعد از پیدا کردن یک مقسوم‌علیه، نیازی به ادامه بررسی نیست. <code>break</code> سرعت برنامه را بالا می‌برد.</li>
+                        <li><strong>شمارش عدد ۱ به‌عنوان اول:</strong> عدد ۱ طبق تعریف، اول نیست. حلقه بیرونی باید از ۲ شروع شود.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۹ — پرسش و پاسخ
+============================================================ -->
+<section class="section s9" id="qa">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۹</span>
+            <div>
+                <h2>پرسش و پاسخ</h2>
+                <p>پرسش‌های پرتکرار این هفته و پاسخ روشن آن‌ها</p>
+            </div>
+        </div>
+
+        <p>
+            این بخش جمع‌بندی پرسش‌هایی است که معمولاً در هفته سوم برای دانشجویان پیش می‌آید. اگر
+            پرسشی مشابه داشتید، پاسخ آن را همین‌جا پیدا می‌کنید.
+        </p>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: کِی از if-else استفاده کنم و کِی از switch؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> اگر شرط شما شامل بازه یا ترکیب چند شرط است (مثل <code>age &gt;= 18 &amp;&amp; hasId</code>)، از <code>if-else</code> استفاده کنید. اگر می‌خواهید یک متغیر را با چند مقدار ثابت مقایسه کنید (مثل کد منو)، <code>switch</code> خواناتر است. یک قاعده سرانگشتی: وقتی بیش از سه یا چهار حالت ثابت دارید، <code>switch</code> انتخاب بهتری است. در نسخه مدرن جاوا، <code>switch</code> حتی می‌تواند مقدار برگرداند و کد شما را کوتاه‌تر کند.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: تفاوت while و do-while چیست و کدام را انتخاب کنم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> <code>while</code> ابتدا شرط را بررسی می‌کند؛ اگر از همان ابتدا غلط باشد، بدنه هیچ‌وقت اجرا نمی‌شود. <code>do-while</code> ابتدا بدنه را یک بار اجرا می‌کند و بعد شرط را بررسی می‌کند؛ پس حداقل یک بار اجرا می‌شود. اگر مطمئن نیستید که آیا نیاز به تکرار هست یا نه، <code>while</code> انتخاب امن‌تری است. اگر می‌خواهید حتماً یک بار اجرا شود (مثل منوی برنامه)، از <code>do-while</code> استفاده کنید. یک نکته جزئی: در <code>do-while</code>، بعد از شرط باید سمی‌کالن بگذارید.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چرا برنامه من در حلقه while قفل می‌شود؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> رایج‌ترین علت، فراموش کردن به‌روزرسانی شمارنده است. اگر داخل حلقه <code>i++</code> یا <code>i--</code> را ننویسید، شرط همیشه درست می‌ماند و حلقه هیچ‌وقت تمام نمی‌شود. علت دیگری که کمتر رایج است، نوشتن سمی‌کالن اضافه بعد از پرانتز <code>while</code> است؛ در این حالت حلقه روی یک دستور خالی اجرا می‌شود و شرط هم همیشه درست می‌ماند. همیشه بعد از نوشتن حلقه، یک بار ذهنی بررسی کنید: «آیا شرط در نهایت غلط می‌شود؟» اگر پاسخ منفی است، جایی اشتباه کرده‌اید.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چرا بعد از هر case در switch باید break بنویسم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> اگر <code>break</code> را فراموش کنید، اجرا به case بعدی «نفوذ» می‌کند. یعنی بعد از اجرای case جاری، caseهای بعدی هم پشت‌سرهم اجرا می‌شوند. این رفتار در واقع یک ویژگی زبان است، اما معمولاً باعث باگ می‌شود. اگر عمداً می‌خواهید چند case یک کد مشترک را اجرا کنند، نبودن break منطقی است؛ در غیر این صورت، همیشه <code>break</code> بنویسید. در نسخه مدرن جاوا (سینتکس <code>-&gt;</code>)، دیگر نیازی به break نیست و این مشکل اصلاً پیش نمی‌آید.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: تفاوت break و continue در چیست؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> <code>break</code> حلقه را کاملاً متوقف می‌کند و اجرا به اولین خط بعد از حلقه می‌رود. <code>continue</code> فقط دور فعلی را نادیده می‌گیرد و به دور بعدی می‌رود. یک جمله ساده برای یادسپاری: «break می‌شکند، continue می‌پرد». اگر می‌خواهید حلقه دیگر ادامه پیدا نکند، <code>break</code>. اگر می‌خواهید یک دور خاص را نادیده بگیرید، <code>continue</code>. در حلقه <code>while</code>، مراقب باشید که <code>continue</code> قبل از به‌روزرسانی شمارنده نباشد، وگرنه حلقه بی‌نهایت می‌شود.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چطور بفهمم کدام نوع حلقه را انتخاب کنم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> سه سؤال از خودتان بپرسید. اول، آیا تعداد تکرارها از قبل مشخص است؟ اگر بله، <code>for</code> بهترین انتخاب است. دوم، آیا حداقل یک بار باید اجرا شود (مثل منو)؟ اگر بله، <code>do-while</code>. سوم، آیا تکرار تا زمانی که شرطی برقرار بماند (مثل گرفتن رمز درست)؟ اگر بله، <code>while</code>. با این سه سؤال، انتخاب درست تقریباً همیشه مشخص است. اگر شک داشتید، <code>while</code> یا <code>for</code> معمولاً گزینه‌های امنی هستند.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: آیا می‌توانم از حلقه تو در تو در حلقه تو در توی دیگری استفاده کنم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> بله، از نظر فنی هیچ محدودیتی وجود ندارد. اما در عمل، بیش از سه سطح تودرتو خوانایی کد را به‌شدت پایین می‌آورد و رفع باگ را بسیار سخت می‌کند. اگر نیاز به حلقه‌های عمیق‌تر دارید، بهتر است منطق را به متدهای جداگانه بشکنید یا ساختار داده مناسب‌تری انتخاب کنید. برای تمرین‌های این دوره، دو سطح تودرتو کافی است. اگر در حال نوشتن کدی هستید که به سه سطح یا بیشتر رسیده، احتمالاً می‌توانید آن را با یک متد جداگانه ساده‌تر کنید.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: در حلقه for، اگر بخش شروع یا گام را حذف کنم چه اتفاقی می‌افتد؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> در جاوا هر سه بخش <code>for</code> اختیاری هستند، اما سمی‌کالن‌های جداکننده حتماً باید سر جایشان باشند. مثلاً <code>for (;;)</code> یک حلقه بی‌نهایت معتبر است که معادل <code>while (true)</code> است. اگر بخش شروع را حذف کنید، متغیر شمارنده باید قبل از حلقه تعریف شده باشد. اگر بخش گام را حذف کنید، باید داخل بدنه حلقه شمارنده را به‌روزرسانی کنید، وگرنه حلقه بی‌نهایت می‌شود. اما در عمل، در سطح مقدماتی همیشه از شکل کامل استفاده کنید تا کد خوانا بماند و کمتر پیش بیاید که چیزی را فراموش کنید.</p>
+            </div>
+        </details>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۱۰ — جمع‌بندی
+============================================================ -->
+<section class="section s10" id="summary">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۱۰</span>
+            <div>
+                <h2>جمع‌بندی و نکات کلیدی</h2>
+                <p>مرور سریع مطالب این هفته</p>
+            </div>
+        </div>
+
+        <div class="cheat">
+            <h3>شرط‌ها</h3>
+            <ul class="dot-list">
+                <li><code>if</code> برای یک تصمیم ساده؛ اگر شرط درست بود، بدنه اجرا می‌شود.</li>
+                <li><code>if-else</code> برای دو مسیر؛ دقیقاً یکی از دو بدنه اجرا می‌شود.</li>
+                <li><code>else-if</code> برای چند مسیر؛ به محض رسیدن به اولین شرط درست، از نردبان خارج می‌شود.</li>
+                <li>همیشه شرط محدودتر را بالاتر بنویسید.</li>
+                <li>شرط تودرتو برای فیلترهای چندمرحله‌ای با پیام خطای متفاوت.</li>
+                <li>هرگز بعد از پرانتز if سمی‌کالن نگذارید.</li>
+                <li>در شرط از <code>==</code> استفاده کنید، نه <code>=</code>.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>switch</h3>
+            <ul class="dot-list">
+                <li>برای مقایسه یک متغیر با چند مقدار ثابت.</li>
+                <li>در نسخه سنتی، بعد از هر case <code>break</code> بنویسید تا نفوذ رخ ندهد.</li>
+                <li>در نسخه مدرن (جاوا ۱۴+)، از سینتکس <code>-&gt;</code> استفاده کنید.</li>
+                <li>در نسخه مدرن، switch می‌تواند مقدار برگرداند و مستقیماً به متغیر نسبت داده شود.</li>
+                <li>در نسخه مدرن، می‌توان چند مقدار را با کاما در یک case گروه کرد.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>حلقه‌ها</h3>
+            <ul class="dot-list">
+                <li><code>while</code>: بررسی شرط قبل از اجرا؛ ممکن است صفر بار اجرا شود.</li>
+                <li><code>do-while</code>: بررسی شرط بعد از اجرا؛ حداقل یک بار اجرا می‌شود. سمی‌کالن انتهایی الزامی است.</li>
+                <li><code>for</code>: شروع، شرط و گام در یک خط؛ مناسب وقتی تعداد تکرار مشخص است.</li>
+                <li>حلقه تودرتو: حلقه درونی برای هر دور حلقه بیرونی، کامل اجرا می‌شود.</li>
+                <li>در حلقه‌های بی‌نهایت، فراموش نکنید شرط خروج با <code>break</code> داشته باشید.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>break و continue</h3>
+            <ul class="dot-list">
+                <li><code>break</code> حلقه را کاملاً متوقف می‌کند.</li>
+                <li><code>continue</code> فقط دور فعلی را رد می‌کند.</li>
+                <li>در حلقه <code>while</code>، مراقب باشید <code>continue</code> قبل از به‌روزرسانی شمارنده نباشد.</li>
+                <li>در حلقه‌های تودرتو، <code>break</code> فقط از حلقه درونی خارج می‌شود.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     فوتر
+============================================================ -->
+<footer class="site-footer">
+    <div class="container">
+        <p><strong>هفته سوم</strong> — ساختارهای کنترلی، شرط‌ها و حلقه‌های تکرار</p>
+    </div>
+</footer>
+
+<!-- ============================================================
+     دکمه بازگشت به بالا
+============================================================ -->
+<button id="toTop" title="بازگشت به بالای صفحه" aria-label="بازگشت به بالای صفحه">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+    <span class="toTop-text">بازگشت به بالا</span>
+</button>
+
+<!-- ============================================================
+     اسکریپت
+============================================================ -->
+<script>
+/* ---------- تم روشن/تاریک ---------- */
+(function () {
+    const root = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+
+    const saved = localStorage.getItem('java-guide-theme');
+    if (saved === 'dark') apply('dark');
+
+    function apply(mode) {
+        if (mode === 'dark') {
+            root.setAttribute('data-theme', 'dark');
+            icon.textContent = '☀️';
+            label.textContent = 'تم روشن';
+        } else {
+            root.removeAttribute('data-theme');
+            icon.textContent = '🌙';
+            label.textContent = 'تم تاریک';
+        }
+    }
+
+    btn.addEventListener('click', function () {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        const next = isDark ? 'light' : 'dark';
+        apply(next);
+        localStorage.setItem('java-guide-theme', next);
+    });
+})();
+
+/* ---------- دکمه بازگشت به بالا ---------- */
+(function () {
+    const btn = document.getElementById('toTop');
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 400) btn.classList.add('show');
+        else btn.classList.remove('show');
+    });
+    btn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+})();
+
+/* ---------- هایلایت کد ---------- */
+(function () {
+    function esc(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    const KEYWORDS = new Set([
+        'abstract','assert','boolean','break','byte','case','catch','char','class','const',
+        'continue','default','do','double','else','enum','extends','final','finally','float',
+        'for','if','implements','import','instanceof','int','interface','long','native','new',
+        'package','private','protected','public','return','short','static','strictfp','super',
+        'switch','synchronized','this','throw','throws','transient','try','void','volatile',
+        'while','true','false','null','var','yield',
+        'String','StringBuilder','System','Scanner','Math','Integer','Double','Character','Boolean','Arrays'
+    ]);
+
+    function highlight(code) {
+        const re = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|\b(\d+(?:\.\d+)?[fFdDlL]?)\b|\b([A-Za-z_$][\w$]*)\b/g;
+        let out = '', last = 0, m;
+        while ((m = re.exec(code)) !== null) {
+            out += esc(code.slice(last, m.index));
+            const full = m[0];
+            if (m[1])      out += '<span class="tok-com">' + esc(full) + '</span>';
+            else if (m[2]) out += '<span class="tok-str">' + esc(full) + '</span>';
+            else if (m[3]) out += '<span class="tok-num">' + esc(full) + '</span>';
+            else if (m[4] && KEYWORDS.has(m[4])) out += '<span class="tok-kw">' + esc(full) + '</span>';
+            else           out += esc(full);
+            last = re.lastIndex;
+        }
+        out += esc(code.slice(last));
+        return out;
+    }
+
+    document.querySelectorAll('pre code').forEach(function (block) {
+        if (block.querySelector('span')) return;
+        const raw = block.textContent;
+        block.innerHTML = highlight(raw);
+    });
+})();
+
+/* ---------- دکمه کپی ---------- */
+(function () {
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const code = btn.closest('.code-block').querySelector('code').innerText;
+            const done = function () {
+                const original = btn.textContent;
+                btn.textContent = 'کپی شد ✓';
+                btn.style.background = '#10b981';
+                btn.style.borderColor = '#10b981';
+                btn.style.color = '#fff';
+                setTimeout(function () {
+                    btn.textContent = original;
+                    btn.style.background = '';
+                    btn.style.borderColor = '';
+                    btn.style.color = '';
+                }, 1500);
+            };
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(code).then(done).catch(function () { fallback(code, done); });
+            } else {
+                fallback(code, done);
+            }
+        });
+    });
+
+    function fallback(text, cb) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); cb(); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+    }
+})();
+</script>
+
+</body>
+</html>
