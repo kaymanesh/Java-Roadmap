@@ -1,0 +1,2289 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>هفته دوم جاوا — متغیرها، انواع داده، عملگرها و دریافت ورودی</title>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+
+<style>
+/* ============================================================
+   متغیرهای رنگی — تم روشن
+============================================================ */
+:root {
+    --bg: #ffffff;
+    --bg-soft: #f8fafc;
+    --bg-card: #ffffff;
+    --text: #1e293b;
+    --text-soft: #475569;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --primary: #4f46e5;
+    --primary-soft: #eef2ff;
+
+    --sec-1: #2563eb;
+    --sec-2: #059669;
+    --sec-3: #d97706;
+    --sec-4: #7c3aed;
+    --sec-5: #e11d48;
+    --sec-6: #0891b2;
+    --sec-7: #c026d3;
+    --sec-8: #ea580c;
+    --sec-9: #0d9488;
+    --sec-10: #65a30d;
+
+    --code-bg: #0f172a;
+    --code-head: #1e293b;
+    --code-text: #e2e8f0;
+
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, .06);
+    --shadow-md: 0 6px 20px rgba(15, 23, 42, .08);
+}
+
+/* ============================================================
+   تم تاریک
+============================================================ */
+[data-theme="dark"] {
+    --bg: #0b1220;
+    --bg-soft: #111a2e;
+    --bg-card: #131d35;
+    --text: #e6ecf6;
+    --text-soft: #a9b6cc;
+    --muted: #7f8ba5;
+    --border: #25324d;
+    --border-strong: #34425f;
+    --primary: #818cf8;
+    --primary-soft: #1e2a4a;
+
+    --sec-1: #60a5fa;
+    --sec-2: #34d399;
+    --sec-3: #fbbf24;
+    --sec-4: #c084fc;
+    --sec-5: #fb7185;
+    --sec-6: #22d3ee;
+    --sec-7: #e879f9;
+    --sec-8: #fb923c;
+    --sec-9: #2dd4bf;
+    --sec-10: #a3e635;
+
+    --code-bg: #060c18;
+    --code-head: #0f172a;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, .4);
+    --shadow-md: 0 6px 20px rgba(0, 0, 0, .5);
+}
+
+/* ============================================================
+   پایه
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Vazirmatn', Tahoma, system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.95;
+    font-size: 16px;
+    transition: background-color .25s ease, color .25s ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ============================================================
+   هدر
+============================================================ */
+.hero {
+    padding: 20px 0 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.hero-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-badge {
+    display: inline-block;
+    font-size: .78rem;
+    font-weight: 700;
+    padding: 5px 15px;
+    border-radius: 999px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.theme-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border-strong);
+    background: var(--bg-card);
+    color: var(--text);
+    font-family: inherit;
+    font-size: .8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s ease;
+    white-space: nowrap;
+}
+
+.theme-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.theme-btn .theme-icon { font-size: 1rem; line-height: 1; }
+
+.hero-title {
+    font-size: clamp(1.4rem, 3.8vw, 1.9rem);
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: -.4px;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.hero-subtitle {
+    font-size: .92rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.hero-desc {
+    font-size: .95rem;
+    color: var(--text-soft);
+    line-height: 2;
+    text-align: justify;
+    margin-bottom: 18px;
+}
+
+.goal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-inline-start: 4px solid var(--primary);
+    border-radius: 12px;
+    padding: 14px 18px;
+    box-shadow: var(--shadow-sm);
+    font-size: .93rem;
+    line-height: 1.9;
+    color: var(--text-soft);
+    text-align: justify;
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.goal strong { color: var(--primary); font-weight: 800; }
+
+/* ============================================================
+   فهرست مطالب
+============================================================ */
+.toc {
+    margin: 32px 0 10px;
+    padding: 24px 26px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow-sm);
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.toc-title {
+    font-size: 1.02rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+}
+
+.toc-title::before {
+    content: "";
+    width: 5px;
+    height: 20px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #38bdf8, #a855f7);
+}
+
+.toc-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 10px;
+}
+
+.toc-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .87rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.toc-link:hover {
+    border-color: var(--tc, var(--primary));
+    color: var(--tc, var(--primary));
+    transform: translateX(-3px);
+    background: var(--bg-card);
+}
+
+.toc-link .num {
+    flex: 0 0 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--tc, var(--primary));
+    color: #fff;
+    font-weight: 800;
+    font-size: .82rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .15);
+}
+
+/* ============================================================
+   بخش‌ها
+============================================================ */
+.section { margin: 44px 0; scroll-margin-top: 20px; }
+
+.sec-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+}
+
+.sec-num {
+    flex: 0 0 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 15px;
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 800;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+    background: var(--tc, var(--primary));
+}
+
+.sec-head h2 {
+    font-size: clamp(1.15rem, 3vw, 1.4rem);
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 2px;
+    text-align: right;
+}
+
+.sec-head p {
+    color: var(--muted);
+    font-size: .82rem;
+    margin: 0;
+    text-align: right;
+}
+
+.section.s1 { --tc: var(--sec-1); }
+.section.s2 { --tc: var(--sec-2); }
+.section.s3 { --tc: var(--sec-3); }
+.section.s4 { --tc: var(--sec-4); }
+.section.s5 { --tc: var(--sec-5); }
+.section.s6 { --tc: var(--sec-6); }
+.section.s7 { --tc: var(--sec-7); }
+.section.s8 { --tc: var(--sec-8); }
+.section.s9 { --tc: var(--sec-9); }
+.section.s10 { --tc: var(--sec-10); }
+
+/* ============================================================
+   زیرعنوان‌ها
+============================================================ */
+h3 {
+    font-size: 1.08rem;
+    font-weight: 800;
+    margin: 28px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    text-align: right;
+}
+
+h3::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--tc, var(--primary));
+    box-shadow: 0 0 0 4px var(--primary-soft);
+    flex-shrink: 0;
+}
+
+h4 {
+    font-size: .95rem;
+    font-weight: 800;
+    margin: 20px 0 8px;
+    color: var(--tc, var(--primary));
+    text-align: right;
+}
+
+p { margin-bottom: 14px; color: var(--text-soft); text-align: justify; }
+
+/* ============================================================
+   لیست‌های دستی
+============================================================ */
+ol.steps {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+}
+
+ol.steps > li {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+    color: var(--text-soft);
+    font-size: .94rem;
+    line-height: 1.85;
+}
+
+ol.steps > li:last-child { border-bottom: none; }
+
+ol.steps .step-num {
+    flex: 0 0 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--primary-soft);
+    color: var(--tc, var(--primary));
+    font-size: .82rem;
+    font-weight: 800;
+    margin-top: 3px;
+}
+
+ol.steps .step-body { flex: 1; }
+
+ul.dot-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0;
+}
+
+ul.dot-list > li {
+    position: relative;
+    padding-right: 22px;
+    margin-bottom: 8px;
+    color: var(--text-soft);
+    font-size: .94rem;
+    line-height: 1.85;
+}
+
+ul.dot-list > li::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 11px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--tc, var(--primary));
+}
+
+/* ============================================================
+   جعبه‌های رنگی — ۵ نوع
+============================================================ */
+.def-box, .tip-box, .warn-box, .info-box, .danger-box {
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: .93rem;
+    line-height: 1.9;
+    color: var(--text-soft);
+}
+
+.def-box { background: var(--primary-soft); border-inline-start: 4px solid var(--primary); }
+.tip-box { background: rgba(16, 185, 129, .08); border-inline-start: 4px solid #10b981; }
+.warn-box { background: rgba(245, 158, 11, .10); border-inline-start: 4px solid #f59e0b; }
+.info-box { background: rgba(59, 130, 246, .08); border-inline-start: 4px solid #3b82f6; }
+.danger-box { background: rgba(239, 68, 68, .08); border-inline-start: 4px solid #ef4444; }
+
+[data-theme="dark"] .tip-box { background: rgba(16, 185, 129, .12); }
+[data-theme="dark"] .warn-box { background: rgba(245, 158, 11, .12); }
+[data-theme="dark"] .info-box { background: rgba(59, 130, 246, .12); }
+[data-theme="dark"] .danger-box { background: rgba(239, 68, 68, .12); }
+
+.def-box strong { color: var(--primary); font-weight: 700; }
+.tip-box strong { color: #059669; font-weight: 700; }
+.warn-box strong { color: #b45309; font-weight: 700; }
+.info-box strong { color: #1d4ed8; font-weight: 700; }
+.danger-box strong { color: #b91c1c; font-weight: 700; }
+
+.def-box > strong:first-child,
+.tip-box > strong:first-child,
+.warn-box > strong:first-child,
+.info-box > strong:first-child,
+.danger-box > strong:first-child {
+    display: block;
+    margin-bottom: 5px;
+    font-size: .87rem;
+    font-weight: 800;
+}
+
+/* ============================================================
+   بلوک کد + دکمه کپی
+============================================================ */
+.code-block {
+    background: var(--code-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 16px 0;
+    border: 1px solid #1e293b;
+    box-shadow: var(--shadow-md);
+    position: relative;
+}
+
+.code-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 16px;
+    background: var(--code-head);
+    border-bottom: 1px solid #334155;
+}
+
+.code-lang {
+    font-family: 'JetBrains Mono', Consolas, monospace;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.code-lang::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #f59e0b;
+    box-shadow: 15px 0 0 #10b981, 30px 0 0 #ef4444;
+    margin-inline-end: 30px;
+}
+
+.copy-btn {
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: .72rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    background: #334155;
+    border: 1px solid #475569;
+    padding: 4px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.copy-btn:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+.copy-btn:active { transform: scale(.96); }
+
+pre {
+    padding: 18px 20px;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    font-size: .85rem;
+    line-height: 1.8;
+    tab-size: 4;
+    -webkit-overflow-scrolling: touch;
+}
+
+pre code {
+    font-family: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace;
+    color: var(--code-text);
+    white-space: pre;
+}
+
+pre::-webkit-scrollbar { height: 8px; }
+pre::-webkit-scrollbar-track { background: #1e293b; }
+pre::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+
+.tok-kw  { color: #c084fc; font-weight: 600; }
+.tok-str { color: #86efac; }
+.tok-num { color: #fbbf24; }
+.tok-com { color: #64748b; font-style: italic; }
+.tok-fn  { color: #7dd3fc; }
+
+/* ============================================================
+   کد درون خطی
+============================================================ */
+:not(pre) > code {
+    font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+    background: var(--bg-soft);
+    color: #be185d;
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: .85em;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    white-space: nowrap;
+    display: inline-block;
+    direction: ltr;
+    vertical-align: middle;
+}
+
+[data-theme="dark"] :not(pre) > code {
+    background: rgba(244, 114, 182, .12);
+    color: #f9a8d4;
+    border-color: rgba(244, 114, 182, .25);
+}
+
+/* ============================================================
+   جدول
+============================================================ */
+.table-wrap {
+    overflow-x: auto;
+    margin: 16px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+    min-width: 480px;
+}
+
+thead th {
+    background: var(--bg-soft);
+    padding: 12px 14px;
+    text-align: right;
+    font-weight: 800;
+    color: var(--text);
+    font-size: .84rem;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+}
+
+tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-soft);
+    text-align: right;
+    vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-soft); }
+td code { font-size: .82em; }
+
+/* ============================================================
+   کارت گرید
+============================================================ */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+}
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow-sm);
+    transition: all .22s ease;
+}
+
+.card:hover {
+    border-color: var(--tc, var(--primary));
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.card h4 {
+    margin: 0 0 6px;
+    font-size: .92rem;
+    color: var(--tc, var(--primary));
+}
+
+.card p { font-size: .87rem; margin: 0; line-height: 1.8; text-align: right; }
+
+/* ============================================================
+   آکاردئون
+============================================================ */
+details {
+    margin: 12px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-card);
+    overflow: hidden;
+}
+
+details.acc-guide { --acc-color: var(--primary); --acc-bg: var(--primary-soft); }
+details.acc-mistakes { --acc-color: #d97706; --acc-bg: rgba(245, 158, 11, .10); }
+details.acc-qa { --acc-color: #059669; --acc-bg: rgba(16, 185, 129, .08); }
+
+[data-theme="dark"] details.acc-mistakes { --acc-bg: rgba(245, 158, 11, .14); }
+[data-theme="dark"] details.acc-qa { --acc-bg: rgba(16, 185, 129, .12); }
+
+details summary {
+    cursor: pointer;
+    padding: 13px 18px;
+    font-size: .9rem;
+    font-weight: 800;
+    color: var(--acc-color);
+    background: var(--acc-bg);
+    list-style: none;
+    user-select: none;
+    transition: background .2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+.chev {
+    flex-shrink: 0;
+    color: var(--acc-color);
+    transition: transform .3s ease;
+    transform: rotate(0deg);
+    display: block;
+}
+
+details[open] .chev { transform: rotate(-90deg); }
+
+summary:hover { filter: brightness(.96); }
+
+.details-content {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+}
+
+.details-content > *:last-child { margin-bottom: 0; }
+.details-content ol.steps { margin: 0; }
+.details-content ul.dot-list { margin: 0; }
+
+details.acc-qa .details-content {
+    border-inline-start: 3px solid #ef4444;
+    background: rgba(239, 68, 68, .03);
+    padding-inline-start: 16px;
+}
+
+[data-theme="dark"] details.acc-qa .details-content {
+    background: rgba(239, 68, 68, .08);
+}
+
+details.acc-qa .details-content p {
+    margin: 0;
+    font-size: .92rem;
+    line-height: 1.9;
+    text-align: justify;
+}
+
+details.acc-qa .details-content p strong {
+    color: #dc2626;
+    font-weight: 800;
+    margin-inline-end: 4px;
+}
+
+/* ============================================================
+   کارت تمرین
+============================================================ */
+.ex-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .25s ease, background-color .25s ease;
+}
+
+.ex-card:hover { box-shadow: var(--shadow-md); }
+
+.ex-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.ex-badge {
+    font-size: .72rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.ex-badge.project { background: rgba(225, 29, 72, .12); color: #e11d48; }
+.ex-badge.homework { background: rgba(37, 99, 235, .12); color: #2563eb; }
+
+[data-theme="dark"] .ex-badge.project { background: rgba(251, 113, 133, .18); color: #fb7185; }
+[data-theme="dark"] .ex-badge.homework { background: rgba(96, 165, 250, .18); color: #60a5fa; }
+
+.ex-head h3 {
+    margin: 0;
+    font-size: 1rem;
+    flex: 1;
+    min-width: 200px;
+    text-align: right;
+}
+
+.ex-head h3::before { display: none; }
+
+.ex-desc {
+    font-size: .92rem;
+    color: var(--text-soft);
+    line-height: 1.9;
+    margin-bottom: 12px;
+    text-align: justify;
+}
+
+/* ============================================================
+   کادر الگوریتم
+============================================================ */
+.algo {
+    background: var(--bg-soft);
+    border: 1px dashed var(--tc, var(--primary));
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 14px 0;
+}
+
+.algo ol { margin: 0; padding-inline-start: 20px; }
+
+.algo li {
+    font-size: .9rem;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+    line-height: 1.8;
+}
+
+.algo li:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   نوار جمع‌بندی
+============================================================ */
+.cheat {
+    background: linear-gradient(135deg, var(--primary-soft), rgba(14, 165, 233, .06));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin: 24px 0;
+}
+
+.cheat h3 { margin-top: 0; }
+.cheat ul.dot-list { margin-bottom: 0; }
+
+/* ============================================================
+   فوتر
+============================================================ */
+.site-footer {
+    margin-top: 70px;
+    padding: 24px 0;
+    background: #f1f5f9;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    color: #64748b;
+    font-size: .85rem;
+}
+
+[data-theme="dark"] .site-footer {
+    background: #0a0f1c;
+    border-top-color: #1e293b;
+    color: #94a3b8;
+}
+
+.site-footer p { text-align: center; margin: 0; color: inherit; }
+.site-footer strong { color: #334155; }
+[data-theme="dark"] .site-footer strong { color: #e2e8f0; }
+
+/* ============================================================
+   دکمه بازگشت به بالا
+============================================================ */
+#toTop {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    padding: 12px 20px 12px 16px;
+    border-radius: 999px;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    font-family: inherit;
+    font-size: .85rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(79, 70, 229, .35);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: all .3s ease;
+    z-index: 90;
+}
+
+#toTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+#toTop:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(79, 70, 229, .45);
+}
+
+#toTop svg { flex-shrink: 0; display: block; }
+
+/* ============================================================
+   رسپانسیو
+============================================================ */
+@media (max-width: 640px) {
+    body { font-size: 15px; }
+    .container { padding: 0 14px; }
+    .hero { padding: 14px 0 20px; }
+    .hero-top { margin-bottom: 12px; }
+    .hero-title { font-size: 1.24rem; }
+    .hero-subtitle { font-size: .83rem; margin-bottom: 12px; }
+    .hero-desc { font-size: .9rem; margin-bottom: 14px; }
+    .goal { padding: 12px 14px; font-size: .88rem; }
+    .theme-btn { padding: 6px 10px; font-size: .74rem; }
+    .theme-btn .theme-label { display: none; }
+    .toc { padding: 18px; }
+    .toc-list { grid-template-columns: 1fr; }
+    .sec-head { gap: 12px; padding-bottom: 14px; }
+    .sec-num { flex-basis: 44px; height: 44px; font-size: 1.1rem; border-radius: 12px; }
+    .ex-card { padding: 16px 16px; }
+    pre { padding: 14px 16px; font-size: .78rem; }
+    #toTop { bottom: 16px; right: 16px; padding: 12px; width: 44px; height: 44px; justify-content: center; }
+    #toTop .toTop-text { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     هدر
+============================================================ -->
+<header class="hero">
+    <div class="container">
+        <div class="hero-top">
+            <span class="hero-badge">هفته دوم</span>
+            <button class="theme-btn" id="themeBtn" aria-label="تغییر تم">
+                <span class="theme-icon" id="themeIcon">🌙</span>
+                <span class="theme-label" id="themeLabel">تم تاریک</span>
+            </button>
+        </div>
+        <h1 class="hero-title">متغیرها، انواع داده، عملگرها و دریافت ورودی</h1>
+        <p class="hero-subtitle">جزوه آموزشی زبان برنامه‌نویسی جاوا — دوره مقدماتی</p>
+        <p class="hero-desc">
+            در این هفته یاد می‌گیریم برنامه چطور داده‌ها را در حافظه نگه می‌دارد، چگونه با آن‌ها محاسبات
+            ریاضی انجام می‌دهد و چطور از کاربر ورودی می‌گیرد. این سه مهارت، پایه همه برنامه‌های واقعی
+            هستند. تقریباً هر برنامه‌ای که بعداً بنویسید، در بخشی از خودش از همین سه مفهوم استفاده می‌کند.
+        </p>
+        <div class="goal">
+            <strong>هدف هفته:</strong>
+            شناخت ساختار ذخیره‌سازی داده‌ها در حافظه موقت سیستم، انجام محاسبات ریاضی و تعامل ابتدایی
+            با کاربر از طریق صفحه‌کلید. در پایان این هفته باید بتوانید برنامه‌ای بنویسید که از کاربر
+            ورودی بگیرد، محاسبات لازم را روی آن انجام دهد و نتیجه را نمایش دهد.
+        </div>
+    </div>
+</header>
+
+<!-- ============================================================
+     فهرست
+============================================================ -->
+<div class="container">
+    <nav class="toc">
+        <div class="toc-title">فهرست مطالب</div>
+        <div class="toc-list">
+            <a class="toc-link" href="#s1" style="--tc: var(--sec-1)">
+                <span class="num">۱</span> متغیر و ثابت
+            </a>
+            <a class="toc-link" href="#s2" style="--tc: var(--sec-2)">
+                <span class="num">۲</span> انواع داده اولیه
+            </a>
+            <a class="toc-link" href="#s3" style="--tc: var(--sec-3)">
+                <span class="num">۳</span> نام‌گذاری متغیرها
+            </a>
+            <a class="toc-link" href="#s4" style="--tc: var(--sec-4)">
+                <span class="num">۴</span> عملگرهای ریاضی
+            </a>
+            <a class="toc-link" href="#s5" style="--tc: var(--sec-6)">
+                <span class="num">۵</span> عملگرهای مقایسه‌ای و منطقی
+            </a>
+            <a class="toc-link" href="#s6" style="--tc: var(--sec-7)">
+                <span class="num">۶</span> دریافت ورودی با Scanner
+            </a>
+            <a class="toc-link" href="#exercises" style="--tc: var(--sec-5)">
+                <span class="num">۷</span> تمرین‌ها و راهنما
+            </a>
+            <a class="toc-link" href="#qa" style="--tc: var(--sec-9)">
+                <span class="num">۸</span> پرسش و پاسخ
+            </a>
+            <a class="toc-link" href="#summary" style="--tc: var(--sec-10)">
+                <span class="num">۹</span> جمع‌بندی
+            </a>
+        </div>
+    </nav>
+</div>
+
+<!-- ============================================================
+     بخش ۱ — متغیر و ثابت
+============================================================ -->
+<section class="section s1" id="s1">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۱</span>
+            <div>
+                <h2>متغیر و ثابت</h2>
+                <p>چطور یک مقدار را در حافظه نگه داریم و بعداً به آن دسترسی داشته باشیم</p>
+            </div>
+        </div>
+
+        <h3>متغیر چیست؟</h3>
+        <p>
+            فرض کنید می‌خواهید سن یک دانشجو را در برنامه ذخیره کنید. برای این کار به یک ظرف نیاز دارید
+            که بتواند یک عدد را نگه دارد و هر وقت خواستیم، آن را بخوانیم یا عوض کنیم. به این ظرف،
+            <strong>متغیر</strong> می‌گوییم. متغیر در حافظه اصلی سیستم (RAM) ساخته می‌شود و تا وقتی
+            برنامه در حال اجراست، زنده می‌ماند.
+        </p>
+
+        <div class="def-box">
+            <strong>تعریف ساده</strong>
+            متغیر یک جعبه برچسب‌دار در حافظه است. برای هر جعبه سه چیز مشخص می‌کنیم: چه نوع داده‌ای
+            در آن قرار می‌گیرد (نوع داده)، با چه نامی صدایش بزنیم (نام متغیر)، و در ابتدا چه مقداری
+            در آن باشد (مقدار اولیه).
+        </div>
+
+        <h3>ساختار تعریف یک متغیر</h3>
+        <p>
+            در جاوا، تعریف متغیر سه بخش دارد: نوع داده، نام و در صورت نیاز مقدار اولیه.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> age = <span class="tok-num">21</span>;              <span class="tok-com">// whole number</span>
+<span class="tok-kw">double</span> price = <span class="tok-num">19.99</span>;         <span class="tok-com">// decimal number</span>
+<span class="tok-kw">char</span> grade = <span class="tok-str">'A'</span>;             <span class="tok-com">// single character</span>
+<span class="tok-kw">boolean</span> isPassed = <span class="tok-kw">true</span>;     <span class="tok-com">// true or false</span></code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>چرا حتماً باید نوع داده را بنویسیم؟</strong>
+            جاوا یک زبان <em>ایستا نوع‌دار</em> است. یعنی وقتی یک متغیر را از نوع <code>int</code>
+            تعریف کردید، تا آخر همان بلوک کد فقط می‌تواند عدد صحیح بپذیرد. این دقت، جلوی بسیاری از
+            خطاهای پنهان را می‌گیرد و برخلاف زبان‌های پویا مثل Python، اجازه نمی‌دهد یک متغیر در
+            هر لحظه نوعش عوض شود.
+        </div>
+
+        <h3>تغییر مقدار یک متغیر</h3>
+        <p>
+            بعد از تعریف متغیر، می‌توانید در هر جای برنامه مقدارش را با عملگر <code>=</code> عوض کنید.
+            جاوا همیشه آخرین مقداری که در متغیر گذاشته شده را به یاد می‌آورد.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> age = <span class="tok-num">21</span>;
+System.out.println(age);   <span class="tok-com">// prints 21</span>
+
+age = <span class="tok-num">22</span>;                <span class="tok-com">// update the value</span>
+System.out.println(age);   <span class="tok-com">// prints 22</span></code></pre>
+        </div>
+
+        <h3>ثابت (Constant)</h3>
+        <p>
+            گاهی می‌خواهیم یک مقدار را یک بار تعریف کنیم و مطمئن باشیم تا آخر برنامه دست نمی‌خورد.
+            مثلاً عدد پی یا حداکثر تعداد کاربران مجاز. برای این حالت از کلمه کلیدی <code>final</code>
+            استفاده می‌کنیم. به چنین متغیری، <strong>ثابت</strong> می‌گوییم.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">final double</span> PI = <span class="tok-num">3.14159</span>;
+<span class="tok-kw">final int</span> MAX_USERS = <span class="tok-num">100</span>;
+
+<span class="tok-com">// PI = 3.14;   // ERROR: cannot reassign a final variable</span></code></pre>
+        </div>
+
+        <div class="warn-box">
+            <strong>تفاوت متغیر و ثابت</strong>
+            متغیر را می‌توانید هر چند بار که خواستید عوض کنید. ثابت را فقط یک بار، همان موقع تعریف،
+            مقدار می‌دهید. اگر بخواهید بعداً مقدارش را عوض کنید، کامپایلر خطا می‌دهد. این خطا در واقع
+            یک محافظ است تا اشتباهاً مقدار مهمی مثل عدد پی تغییر نکند.
+        </div>
+
+        <div class="tip-box">
+            <strong>قرارداد نام‌گذاری ثابت‌ها</strong>
+            طبق استاندارد جاوا، نام ثابت‌ها را با حروف بزرگ و کلمات جدا شده با زیرخط می‌نویسیم. مثل
+            <code>MAX_USERS</code>، <code>PI</code> یا <code>MIN_AGE</code>. این قرارداد به خواننده کد
+            کمک می‌کند در یک نگاه بفهمد با یک ثابت طرف است، نه یک متغیر معمولی.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۲ — انواع داده اولیه
+============================================================ -->
+<section class="section s2" id="s2">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۲</span>
+            <div>
+                <h2>انواع داده اولیه</h2>
+                <p>هشت نوع داده‌ای که پایه همه برنامه‌های جاوا هستند</p>
+            </div>
+        </div>
+
+        <p>
+            جاوا هشت نوع داده اولیه دارد. این‌ها ساده‌ترین انواع داده هستند و مقدار واقعی را مستقیماً در
+            حافظه نگه می‌دارند. بقیه انواع داده (مثل <code>String</code> یا کلاس‌هایی که بعداً
+            می‌سازید) از نوع <em>ارجاعی</em> هستند و فقط به یک آدرس در حافظه اشاره می‌کنند.
+        </p>
+
+        <h3>جدول کامل انواع اولیه</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>نوع داده</th>
+                        <th>حجم در حافظه</th>
+                        <th>محدوده مقادیر</th>
+                        <th>مقدار پیش‌فرض</th>
+                        <th>مثال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>byte</code></td>
+                        <td>۱ بایت</td>
+                        <td dir="ltr">-128 … 127</td>
+                        <td dir="ltr">0</td>
+                        <td dir="ltr"><code>byte b = 100;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>short</code></td>
+                        <td>۲ بایت</td>
+                        <td dir="ltr">-32,768 … 32,767</td>
+                        <td dir="ltr">0</td>
+                        <td dir="ltr"><code>short s = 30000;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>int</code></td>
+                        <td>۴ بایت</td>
+                        <td dir="ltr">-2,147,483,648 … 2,147,483,647</td>
+                        <td dir="ltr">0</td>
+                        <td dir="ltr"><code>int i = 100000;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>long</code></td>
+                        <td>۸ بایت</td>
+                        <td dir="ltr">حدود ±9.2 × 10¹⁸</td>
+                        <td dir="ltr">0L</td>
+                        <td dir="ltr"><code>long l = 15000000000L;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>float</code></td>
+                        <td>۴ بایت</td>
+                        <td dir="ltr">حدود ±3.4 × 10³⁸</td>
+                        <td dir="ltr">0.0f</td>
+                        <td dir="ltr"><code>float f = 3.14f;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>double</code></td>
+                        <td>۸ بایت</td>
+                        <td dir="ltr">حدود ±1.7 × 10³⁰⁸</td>
+                        <td dir="ltr">0.0d</td>
+                        <td dir="ltr"><code>double d = 3.14159;</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>char</code></td>
+                        <td>۲ بایت</td>
+                        <td dir="ltr">یک کاراکتر یونیکد</td>
+                        <td dir="ltr">'\u0000'</td>
+                        <td dir="ltr"><code>char c = 'A';</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>boolean</code></td>
+                        <td>وابسته به پیاده‌سازی</td>
+                        <td dir="ltr">true یا false</td>
+                        <td dir="ltr">false</td>
+                        <td dir="ltr"><code>boolean ok = true;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>دسته‌بندی ساده‌تر</h3>
+        <p>برای راحتی به خاطر سپردن، این هشت نوع را در چهار دسته می‌توان دید:</p>
+
+        <div class="card-grid">
+            <div class="card">
+                <h4>اعداد صحیح</h4>
+                <p><code>byte</code>، <code>short</code>، <code>int</code>، <code>long</code></p>
+                <p>برای شمردن و مقادیر بدون اعشار.</p>
+            </div>
+            <div class="card">
+                <h4>اعداد اعشاری</h4>
+                <p><code>float</code> و <code>double</code></p>
+                <p>برای مقادیر با اعشار. <code>double</code> دقت بیشتری دارد و پیش‌فرض است.</p>
+            </div>
+            <div class="card">
+                <h4>کاراکتری</h4>
+                <p><code>char</code></p>
+                <p>برای نگه‌داری یک حرف یا نماد، داخل تک‌کوتیشن.</p>
+            </div>
+            <div class="card">
+                <h4>منطقی</h4>
+                <p><code>boolean</code></p>
+                <p>فقط دو مقدار: درست یا غلط. پایه شرط‌ها.</p>
+            </div>
+        </div>
+
+        <h3>کدام نوع را انتخاب کنیم؟</h3>
+        <p>
+            برای اعداد صحیح، تقریباً همیشه <code>int</code> انتخاب اول است. از <code>byte</code>
+            و <code>short</code> فقط وقتی استفاده می‌کنیم که حافظه محدود باشد (مثل آرایه‌های خیلی
+            بزرگ) و از <code>long</code> برای اعداد خیلی بزرگ (بیشتر از دو میلیارد). برای اعداد
+            اعشاری، به‌طور پیش‌فرض <code>double</code> انتخاب کنید، چون دقت بالاتری دارد.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> studentAge = <span class="tok-num">20</span>;
+<span class="tok-kw">double</span> gpa = <span class="tok-num">3.75</span>;
+<span class="tok-kw">char</span> grade = <span class="tok-str">'A'</span>;
+<span class="tok-kw">boolean</span> isGraduated = <span class="tok-kw">false</span>;
+
+<span class="tok-kw">long</span> worldPopulation = <span class="tok-num">8000000000L</span>;   <span class="tok-com">// L at the end</span>
+<span class="tok-kw">float</span> bodyTemp = <span class="tok-num">36.6f</span>;                 <span class="tok-com">// f at the end</span></code></pre>
+        </div>
+
+        <div class="warn-box">
+            <strong>پسوندهای اجباری</strong>
+            برای <code>long</code> باید در انتهای عدد حرف <code>L</code> بنویسید و برای
+            <code>float</code> حرف <code>f</code>. اگر این پسوندها را ننویسید، جاوا عدد اعشاری را
+            به‌طور پیش‌فرض <code>double</code> در نظر می‌گیرد و عدد صحیح بزرگ را <code>int</code>،
+            که در هر دو حالت منجر به خطای کامپایل می‌شود.
+        </div>
+
+        <h3>سرریز (Overflow)</h3>
+        <p>
+            هر نوع داده، یک ظرفیت مشخص دارد. اگر مقداری بزرگ‌تر از ظرفیت در آن بریزید، مقدارش دور
+            می‌زند و به کوچک‌ترین مقدار همان نوع تبدیل می‌شود. این رفتار ممکن است در ابتدا عجیب به
+            نظر برسد، اما نتیجه یک قاعده مشخص در ریاضیات کامپیوتری است.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">byte</span> b = <span class="tok-num">127</span>;   <span class="tok-com">// maximum value of byte</span>
+b++;            <span class="tok-com">// overflow happens here</span>
+System.out.println(b);   <span class="tok-com">// prints -128, not 128</span></code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>مقدار پیش‌فرض فقط برای فیلدهای کلاس</strong>
+            متغیرهایی که داخل متدها (مثل <code>main</code>) تعریف می‌شوند، مقدار پیش‌فرض ندارند و
+            حتماً باید قبل از استفاده به آن‌ها مقدار بدهید. اگر بدون مقداردهی از آن‌ها استفاده کنید،
+            کامپایلر خطا می‌دهد. مقدار پیش‌فرض جدول بالا، فقط برای فیلدهایی است که داخل کلاس تعریف
+            می‌شوند، نه متغیرهای محلی.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۳ — نام‌گذاری
+============================================================ -->
+<section class="section s3" id="s3">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۳</span>
+            <div>
+                <h2>نام‌گذاری متغیرها</h2>
+                <p>قوانین و سبک استاندارد نام‌گذاری در جاوا</p>
+            </div>
+        </div>
+
+        <h3>قوانین اجباری</h3>
+        <p>
+            جاوا برای نام متغیرها چند قاعده سخت‌گیرانه دارد. اگر یکی از این قواعد نقض شود، کامپایلر
+            خطا می‌دهد و برنامه اجرا نمی‌شود.
+        </p>
+
+        <ul class="dot-list">
+            <li>نام متغیر باید با یک <strong>حرف</strong>، <strong>زیرخط</strong> (<code>_</code>) یا <strong>دلار</strong> (<code>$</code>) شروع شود.</li>
+            <li>نمی‌تواند با <strong>رقم</strong> شروع شود. مثلاً <code>1name</code> معتبر نیست.</li>
+            <li>نمی‌تواند شامل <strong>فاصله</strong> باشد. مثلاً <code>my age</code> معتبر نیست.</li>
+            <li>به بزرگی و کوچکی حروف <strong>حساس</strong> است. <code>age</code> و <code>Age</code> دو متغیر متفاوت هستند.</li>
+            <li>نمی‌تواند یکی از <strong>کلمات کلیدی</strong> جاوا باشد. کلماتی مثل <code>int</code>، <code>class</code>، <code>for</code>، <code>if</code> رزرو شده‌اند.</li>
+        </ul>
+
+        <h3>سبک استاندارد: Camel Case</h3>
+        <p>
+            جدا از قوانین اجباری، جاوا یک قرارداد سبک هم دارد که همه برنامه‌نویسان حرفه‌ای آن را رعایت
+            می‌کنند. طبق این قرارداد، نام متغیرها و متدها با <strong>حرف کوچک</strong> شروع می‌شود و
+            حرف اول هر کلمه بعدی با <strong>حرف بزرگ</strong> نوشته می‌شود. به این سبک،
+            <strong>Camel Case</strong> می‌گویند.
+        </p>
+
+        <div class="card-grid">
+            <div class="card">
+                <h4>✅ درست</h4>
+                <p>
+                    <code>firstName</code><br>
+                    <code>studentAge</code><br>
+                    <code>totalPrice</code><br>
+                    <code>isLoggedIn</code>
+                </p>
+            </div>
+            <div class="card">
+                <h4>❌ نادرست</h4>
+                <p>
+                    <code>first_name</code> (سبک snake_case)<br>
+                    <code>FirstName</code> (سبک PascalCase)<br>
+                    <code>1stName</code> (شروع با رقم)<br>
+                    <code>my age</code> (دارای فاصله)
+                </p>
+            </div>
+        </div>
+
+        <div class="tip-box">
+            <strong>نام معنادار انتخاب کنید</strong>
+            یک متغیر با نام <code>a</code> یا <code>x</code> هیچ چیز درباره محتوایش نمی‌گوید، اما
+            <code>studentAge</code> خودش را توضیح می‌دهد. کد باید خوانده شود، نه فقط اجرا. کسی که
+            شش ماه بعد به کد شما نگاه می‌کند، احتمالاً خودتان هستید؛ نام معنادار، بزرگ‌ترین لطفی است
+            که به خودتان می‌کنید.
+        </div>
+
+        <div class="warn-box">
+            <strong>حساسیت به حروف بزرگ و کوچک</strong>
+            جاوا به بزرگی و کوچکی حروف حساس است. یعنی <code>age</code>، <code>Age</code> و
+            <code>AGE</code> سه متغیر کاملاً متفاوت هستند. این ویژگی در ابتدا ممکن است باعث اشتباه
+            شود، اما یک قاعده ثابت در تمام زبان‌های خانواده C است.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۴ — عملگرهای ریاضی
+============================================================ -->
+<section class="section s4" id="s4">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۴</span>
+            <div>
+                <h2>عملگرهای ریاضی</h2>
+                <p>محاسبات پایه و ترتیب اجرای آن‌ها</p>
+            </div>
+        </div>
+
+        <h3>پنج عملگر اصلی</h3>
+        <p>
+            جاوا پنج عملگر ریاضی دارد که روی متغیرها و مقادیر عمل می‌کنند. این‌ها پایه هر محاسبه‌ای
+            در برنامه‌های واقعی هستند.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>عملگر</th>
+                        <th>نام</th>
+                        <th>توضیح</th>
+                        <th>مثال (a=10, b=3)</th>
+                        <th>نتیجه</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>+</code></td><td>جمع</td><td>جمع دو عدد</td><td dir="ltr"><code>a + b</code></td><td dir="ltr">13</td></tr>
+                    <tr><td><code>-</code></td><td>تفریق</td><td>تفاضل دو عدد</td><td dir="ltr"><code>a - b</code></td><td dir="ltr">7</td></tr>
+                    <tr><td><code>*</code></td><td>ضرب</td><td>حاصل‌ضرب</td><td dir="ltr"><code>a * b</code></td><td dir="ltr">30</td></tr>
+                    <tr><td><code>/</code></td><td>تقسیم</td><td>خارج‌قسمت</td><td dir="ltr"><code>a / b</code></td><td dir="ltr">3</td></tr>
+                    <tr><td><code>%</code></td><td>باقیمانده</td><td>باقی‌مانده تقسیم</td><td dir="ltr"><code>a % b</code></td><td dir="ltr">1</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> a = <span class="tok-num">10</span>, b = <span class="tok-num">3</span>;
+
+System.out.println(a + b);   <span class="tok-com">// 13</span>
+System.out.println(a - b);   <span class="tok-com">// 7</span>
+System.out.println(a * b);   <span class="tok-com">// 30</span>
+System.out.println(a / b);   <span class="tok-com">// 3  ← integer division!</span>
+System.out.println(a % b);   <span class="tok-com">// 1</span></code></pre>
+        </div>
+
+        <h3>تله تقسیم صحیح</h3>
+        <p>
+            یکی از رایج‌ترین اشتباهات مبتدیان، انتظار نتیجه اعشاری از تقسیم دو عدد صحیح است. وقتی هر
+            دو طرف تقسیم از نوع <code>int</code> باشند، نتیجه هم <code>int</code> است و بخش اعشاری
+            آن به‌طور کامل حذف می‌شود. یعنی <code>7 / 2</code> برابر <code>3</code> است، نه
+            <code>3.5</code>.
+        </p>
+
+        <div class="danger-box">
+            <strong>تقسیم صحیح بخش اعشاری را حذف می‌کند</strong>
+            برای گرفتن نتیجه دقیق اعشاری، حداقل یکی از طرفین تقسیم باید <code>double</code> یا
+            <code>float</code> باشد. مثلاً <code>7.0 / 2</code> نتیجه <code>3.5</code> می‌دهد، اما
+            <code>7 / 2</code> نتیجه <code>3</code>.
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>System.out.println(<span class="tok-num">7</span> / <span class="tok-num">2</span>);         <span class="tok-com">// 3   (both int)</span>
+System.out.println(<span class="tok-num">7</span> / <span class="tok-num">2.0</span>);       <span class="tok-com">// 3.5 (one is double)</span>
+System.out.println(<span class="tok-num">7.0</span> / <span class="tok-num">2</span>);       <span class="tok-com">// 3.5</span>
+System.out.println((<span class="tok-kw">double</span>) <span class="tok-num">7</span> / <span class="tok-num">2</span>);   <span class="tok-com">// 3.5 (cast)</span></code></pre>
+        </div>
+
+        <h3>ترتیب اجرا (اولویت عملگرها)</h3>
+        <p>
+            وقتی چند عملگر در یک عبارت کنار هم قرار می‌گیرند، جاوا به ترتیب اولویت آن‌ها را اجرا
+            می‌کند. این ترتیب، همان ترتیبی است که در ریاضیات مدرسه یاد گرفته‌اید.
+        </p>
+
+        <ol class="steps">
+            <li><span class="step-num">۱</span><div class="step-body"><strong>پرانتز:</strong> ابتدا هر چیزی که داخل پرانتز است محاسبه می‌شود.</div></li>
+            <li><span class="step-num">۲</span><div class="step-body"><strong>عملگرهای یکانی:</strong> مثل <code>++</code> و <code>--</code>.</div></li>
+            <li><span class="step-num">۳</span><div class="step-body"><strong>ضرب، تقسیم و باقیمانده:</strong> از چپ به راست.</div></li>
+            <li><span class="step-num">۴</span><div class="step-body"><strong>جمع و تفریق:</strong> از چپ به راست.</div></li>
+            <li><span class="step-num">۵</span><div class="step-body"><strong>انتساب:</strong> عملگر <code>=</code> در آخر اجرا می‌شود.</div></li>
+        </ol>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> r1 = <span class="tok-num">2</span> + <span class="tok-num">3</span> * <span class="tok-num">4</span>;        <span class="tok-com">// 14 (multiplication first)</span>
+<span class="tok-kw">int</span> r2 = (<span class="tok-num">2</span> + <span class="tok-num">3</span>) * <span class="tok-num">4</span>;      <span class="tok-com">// 20 (parentheses first)</span>
+<span class="tok-kw">int</span> r3 = <span class="tok-num">10</span> - <span class="tok-num">4</span> / <span class="tok-num">2</span>;       <span class="tok-com">// 8</span>
+<span class="tok-kw">int</span> r4 = (<span class="tok-num">10</span> - <span class="tok-num">4</span>) / <span class="tok-num">2</span>;     <span class="tok-com">// 3</span></code></pre>
+        </div>
+
+        <div class="tip-box">
+            <strong>پرانتز، همیشه پرانتز</strong>
+            حتی وقتی اولویت‌ها را خوب می‌دانید، برای خوانایی بهتر از پرانتز استفاده کنید.
+            <code>(a + b) / 2</code> بسیار خواناتر از <code>a + b / 2</code> است. کد برای خواندن
+            نوشته می‌شود، نه فقط برای اجرا.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۵ — مقایسه‌ای و منطقی
+============================================================ -->
+<section class="section s6" id="s5">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۵</span>
+            <div>
+                <h2>عملگرهای مقایسه‌ای و منطقی</h2>
+                <p>پایه ساخت شرط‌ها و تصمیم‌گیری در برنامه</p>
+            </div>
+        </div>
+
+        <h3>عملگرهای مقایسه‌ای</h3>
+        <p>
+            این عملگرها دو مقدار را با هم مقایسه می‌کنند و همیشه یک نتیجه <code>boolean</code>
+            برمی‌گردانند؛ یعنی یا <code>true</code> یا <code>false</code>. خروجی این عملگرها، پایه
+            ساخت شرط‌هایی است که در هفته‌های بعد یاد می‌گیریم.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>عملگر</th>
+                        <th>معنی</th>
+                        <th>مثال (x=5, y=8)</th>
+                        <th>نتیجه</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>==</code></td><td>مساوی است با</td><td dir="ltr"><code>x == y</code></td><td dir="ltr">false</td></tr>
+                    <tr><td><code>!=</code></td><td>مساوی نیست با</td><td dir="ltr"><code>x != y</code></td><td dir="ltr">true</td></tr>
+                    <tr><td><code>&gt;</code></td><td>بزرگ‌تر از</td><td dir="ltr"><code>x &gt; y</code></td><td dir="ltr">false</td></tr>
+                    <tr><td><code>&lt;</code></td><td>کوچک‌تر از</td><td dir="ltr"><code>x &lt; y</code></td><td dir="ltr">true</td></tr>
+                    <tr><td><code>&gt;=</code></td><td>بزرگ‌تر یا مساوی</td><td dir="ltr"><code>x &gt;= y</code></td><td dir="ltr">false</td></tr>
+                    <tr><td><code>&lt;=</code></td><td>کوچک‌تر یا مساوی</td><td dir="ltr"><code>x &lt;= y</code></td><td dir="ltr">true</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="danger-box">
+            <strong>اشتباه رایج: <code>=</code> با <code>==</code> فرق دارد</strong>
+            <code>=</code> یک عملگر انتساب است و مقدار را در متغیر می‌گذارد. <code>==</code>
+            عملگر مقایسه است و دو مقدار را با هم می‌سنجد. اگر در یک شرط به‌جای <code>==</code>
+            از <code>=</code> استفاده کنید، خطای کامپایل می‌گیرید. همیشه به خاطر بسپارید:
+            <code>=</code> برای انتساب، <code>==</code> برای مقایسه.
+        </div>
+
+        <h3>عملگرهای منطقی</h3>
+        <p>
+            برای ترکیب چند شرط با هم، از عملگرهای منطقی استفاده می‌کنیم. این عملگرها روی مقادیر
+            <code>boolean</code> کار می‌کنند و خروجی‌شان هم <code>boolean</code> است.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>عملگر</th>
+                        <th>نام</th>
+                        <th>قانون</th>
+                        <th>مثال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>&amp;&amp;</code></td>
+                        <td>AND (و)</td>
+                        <td>هر دو شرط باید درست باشند</td>
+                        <td dir="ltr"><code>true &amp;&amp; false</code> → <code>false</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>||</code></td>
+                        <td>OR (یا)</td>
+                        <td>حداقل یکی درست باشد کافی است</td>
+                        <td dir="ltr"><code>true || false</code> → <code>true</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>!</code></td>
+                        <td>NOT (نقیض)</td>
+                        <td>مقدار را برعکس می‌کند</td>
+                        <td dir="ltr"><code>!true</code> → <code>false</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> age = <span class="tok-num">20</span>;
+<span class="tok-kw">boolean</span> hasIdCard = <span class="tok-kw">true</span>;
+
+<span class="tok-kw">boolean</span> canEnter = (age &gt;= <span class="tok-num">18</span>) &amp;&amp; hasIdCard;
+System.out.println(canEnter);   <span class="tok-com">// true</span>
+
+<span class="tok-kw">boolean</span> isWeekend = <span class="tok-kw">false</span>;
+<span class="tok-kw">boolean</span> isHoliday = <span class="tok-kw">true</span>;
+System.out.println(isWeekend || isHoliday);   <span class="tok-com">// true</span>
+
+System.out.println(!hasIdCard);               <span class="tok-com">// false</span></code></pre>
+        </div>
+
+        <h3>ویژگی Short-Circuit</h3>
+        <p>
+            وقتی از <code>&amp;&amp;</code> استفاده می‌کنید و طرف اول <code>false</code> باشد، جاوا
+            طرف دوم را حتی بررسی نمی‌کند. چون در AND، اگر یکی false باشد، نتیجه کل عبارت هم false
+            است. همین رفتار در <code>||</code> هم وجود دارد: اگر طرف اول <code>true</code> باشد،
+            طرف دوم بررسی نمی‌شود.
+        </p>
+
+        <div class="info-box">
+            <strong>چرا Short-Circuit مهم است؟</strong>
+            این ویژگی هم سرعت اجرا را بالا می‌برد و هم از خطا جلوگیری می‌کند. مثلاً اگر شرط دوم به
+            متغیری نیاز داشته باشد که فقط وقتی شرط اول درست است وجود دارد، Short-Circuit جلوی خطا
+            را می‌گیرد. این رفتار را در هفته سوم، هنگام ساخت شرط‌های مرکب، بهتر می‌بینید.
+        </div>
+
+        <h3>ترتیب اولویت</h3>
+        <p>
+            وقتی چند عملگر در یک عبارت با هم هستند، ترتیب اجرا از بیشترین اولویت به کمترین است:
+            اول پرانتز، بعد نقیض <code>!</code>، بعد عملگرهای مقایسه‌ای، بعد <code>&amp;&amp;</code>،
+            بعد <code>||</code>. برای خوانایی بهتر، حتی وقتی اولویت‌ها را می‌دانید از پرانتز استفاده کنید.
+        </p>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۶ — Scanner
+============================================================ -->
+<section class="section s7" id="s6">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۶</span>
+            <div>
+                <h2>دریافت ورودی با Scanner</h2>
+                <p>تعامل با کاربر و خواندن داده‌ها از صفحه‌کلید</p>
+            </div>
+        </div>
+
+        <p>
+            تا اینجا برنامه‌های ما فقط خروجی می‌دادند. اما برنامه‌های واقعی معمولاً از کاربر ورودی
+            می‌گیرند و بر اساس آن تصمیم می‌گیرند. برای خواندن ورودی از صفحه‌کلید در جاوا، از کلاس
+            <code>Scanner</code> استفاده می‌کنیم. این کلاس در پکیج <code>java.util</code> قرار دارد.
+        </p>
+
+        <h3>سه گام برای استفاده از Scanner</h3>
+
+        <ol class="steps">
+            <li><span class="step-num">۱</span><div class="step-body">در ابتدای فایل، کلاس Scanner را با <code>import java.util.Scanner;</code> وارد کنید.</div></li>
+            <li><span class="step-num">۲</span><div class="step-body">یک شیء از Scanner بسازید که به <code>System.in</code> (ورودی سیستم) وصل باشد.</div></li>
+            <li><span class="step-num">۳</span><div class="step-body">با متد مناسب (مثل <code>nextInt</code> یا <code>nextLine</code>) داده مورد نظر را بخوانید.</div></li>
+        </ol>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">import</span> java.util.Scanner;
+
+<span class="tok-kw">public class</span> Main {
+    <span class="tok-kw">public static void</span> <span class="tok-fn">main</span>(String[] args) {
+        Scanner sc = <span class="tok-kw">new</span> Scanner(System.in);
+
+        System.out.print(<span class="tok-str">"Enter your name: "</span>);
+        String name = sc.nextLine();
+
+        System.out.print(<span class="tok-str">"Enter your age: "</span>);
+        <span class="tok-kw">int</span> age = sc.nextInt();
+
+        System.out.print(<span class="tok-str">"Enter your height: "</span>);
+        <span class="tok-kw">double</span> height = sc.nextDouble();
+
+        System.out.println(<span class="tok-str">"Hello, "</span> + name + <span class="tok-str">"!"</span>);
+        System.out.println(<span class="tok-str">"Age: "</span> + age + <span class="tok-str">", Height: "</span> + height);
+
+        sc.close();
+    }
+}</code></pre>
+        </div>
+
+        <h3>متدهای پرکاربرد Scanner</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>متد</th>
+                        <th>نوع بازگشتی</th>
+                        <th>کاربرد</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>nextInt()</code></td><td><code>int</code></td><td>خواندن یک عدد صحیح</td></tr>
+                    <tr><td><code>nextLong()</code></td><td><code>long</code></td><td>خواندن یک عدد صحیح بزرگ</td></tr>
+                    <tr><td><code>nextDouble()</code></td><td><code>double</code></td><td>خواندن یک عدد اعشاری</td></tr>
+                    <tr><td><code>nextFloat()</code></td><td><code>float</code></td><td>خواندن یک عدد اعشاری با دقت کمتر</td></tr>
+                    <tr><td><code>nextBoolean()</code></td><td><code>boolean</code></td><td>خواندن true یا false</td></tr>
+                    <tr><td><code>next()</code></td><td><code>String</code></td><td>خواندن یک واژه (تا اولین فاصله)</td></tr>
+                    <tr><td><code>nextLine()</code></td><td><code>String</code></td><td>خواندن یک خط کامل (تا Enter)</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>تله معروف: تداخل nextInt و nextLine</h3>
+        <p>
+            یکی از رایج‌ترین مشکلاتی که مبتدیان با آن روبه‌رو می‌شوند، این است که بعد از
+            <code>nextInt</code> یا <code>nextDouble</code>، اگر بلافاصله <code>nextLine</code>
+            صدا بزنید، برنامه به‌جای خواندن متن کاربر، یک رشته خالی برمی‌گرداند. این رفتار باعث
+            می‌شود برنامه، بخش دریافت متن را رد کند و به سراغ خط بعدی برود.
+        </p>
+
+        <div class="danger-box">
+            <strong>ریشه مشکل</strong>
+            وقتی کاربر یک عدد را وارد می‌کند و Enter می‌زند، در واقع دو چیز به برنامه می‌رسد: خود عدد
+            و کاراکتر Enter. متد <code>nextInt</code> عدد را می‌خواند، اما کاراکتر Enter را در بافر
+            ورودی باقی می‌گذارد. حالا اگر <code>nextLine</code> صدا بزنید، همان Enter باقی‌مانده را
+            می‌خواند و یک رشته خالی برمی‌گرداند.
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — مشکل</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>System.out.print(<span class="tok-str">"Age: "</span>);
+<span class="tok-kw">int</span> age = sc.nextInt();        <span class="tok-com">// user types 20 and presses Enter</span>
+
+System.out.print(<span class="tok-str">"Name: "</span>);
+String name = sc.nextLine();   <span class="tok-com">// BUG: reads the leftover Enter, not the name</span></code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — راه‌حل</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>System.out.print(<span class="tok-str">"Age: "</span>);
+<span class="tok-kw">int</span> age = sc.nextInt();
+sc.nextLine();                 <span class="tok-com">// consume the leftover newline</span>
+
+System.out.print(<span class="tok-str">"Name: "</span>);
+String name = sc.nextLine();   <span class="tok-com">// now works correctly</span></code></pre>
+        </div>
+
+        <div class="tip-box">
+            <strong>قاعده ساده</strong>
+            هر زمان که بعد از یک متد عددی (<code>nextInt</code>، <code>nextDouble</code>،
+            <code>nextFloat</code> و…) می‌خواهید <code>nextLine</code> صدا بزنید، یک
+            <code>nextLine()</code> اضافه در وسط قرار دهید تا Enter باقی‌مانده پاک شود. اگر
+            بعد از متد عددی از <code>nextInt</code> یا <code>nextDouble</code> دوباره استفاده
+            می‌کنید، نیازی به این کار نیست چون متد عددی، فاصله‌ها و Enter را خودش نادیده می‌گیرد.
+        </div>
+
+        <h3>بستن Scanner</h3>
+        <p>
+            در انتهای برنامه، متد <code>sc.close()</code> را صدا بزنید. این کار منابع سیستمی را آزاد
+            می‌کند. اما دقت کنید اگر <code>System.in</code> را ببندید، دیگر نمی‌توانید در همان برنامه
+            دوباره از آن بخوانید. برای برنامه‌های کوچک، این کار اهمیت زیادی ندارد، اما عادت خوبی است
+            که بعداً در پروژه‌های بزرگ‌تر به کارتان می‌آید.
+        </p>
+
+        <div class="info-box">
+            <strong>تفاوت next و nextLine</strong>
+            <code>next()</code> فقط تا اولین فاصله، تب یا Enter می‌خواند. اگر ورودی
+            <code dir="ltr">"Ali Reza"</code> باشد، فقط <code dir="ltr">"Ali"</code> را برمی‌گرداند.
+            <code>nextLine()</code> تا انتهای خط را می‌خواند، پس کل
+            <code dir="ltr">"Ali Reza"</code> را برمی‌گرداند. برای دریافت نام کامل، از
+            <code>nextLine</code> استفاده کنید.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۷ — تمرین‌ها
+============================================================ -->
+<section class="section s5" id="exercises">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۷</span>
+            <div>
+                <h2>تمرین‌ها و راهنما</h2>
+                <p>دو پروژه کلاسی و دو تمرین منزل برای تثبیت مطالب</p>
+            </div>
+        </div>
+
+        <!-- پروژه ۱: مبدل دما -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge project">پروژه کلاسی ۱</span>
+                <h3>مبدل دما</h3>
+            </div>
+
+            <p class="ex-desc">
+                برنامه‌ای بنویسید که دمای هوا را بر حسب سانتی‌گراد از کاربر دریافت کند و آن را به
+                فارنهایت و کلوین تبدیل کرده و نمایش دهد. چون دما می‌تواند اعشاری باشد، از
+                <code>nextDouble</code> استفاده کنید. خروجی را با دو رقم اعشار نمایش دهید.
+            </p>
+
+            <div class="algo">
+                <strong style="display:block;margin-bottom:6px;color:var(--tc);">فرمول‌ها</strong>
+                <ol>
+                    <li>فارنهایت = سانتی‌گراد × ۹ ÷ ۵ + ۳۲</li>
+                    <li>کلوین = سانتی‌گراد + ۲۷۳٫۱۵</li>
+                </ol>
+            </div>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">کلاس <code>Scanner</code> را import کنید و یک شیء از آن بسازید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">از کاربر دمای سانتی‌گراد را با <code>nextDouble</code> بگیرید و در متغیری از نوع <code>double</code> ذخیره کنید.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">دو متغیر دیگر برای فارنهایت و کلوین تعریف کنید و با فرمول‌های بالا مقدار بدهید.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">برای نمایش با دو رقم اعشار، از <code>System.out.printf</code> استفاده کنید. برای عدد اعشاری با دو رقم، از <code>%.2f</code> و برای خط جدید از <code>%n</code>.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">در پایان، <code>sc.close()</code> را صدا بزنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>استفاده از <code>nextInt</code> به‌جای <code>nextDouble</code>:</strong> اگر کاربر دمای ۳۶٫۶ را وارد کند، برنامه خطای ورودی می‌دهد. برای مقادیر اعشاری، همیشه <code>nextDouble</code>.</li>
+                        <li><strong>تقسیم صحیح در فرمول:</strong> اگر همه اعداد را <code>int</code> بگیرید، <code>9 / 5</code> نتیجه <code>1</code> می‌شود، نه <code>1.8</code>. برای اطمینان، در فرمول فارنهایت از <code>9.0</code> یا <code>5.0</code> استفاده کنید، یا مطمئن شوید متغیر سانتی‌گراد از نوع <code>double</code> است.</li>
+                        <li><strong>جا افتادن پرانتز در فرمول:</strong> عبارت <code>celsius * 9 / 5 + 32</code> درست است، اما <code>celsius * 9 / (5 + 32)</code> نتیجه اشتباه می‌دهد. اولویت عملگرها را در فرمول دقیق رعایت کنید.</li>
+                        <li><strong>فراموش کردن <code>%n</code> در printf:</strong> اگر <code>%n</code> را نگذارید، خروجی‌های متعدد در یک خط به هم می‌چسبند.</li>
+                        <li><strong>خطای ورودی در scanf:</strong> اگر کاربر به‌جای عدد، حرف وارد کند، برنامه با خطای ورودی متوقف می‌شود. فعلاً نگران این حالت نباشید؛ در هفته‌های بعد یاد می‌گیرید چطور این خطاها را مدیریت کنید.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <!-- پروژه ۲: تبدیل ثانیه -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge project">پروژه کلاسی ۲</span>
+                <h3>تبدیل ثانیه به ساعت، دقیقه و ثانیه</h3>
+            </div>
+
+            <p class="ex-desc">
+                برنامه‌ای بنویسید که یک عدد صحیح به‌عنوان تعداد ثانیه از کاربر دریافت کند و آن را به
+                قالب استاندارد ساعت، دقیقه و ثانیه تبدیل کند. مثلاً ورودی ۳۷۲۵ باید به شکل
+                <code dir="ltr">01:02:05</code> نمایش داده شود.
+            </p>
+
+            <div class="algo">
+                <strong style="display:block;margin-bottom:6px;color:var(--tc);">منطق تقسیم</strong>
+                <ol>
+                    <li>تعداد ساعت‌های کامل = کل ثانیه ÷ ۳۶۰۰ (تقسیم صحیح).</li>
+                    <li>باقیمانده بعد از ساعت = کل ثانیه % ۳۶۰۰.</li>
+                    <li>تعداد دقیقه‌های کامل = آن باقیمانده ÷ ۶۰.</li>
+                    <li>تعداد ثانیه‌های باقیمانده = کل ثانیه % ۶۰.</li>
+                </ol>
+            </div>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">یک شیء <code>Scanner</code> بسازید و کل ثانیه را با <code>nextInt</code> در متغیری از نوع <code>int</code> ذخیره کنید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">سه متغیر از نوع <code>int</code> تعریف کنید: یکی برای ساعت، یکی برای دقیقه و یکی برای ثانیه.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">ساعت را با <code>total / 3600</code> محاسبه کنید. چون هر دو عدد صحیح هستند، بخش اعشاری حذف می‌شود و همان تعداد ساعت کامل به دست می‌آید.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">دقیقه را با <code>(total % 3600) / 60</code> محاسبه کنید. اول باقیمانده بعد از ساعت‌ها را جدا می‌کنید و بعد آن را بر ۶۰ تقسیم می‌کنید.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">ثانیه را با <code>total % 60</code> محاسبه کنید.</div></li>
+                        <li><span class="step-num">۶</span><div class="step-body">برای نمایش دو رقمی (مثلاً <code>01</code> به‌جای <code>1</code>) از <code>printf</code> با قالب <code>%02d:%02d:%02d%n</code> استفاده کنید. عدد ۲ در <code>%02d</code> یعنی حداقل دو رقم و صفر یعنی در صورت نیاز با صفر پر شود.</div></li>
+                        <li><span class="step-num">۷</span><div class="step-body">در پایان، <code>sc.close()</code> را صدا بزنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>محاسبه دقیقه به‌روش اشتباه:</strong> اگر دقیقه را با <code>(total / 60) % 60</code> حساب کنید، وقتی total برابر ۳۷۲۵ باشد، باز هم نتیجه درست می‌گیرید. اما روش <code>(total % 3600) / 60</code> شفاف‌تر است و مستقیماً همان باقیمانده بعد از ساعت‌ها را بر ۶۰ تقسیم می‌کند.</li>
+                        <li><strong>استفاده از <code>nextDouble</code> به‌جای <code>nextInt</code>:</strong> ثانیه همیشه عدد صحیح است. اگر از <code>nextDouble</code> استفاده کنید، ممکن است محاسباتتان با اعداد اعشاری پیچیده شود.</li>
+                        <li><strong>فراموش کردن صفر پیشرو:</strong> بدون <code>%02d</code>، خروجی برای ۳۷۲۵ به‌شکل <code>1:2:5</code> نمایش داده می‌شود که خوانا نیست.</li>
+                        <li><strong>استفاده از <code>%d</code> به‌جای <code>%02d</code>:</strong> بدون عدد ۲، عرض ثابت اعمال نمی‌شود و صفر پیشرو اضافه نمی‌شود.</li>
+                        <li><strong>خطای تقسیم صحیح در محاسبه ثانیه:</strong> اگر ثانیه را با <code>(total % 3600) % 60</code> حساب کنید، باز هم درست است؛ اما ساده‌ترین شکل <code>total % 60</code> است.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <!-- تمرین ۱: BMI -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۱</span>
+                <h3>محاسبه شاخص توده بدنی (BMI)</h3>
+            </div>
+
+            <p class="ex-desc">
+                برنامه‌ای بنویسید که وزن (کیلوگرم) و قد (متر) را از کاربر دریافت کند و شاخص توده بدنی
+                را محاسبه و با دو رقم اعشار نمایش دهد. فرمول محاسبه:
+                <code dir="ltr">BMI = weight / (height × height)</code>
+            </p>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">یک شیء <code>Scanner</code> بسازید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">وزن را با <code>nextDouble</code> در متغیری از نوع <code>double</code> ذخیره کنید.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">قد را هم با <code>nextDouble</code> در متغیری از نوع <code>double</code> ذخیره کنید.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">قد را در خودش ضرب کنید (قد به توان دو) و نتیجه را در یک متغیر موقت نگه دارید، یا مستقیماً در فرمول بگذارید.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">وزن را بر آن مقدار تقسیم کنید و نتیجه را در متغیری به نام <code>bmi</code> نگه دارید.</div></li>
+                        <li><span class="step-num">۶</span><div class="step-body">با <code>System.out.printf</code> و قالب <code>%.2f</code> نتیجه را با دو رقم اعشار چاپ کنید.</div></li>
+                        <li><span class="step-num">۷</span><div class="step-body">در پایان، <code>sc.close()</code> را صدا بزنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>استفاده از <code>int</code> برای وزن و قد:</strong> اگر وزن ۷۰٫۵ باشد، با <code>int</code> خطای ورودی می‌گیرید. همیشه برای این مقادیر از <code>double</code> استفاده کنید.</li>
+                        <li><strong>فراموش کردن پرانتز در مخرج:</strong> نوشتن <code>weight / height * height</code> غلط است، چون از چپ به راست حساب می‌شود و نتیجه می‌شود <code>(weight / height) × height</code>. حتماً <code>weight / (height * height)</code> بنویسید.</li>
+                        <li><strong>اعشار جدا شده با کاما در ورودی:</strong> در جاوا، اعداد اعشاری باید با نقطه وارد شوند، نه کاما. اگر کاربر عادت دارد <code>1,75</code> بنویسد، برنامه خطا می‌دهد. در هفته‌های بعد یاد می‌گیرید چطور این حالت را هم مدیریت کنید.</li>
+                        <li><strong>فراموش کردن واحد در پیام خروجی:</strong> پیام پایانی بهتر است واحد را هم نشان دهد، مثلاً «شاخص توده بدنی: ۲۲٫۸۶». این جزو کیفیت کد است.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <!-- تمرین ۲: Swap -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۲</span>
+                <h3>جابه‌جایی دو عدد بدون متغیر کمکی</h3>
+            </div>
+
+            <p class="ex-desc">
+                دو متغیر عددی از کاربر دریافت کنید و مقادیر آن‌ها را بدون استفاده از متغیر سوم،
+                با هم جابه‌جا کنید. سپس مقادیر جدید را چاپ کنید. برای این کار، از عملگرهای ریاضی
+                (جمع و تفریق) استفاده کنید.
+            </p>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">دو متغیر <code>a</code> و <code>b</code> از نوع <code>int</code> تعریف کنید و مقادیرشان را با <code>nextInt</code> از کاربر بگیرید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">قبل از جابه‌جایی، مقادیر اولیه را چاپ کنید تا بعداً بتوانید مقایسه کنید.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">در <code>a</code> مجموع دو عدد را بریزید: <code>a = a + b</code>. حالا <code>a</code> مجموع را نگه می‌دارد.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">در <code>b</code> مقدار اصلی <code>a</code> را بازیابی کنید: <code>b = a - b</code>. حالا <code>b</code> مقدار قبلی <code>a</code> را دارد.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">در <code>a</code> مقدار اصلی <code>b</code> را بازیابی کنید: <code>a = a - b</code>. حالا <code>a</code> مقدار قبلی <code>b</code> را دارد.</div></li>
+                        <li><span class="step-num">۶</span><div class="step-body">مقادیر جدید را چاپ کنید تا جابه‌جایی را ببینید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>اشتباه در ترتیب مراحل:</strong> ترتیب دقیقاً باید <code>a = a + b</code>، بعد <code>b = a - b</code> و در نهایت <code>a = a - b</code> باشد. اگر جای مراحل را عوض کنید، مقادیر بازیابی نمی‌شوند.</li>
+                        <li><strong>خطر سرریز در مقادیر بزرگ:</strong> اگر دو عدد خیلی بزرگ باشند، جمعشان ممکن است از ظرفیت <code>int</code> بیشتر شود و سرریز رخ دهد. برای اعداد خیلی بزرگ، این روش امن نیست. اما برای مقادیر معمولی کار می‌کند.</li>
+                        <li><strong>فراموش کردن صفر یا اعداد منفی:</strong> این روش برای اعداد منفی و صفر هم کار می‌کند. با اعداد نمونه مثل <code>a=5</code> و <code>b=10</code> و <code>a=-3</code> و <code>b=7</code> تست کنید تا مطمئن شوید.</li>
+                        <li><strong>نبودن پیام واضح در خروجی:</strong> مقادیر جدید را با پیام روشن چاپ کنید، مثلاً «پس از جابه‌جایی: a = ...، b = ...». این کار تشخیص درست بودن نتیجه را ساده می‌کند.</li>
+                        <li><strong>انتظار غیرواقعی از خروجی:</strong> اگر مقادیر را با <code>println</code> خیلی ساده چاپ کنید، ممکن است نتوانید تشخیص دهید کدام مقدار مربوط به کدام متغیر است. از برچسب استفاده کنید.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۸ — پرسش و پاسخ
+============================================================ -->
+<section class="section s9" id="qa">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۸</span>
+            <div>
+                <h2>پرسش و پاسخ</h2>
+                <p>پرسش‌های پرتکرار این هفته و پاسخ روشن آن‌ها</p>
+            </div>
+        </div>
+
+        <p>
+            این بخش جمع‌بندی پرسش‌هایی است که معمولاً در هفته دوم برای دانشجویان پیش می‌آید. اگر
+            پرسشی مشابه داشتید، پاسخ آن را همین‌جا پیدا می‌کنید.
+        </p>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چرا باید نوع داده را دقیق انتخاب کنم؟ نمی‌شود همیشه از int و double استفاده کرد؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> در بسیاری از برنامه‌های کوچک، بله، می‌توانید همیشه از <code>int</code> و <code>double</code> استفاده کنید و کارتان راه بیفتد. اما وقتی برنامه‌های بزرگ‌تر و آرایه‌های خیلی بزرگ می‌سازید، تفاوت حافظه اهمیت پیدا می‌کند. مثلاً اگر یک آرایه با یک میلیون عضو از نوع <code>int</code> داشته باشید، حدود ۴ مگابایت حافظه مصرف می‌شود، اما همان آرایه از نوع <code>byte</code> فقط ۱ مگابایت می‌گیرد. با انتخاب درست نوع داده، هم حافظه کمتری مصرف می‌شود و هم برنامه سریع‌تر اجرا می‌شود. همچنین انتخاب نوع درست، خودش نوعی مستندسازی است: وقتی کسی <code>byte age</code> می‌بیند، می‌فهمد این مقدار نباید بزرگ‌تر از ۱۲۷ باشد.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: تفاوت float و double در چیست و کدام را انتخاب کنم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> <code>double</code> دقت بالاتری دارد و ۸ بایت فضا می‌گیرد، در حالی که <code>float</code> ۴ بایت فضا می‌گیرد و دقت کمتری دارد. در عمل، تقریباً همیشه <code>double</code> انتخاب می‌شود، مگر اینکه با حجم عظیمی از داده‌های اعشاری کار کنید و بخواهید در حافظه صرفه‌جویی کنید. حتی در مواردی مثل محاسبه BMI یا مبدل دما، دقت بالای <code>double</code> به کارتان می‌آید. تنها نکته‌ای که باید یادتان باشد این است که برای تعریف یک متغیر <code>float</code>، باید در انتهای عدد حرف <code>f</code> بنویسید؛ مثل <code>3.14f</code>. برای <code>double</code> نیازی به پسوند نیست.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چرا 5 / 2 نتیجه 2.5 نمی‌دهد، بلکه 2 برمی‌گرداند؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> در جاوا، وقتی هر دو طرف تقسیم از یک نوع صحیح باشند (مثل <code>int</code>، <code>byte</code>، <code>short</code> یا <code>long</code>)، نتیجه هم از همان نوع صحیح است و بخش اعشاری آن حذف می‌شود، نه گرد. یعنی <code>5 / 2</code> برابر <code>2</code> است و <code>7 / 3</code> برابر <code>2</code>. این رفتار به این دلیل است که جاوا به نوع داده عملوندها وفادار می‌ماند. برای گرفتن نتیجه دقیق، حداقل یکی از طرفین باید <code>double</code> یا <code>float</code> باشد. مثلاً <code>5.0 / 2</code> یا <code>5 / 2.0</code> نتیجه <code>2.5</code> می‌دهد. اگر هر دو طرف متغیر باشند، می‌توانید یکی را با <code>(double)</code> تبدیل کنید: <code>(double) a / b</code>.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: تفاوت = و == دقیقاً چیست؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> <code>=</code> یک عملگر انتساب است. یعنی مقدار سمت راست را در متغیر سمت چپ می‌ریزد. مثلاً <code>age = 20</code> یعنی در متغیر <code>age</code> مقدار ۲۰ را قرار بده. <code>==</code> یک عملگر مقایسه است و دو مقدار را با هم می‌سنجد. نتیجه‌اش یک <code>boolean</code> است: اگر برابر باشند <code>true</code>، وگرنه <code>false</code>. مثلاً <code>age == 20</code> اگر <code>age</code> برابر ۲۰ باشد <code>true</code> برمی‌گرداند. اگر در یک شرط، به‌جای <code>==</code> از <code>=</code> استفاده کنید، کامپایلر خطا می‌دهد چون نتیجه انتساب از نوع متغیر است، نه از نوع <code>boolean</code>. همیشه به خاطر بسپارید: <code>=</code> برای گذاشتن مقدار، <code>==</code> برای مقایسه.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چرا بعد از nextInt، nextLine رشته خالی برمی‌گرداند؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> وقتی کاربر یک عدد را وارد می‌کند و Enter می‌زند، در واقع دو چیز به برنامه می‌رسد: خود عدد و کاراکتر Enter. متد <code>nextInt</code> عدد را می‌خواند و به برنامه برمی‌گرداند، اما کاراکتر Enter را مصرف نمی‌کند و در بافر ورودی باقی می‌گذارد. حالا اگر بلافاصله <code>nextLine</code> صدا بزنید، این متد به بافر نگاه می‌کند و اولین چیزی که می‌بیند، همان Enter باقی‌مانده است. بنابراین یک رشته خالی برمی‌گرداند و بلافاصله تمام می‌شود. راه‌حل ساده این است که بعد از <code>nextInt</code>، یک <code>nextLine()</code> اضافه صدا بزنید تا آن Enter باقی‌مانده مصرف شود. بعد از آن، <code>nextLine</code> بعدی منتظر ورودی واقعی می‌ماند و متن کاربر را درست می‌خواند.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: اگر بخواهم نام و نام خانوادگی را با هم از کاربر بگیرم، از next استفاده کنم یا nextLine؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> برای گرفتن نام کامل، از <code>nextLine</code> استفاده کنید. متد <code>next</code> فقط تا اولین فاصله می‌خواند، یعنی اگر کاربر بنویسد «علی رضایی»، فقط «علی» را می‌گیرد و «رضایی» در بافر باقی می‌ماند. متد <code>nextLine</code> تا Enter را می‌خواند و کل «علی رضایی» را برمی‌گرداند. تنها نکته این است که اگر قبل از <code>nextLine</code> از <code>nextInt</code> یا <code>nextDouble</code> استفاده کرده باشید، باید یک <code>nextLine()</code> اضافه در وسط صدا بزنید تا Enter باقی‌مانده پاک شود.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چرا مقدار پیش‌فرض برای متغیرهای محلی وجود ندارد؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> متغیرهایی که داخل متدها تعریف می‌شوند، توسط کامپایلر مقدار پیش‌فرض نمی‌گیرند. این یکی از تصمیم‌های طراحی جاواست تا برنامه‌نویس را مجبور کند آگاهانه به متغیر مقدار بدهد. اگر متغیری مقدار پیش‌فرض داشته باشد، ممکن است به‌اشتباه از آن استفاده کنید و یک باگ پنهان در برنامه ایجاد شود. مثلاً اگر متغیر <code>sum</code> به‌طور خودکار صفر باشد، ممکن است فراموش کنید آن را مقداردهی کنید و برنامه ظاهراً درست کار کند، ولی در واقع نتیجه اشتباه بدهد. با اجبار به مقداردهی صریح، این نوع باگ‌ها زودتر کشف می‌شوند. فقط فیلدهای کلاس مقدار پیش‌فرض دارند، چون همیشه با ساختن شیء مقداردهی می‌شوند.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: آیا می‌توانم نام متغیر را فارسی بنویسم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> از نظر فنی، جاوا اجازه می‌دهد از حروف یونیکد (که حروف فارسی هم شاملش می‌شود) در نام متغیر استفاده کنید. اما در عمل، این کار توصیه نمی‌شود. سه دلیل اصلی: اول اینکه بسیاری از ابزارهای برنامه‌نویسی، ویرایشگرها و مستندسازها ممکن است در نمایش درست این نام‌ها مشکل داشته باشند. دوم اینکه کد شما ممکن است در پروژه‌های بین‌المللی یا با همکارانی که فارسی نمی‌دانند، قابل خواندن نباشد. سوم اینکه قرارداد استاندارد جامعه جاوا، استفاده از حروف انگلیسی برای نام‌گذاری است. بهتر است نام متغیرها را انگلیسی و معنادار بنویسید و اگر نیاز به توضیح فارسی دارید، در قالب کامنت اضافه کنید.</p>
+            </div>
+        </details>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۹ — جمع‌بندی
+============================================================ -->
+<section class="section s10" id="summary">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۹</span>
+            <div>
+                <h2>جمع‌بندی و نکات کلیدی</h2>
+                <p>مرور سریع مطالب این هفته</p>
+            </div>
+        </div>
+
+        <div class="cheat">
+            <h3>متغیر و ثابت</h3>
+            <ul class="dot-list">
+                <li>متغیر یک جعبه برچسب‌دار در حافظه است که سه بخش دارد: نوع داده، نام و مقدار.</li>
+                <li>برای تعریف ثابت، از <code>final</code> استفاده کنید. مقدار ثابت بعد از تعریف قابل تغییر نیست.</li>
+                <li>نام ثابت‌ها را با حروف بزرگ و کلمات جدا شده با زیرخط می‌نویسیم؛ مثل <code>MAX_USERS</code>.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>انواع داده اولیه</h3>
+            <ul class="dot-list">
+                <li>هشت نوع اولیه: <code>byte</code>، <code>short</code>، <code>int</code>، <code>long</code>، <code>float</code>، <code>double</code>، <code>char</code> و <code>boolean</code>.</li>
+                <li>برای اعداد صحیح، پیش‌فرض <code>int</code>؛ برای اعداد اعشاری، پیش‌فرض <code>double</code>.</li>
+                <li>برای <code>long</code> پسوند <code>L</code> و برای <code>float</code> پسوند <code>f</code> الزامی است.</li>
+                <li>مقدار پیش‌فرض فقط برای فیلدهای کلاس وجود دارد، نه متغیرهای محلی.</li>
+                <li>سرریز باعث می‌شود مقدار از ظرفیت نوع داده عبور کند و دور بزند.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>نام‌گذاری متغیرها</h3>
+            <ul class="dot-list">
+                <li>شروع با حرف، زیرخط یا دلار؛ هرگز با رقم.</li>
+                <li>بدون فاصله، بدون کاراکترهای ویژه.</li>
+                <li>حساس به بزرگی و کوچکی حروف.</li>
+                <li>سبک استاندارد: Camel Case؛ مثل <code>studentAge</code>.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>عملگرهای ریاضی</h3>
+            <ul class="dot-list">
+                <li>پنج عملگر اصلی: <code>+</code>، <code>-</code>، <code>*</code>، <code>/</code> و <code>%</code>.</li>
+                <li>تقسیم دو عدد صحیح، نتیجه صحیح می‌دهد و بخش اعشاری را حذف می‌کند.</li>
+                <li>ترتیب اجرا: پرانتز، بعد ضرب و تقسیم و باقیمانده، بعد جمع و تفریق.</li>
+                <li>برای خوانایی بهتر، حتی وقتی اولویت‌ها را می‌دانید از پرانتز استفاده کنید.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>عملگرهای مقایسه‌ای و منطقی</h3>
+            <ul class="dot-list">
+                <li>عملگرهای مقایسه‌ای همیشه یک <code>boolean</code> برمی‌گردانند.</li>
+                <li><code>=</code> انتساب، <code>==</code> مقایسه. اشتباه گرفتن این دو، خطای رایج مبتدیان است.</li>
+                <li>عملگرهای منطقی: <code>&amp;&amp;</code> (و)، <code>||</code> (یا) و <code>!</code> (نقیض).</li>
+                <li>Short-Circuit: در <code>&amp;&amp;</code> اگر طرف اول false باشد، طرف دوم بررسی نمی‌شود.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>Scanner</h3>
+            <ul class="dot-list">
+                <li>سه گام: import، ساخت شیء با <code>new Scanner(System.in)</code> و خواندن با متد مناسب.</li>
+                <li>متدهای پرکاربرد: <code>nextInt</code>، <code>nextDouble</code>، <code>nextBoolean</code>، <code>next</code> و <code>nextLine</code>.</li>
+                <li>بعد از <code>nextInt</code> قبل از <code>nextLine</code>، یک <code>nextLine()</code> اضافه بزنید.</li>
+                <li>در پایان برنامه، <code>sc.close()</code> را صدا بزنید.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     فوتر
+============================================================ -->
+<footer class="site-footer">
+    <div class="container">
+        <p><strong>هفته دوم</strong> — متغیرها، انواع داده، عملگرها و دریافت ورودی</p>
+    </div>
+</footer>
+
+<!-- ============================================================
+     دکمه بازگشت به بالا
+============================================================ -->
+<button id="toTop" title="بازگشت به بالای صفحه" aria-label="بازگشت به بالای صفحه">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+    <span class="toTop-text">بازگشت به بالا</span>
+</button>
+
+<!-- ============================================================
+     اسکریپت
+============================================================ -->
+<script>
+/* ---------- تم روشن/تاریک ---------- */
+(function () {
+    const root = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+
+    const saved = localStorage.getItem('java-guide-theme');
+    if (saved === 'dark') apply('dark');
+
+    function apply(mode) {
+        if (mode === 'dark') {
+            root.setAttribute('data-theme', 'dark');
+            icon.textContent = '☀️';
+            label.textContent = 'تم روشن';
+        } else {
+            root.removeAttribute('data-theme');
+            icon.textContent = '🌙';
+            label.textContent = 'تم تاریک';
+        }
+    }
+
+    btn.addEventListener('click', function () {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        const next = isDark ? 'light' : 'dark';
+        apply(next);
+        localStorage.setItem('java-guide-theme', next);
+    });
+})();
+
+/* ---------- دکمه بازگشت به بالا ---------- */
+(function () {
+    const btn = document.getElementById('toTop');
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 400) btn.classList.add('show');
+        else btn.classList.remove('show');
+    });
+    btn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+})();
+
+/* ---------- هایلایت کد ---------- */
+(function () {
+    function esc(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    const KEYWORDS = new Set([
+        'abstract','assert','boolean','break','byte','case','catch','char','class','const',
+        'continue','default','do','double','else','enum','extends','final','finally','float',
+        'for','if','implements','import','instanceof','int','interface','long','native','new',
+        'package','private','protected','public','return','short','static','strictfp','super',
+        'switch','synchronized','this','throw','throws','transient','try','void','volatile',
+        'while','true','false','null','var','yield',
+        'String','StringBuilder','System','Scanner','Math','Integer','Double','Character','Boolean','Arrays'
+    ]);
+
+    function highlight(code) {
+        const re = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|\b(\d+(?:\.\d+)?[fFdDlL]?)\b|\b([A-Za-z_$][\w$]*)\b/g;
+        let out = '', last = 0, m;
+        while ((m = re.exec(code)) !== null) {
+            out += esc(code.slice(last, m.index));
+            const full = m[0];
+            if (m[1])      out += '<span class="tok-com">' + esc(full) + '</span>';
+            else if (m[2]) out += '<span class="tok-str">' + esc(full) + '</span>';
+            else if (m[3]) out += '<span class="tok-num">' + esc(full) + '</span>';
+            else if (m[4] && KEYWORDS.has(m[4])) out += '<span class="tok-kw">' + esc(full) + '</span>';
+            else           out += esc(full);
+            last = re.lastIndex;
+        }
+        out += esc(code.slice(last));
+        return out;
+    }
+
+    document.querySelectorAll('pre code').forEach(function (block) {
+        if (block.querySelector('span')) return;
+        const raw = block.textContent;
+        block.innerHTML = highlight(raw);
+    });
+})();
+
+/* ---------- دکمه کپی ---------- */
+(function () {
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const code = btn.closest('.code-block').querySelector('code').innerText;
+            const done = function () {
+                const original = btn.textContent;
+                btn.textContent = 'کپی شد ✓';
+                btn.style.background = '#10b981';
+                btn.style.borderColor = '#10b981';
+                btn.style.color = '#fff';
+                setTimeout(function () {
+                    btn.textContent = original;
+                    btn.style.background = '';
+                    btn.style.borderColor = '';
+                    btn.style.color = '';
+                }, 1500);
+            };
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(code).then(done).catch(function () { fallback(code, done); });
+            } else {
+                fallback(code, done);
+            }
+        });
+    });
+
+    function fallback(text, cb) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); cb(); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+    }
+})();
+</script>
+
+</body>
+</html>
