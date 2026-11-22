@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>هفته اول جاوا — مبانی برنامه‌نویسی، معماری جاوا و اولین برنامه</title>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+
+<style>
+/* ============================================================
+   متغیرهای رنگی — تم روشن
+============================================================ */
+:root {
+    --bg: #ffffff;
+    --bg-soft: #f8fafc;
+    --bg-card: #ffffff;
+    --text: #1e293b;
+    --text-soft: #475569;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --primary: #4f46e5;
+    --primary-soft: #eef2ff;
+
+    --sec-1: #2563eb;
+    --sec-2: #059669;
+    --sec-3: #d97706;
+    --sec-4: #7c3aed;
+    --sec-5: #e11d48;
+    --sec-6: #0891b2;
+    --sec-7: #c026d3;
+    --sec-8: #ea580c;
+    --sec-9: #0d9488;
+    --sec-10: #65a30d;
+
+    --code-bg: #0f172a;
+    --code-head: #1e293b;
+    --code-text: #e2e8f0;
+
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, .06);
+    --shadow-md: 0 6px 20px rgba(15, 23, 42, .08);
+}
+
+/* ============================================================
+   تم تاریک
+============================================================ */
+[data-theme="dark"] {
+    --bg: #0b1220;
+    --bg-soft: #111a2e;
+    --bg-card: #131d35;
+    --text: #e6ecf6;
+    --text-soft: #a9b6cc;
+    --muted: #7f8ba5;
+    --border: #25324d;
+    --border-strong: #34425f;
+    --primary: #818cf8;
+    --primary-soft: #1e2a4a;
+
+    --sec-1: #60a5fa;
+    --sec-2: #34d399;
+    --sec-3: #fbbf24;
+    --sec-4: #c084fc;
+    --sec-5: #fb7185;
+    --sec-6: #22d3ee;
+    --sec-7: #e879f9;
+    --sec-8: #fb923c;
+    --sec-9: #2dd4bf;
+    --sec-10: #a3e635;
+
+    --code-bg: #060c18;
+    --code-head: #0f172a;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, .4);
+    --shadow-md: 0 6px 20px rgba(0, 0, 0, .5);
+}
+
+/* ============================================================
+   پایه
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Vazirmatn', Tahoma, system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.95;
+    font-size: 16px;
+    transition: background-color .25s ease, color .25s ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ============================================================
+   هدر
+============================================================ */
+.hero {
+    padding: 20px 0 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.hero-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-badge {
+    display: inline-block;
+    font-size: .78rem;
+    font-weight: 700;
+    padding: 5px 15px;
+    border-radius: 999px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.theme-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border-strong);
+    background: var(--bg-card);
+    color: var(--text);
+    font-family: inherit;
+    font-size: .8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s ease;
+    white-space: nowrap;
+}
+
+.theme-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.theme-btn .theme-icon { font-size: 1rem; line-height: 1; }
+
+.hero-title {
+    font-size: clamp(1.4rem, 3.8vw, 1.9rem);
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: -.4px;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.hero-subtitle {
+    font-size: .92rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.hero-desc {
+    font-size: .95rem;
+    color: var(--text-soft);
+    line-height: 2;
+    text-align: justify;
+    margin-bottom: 18px;
+}
+
+.goal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-inline-start: 4px solid var(--primary);
+    border-radius: 12px;
+    padding: 14px 18px;
+    box-shadow: var(--shadow-sm);
+    font-size: .93rem;
+    line-height: 1.9;
+    color: var(--text-soft);
+    text-align: justify;
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.goal strong { color: var(--primary); font-weight: 800; }
+
+/* ============================================================
+   فهرست مطالب
+============================================================ */
+.toc {
+    margin: 32px 0 10px;
+    padding: 24px 26px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow-sm);
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.toc-title {
+    font-size: 1.02rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+}
+
+.toc-title::before {
+    content: "";
+    width: 5px;
+    height: 20px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #38bdf8, #a855f7);
+}
+
+.toc-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 10px;
+}
+
+.toc-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .87rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.toc-link:hover {
+    border-color: var(--tc, var(--primary));
+    color: var(--tc, var(--primary));
+    transform: translateX(-3px);
+    background: var(--bg-card);
+}
+
+.toc-link .num {
+    flex: 0 0 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--tc, var(--primary));
+    color: #fff;
+    font-weight: 800;
+    font-size: .82rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .15);
+}
+
+/* ============================================================
+   بخش‌ها
+============================================================ */
+.section { margin: 44px 0; scroll-margin-top: 20px; }
+
+.sec-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+}
+
+.sec-num {
+    flex: 0 0 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 15px;
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 800;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+    background: var(--tc, var(--primary));
+}
+
+.sec-head h2 {
+    font-size: clamp(1.15rem, 3vw, 1.4rem);
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 2px;
+    text-align: right;
+}
+
+.sec-head p {
+    color: var(--muted);
+    font-size: .82rem;
+    margin: 0;
+    text-align: right;
+}
+
+.section.s1 { --tc: var(--sec-1); }
+.section.s2 { --tc: var(--sec-2); }
+.section.s3 { --tc: var(--sec-3); }
+.section.s4 { --tc: var(--sec-4); }
+.section.s5 { --tc: var(--sec-5); }
+.section.s6 { --tc: var(--sec-6); }
+.section.s7 { --tc: var(--sec-7); }
+.section.s8 { --tc: var(--sec-8); }
+.section.s9 { --tc: var(--sec-9); }
+.section.s10 { --tc: var(--sec-10); }
+
+/* ============================================================
+   زیرعنوان‌ها
+============================================================ */
+h3 {
+    font-size: 1.08rem;
+    font-weight: 800;
+    margin: 28px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    text-align: right;
+}
+
+h3::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--tc, var(--primary));
+    box-shadow: 0 0 0 4px var(--primary-soft);
+    flex-shrink: 0;
+}
+
+h4 {
+    font-size: .95rem;
+    font-weight: 800;
+    margin: 20px 0 8px;
+    color: var(--tc, var(--primary));
+    text-align: right;
+}
+
+p { margin-bottom: 14px; color: var(--text-soft); text-align: justify; }
+
+/* ============================================================
+   لیست‌های دستی
+============================================================ */
+ol.steps {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+}
+
+ol.steps > li {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+    color: var(--text-soft);
+    font-size: .94rem;
+    line-height: 1.85;
+}
+
+ol.steps > li:last-child { border-bottom: none; }
+
+ol.steps .step-num {
+    flex: 0 0 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--primary-soft);
+    color: var(--tc, var(--primary));
+    font-size: .82rem;
+    font-weight: 800;
+    margin-top: 3px;
+}
+
+ol.steps .step-body { flex: 1; }
+
+ul.dot-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0;
+}
+
+ul.dot-list > li {
+    position: relative;
+    padding-right: 22px;
+    margin-bottom: 8px;
+    color: var(--text-soft);
+    font-size: .94rem;
+    line-height: 1.85;
+}
+
+ul.dot-list > li::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 11px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--tc, var(--primary));
+}
+
+/* ============================================================
+   جعبه‌های رنگی — ۵ نوع
+============================================================ */
+.def-box, .tip-box, .warn-box, .info-box, .danger-box {
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: .93rem;
+    line-height: 1.9;
+    color: var(--text-soft);
+}
+
+.def-box { background: var(--primary-soft); border-inline-start: 4px solid var(--primary); }
+.tip-box { background: rgba(16, 185, 129, .08); border-inline-start: 4px solid #10b981; }
+.warn-box { background: rgba(245, 158, 11, .10); border-inline-start: 4px solid #f59e0b; }
+.info-box { background: rgba(59, 130, 246, .08); border-inline-start: 4px solid #3b82f6; }
+.danger-box { background: rgba(239, 68, 68, .08); border-inline-start: 4px solid #ef4444; }
+
+[data-theme="dark"] .tip-box { background: rgba(16, 185, 129, .12); }
+[data-theme="dark"] .warn-box { background: rgba(245, 158, 11, .12); }
+[data-theme="dark"] .info-box { background: rgba(59, 130, 246, .12); }
+[data-theme="dark"] .danger-box { background: rgba(239, 68, 68, .12); }
+
+.def-box strong { color: var(--primary); font-weight: 700; }
+.tip-box strong { color: #059669; font-weight: 700; }
+.warn-box strong { color: #b45309; font-weight: 700; }
+.info-box strong { color: #1d4ed8; font-weight: 700; }
+.danger-box strong { color: #b91c1c; font-weight: 700; }
+
+.def-box > strong:first-child,
+.tip-box > strong:first-child,
+.warn-box > strong:first-child,
+.info-box > strong:first-child,
+.danger-box > strong:first-child {
+    display: block;
+    margin-bottom: 5px;
+    font-size: .87rem;
+    font-weight: 800;
+}
+
+/* ============================================================
+   بلوک کد + دکمه کپی
+============================================================ */
+.code-block {
+    background: var(--code-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 16px 0;
+    border: 1px solid #1e293b;
+    box-shadow: var(--shadow-md);
+    position: relative;
+}
+
+.code-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 16px;
+    background: var(--code-head);
+    border-bottom: 1px solid #334155;
+}
+
+.code-lang {
+    font-family: 'JetBrains Mono', Consolas, monospace;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.code-lang::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #f59e0b;
+    box-shadow: 15px 0 0 #10b981, 30px 0 0 #ef4444;
+    margin-inline-end: 30px;
+}
+
+.copy-btn {
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: .72rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    background: #334155;
+    border: 1px solid #475569;
+    padding: 4px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.copy-btn:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+.copy-btn:active { transform: scale(.96); }
+
+pre {
+    padding: 18px 20px;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    font-size: .85rem;
+    line-height: 1.8;
+    tab-size: 4;
+    -webkit-overflow-scrolling: touch;
+}
+
+pre code {
+    font-family: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace;
+    color: var(--code-text);
+    white-space: pre;
+}
+
+pre::-webkit-scrollbar { height: 8px; }
+pre::-webkit-scrollbar-track { background: #1e293b; }
+pre::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+
+.tok-kw  { color: #c084fc; font-weight: 600; }
+.tok-str { color: #86efac; }
+.tok-num { color: #fbbf24; }
+.tok-com { color: #64748b; font-style: italic; }
+.tok-fn  { color: #7dd3fc; }
+
+/* ============================================================
+   کد درون خطی
+============================================================ */
+:not(pre) > code {
+    font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+    background: var(--bg-soft);
+    color: #be185d;
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: .85em;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    white-space: nowrap;
+    display: inline-block;
+    direction: ltr;
+    vertical-align: middle;
+}
+
+[data-theme="dark"] :not(pre) > code {
+    background: rgba(244, 114, 182, .12);
+    color: #f9a8d4;
+    border-color: rgba(244, 114, 182, .25);
+}
+
+/* ============================================================
+   جدول
+============================================================ */
+.table-wrap {
+    overflow-x: auto;
+    margin: 16px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+    min-width: 480px;
+}
+
+thead th {
+    background: var(--bg-soft);
+    padding: 12px 14px;
+    text-align: right;
+    font-weight: 800;
+    color: var(--text);
+    font-size: .84rem;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+}
+
+tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-soft);
+    text-align: right;
+    vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-soft); }
+td code { font-size: .82em; }
+
+/* ============================================================
+   کارت گرید
+============================================================ */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+}
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow-sm);
+    transition: all .22s ease;
+}
+
+.card:hover {
+    border-color: var(--tc, var(--primary));
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.card h4 {
+    margin: 0 0 6px;
+    font-size: .92rem;
+    color: var(--tc, var(--primary));
+}
+
+.card p { font-size: .87rem; margin: 0; line-height: 1.8; text-align: right; }
+
+/* ============================================================
+   آکاردئون — سه رنگ
+============================================================ */
+details {
+    margin: 12px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-card);
+    overflow: hidden;
+}
+
+details.acc-guide { --acc-color: var(--primary); --acc-bg: var(--primary-soft); }
+details.acc-mistakes { --acc-color: #d97706; --acc-bg: rgba(245, 158, 11, .10); }
+details.acc-qa { --acc-color: #059669; --acc-bg: rgba(16, 185, 129, .08); }
+
+[data-theme="dark"] details.acc-mistakes { --acc-bg: rgba(245, 158, 11, .14); }
+[data-theme="dark"] details.acc-qa { --acc-bg: rgba(16, 185, 129, .12); }
+
+details summary {
+    cursor: pointer;
+    padding: 13px 18px;
+    font-size: .9rem;
+    font-weight: 800;
+    color: var(--acc-color);
+    background: var(--acc-bg);
+    list-style: none;
+    user-select: none;
+    transition: background .2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+.chev {
+    flex-shrink: 0;
+    color: var(--acc-color);
+    transition: transform .3s ease;
+    transform: rotate(0deg);
+    display: block;
+}
+
+details[open] .chev { transform: rotate(-90deg); }
+
+summary:hover { filter: brightness(.96); }
+
+.details-content {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+}
+
+.details-content > *:last-child { margin-bottom: 0; }
+.details-content ol.steps { margin: 0; }
+.details-content ul.dot-list { margin: 0; }
+
+details.acc-qa .details-content {
+    border-inline-start: 3px solid #ef4444;
+    background: rgba(239, 68, 68, .03);
+    padding-inline-start: 16px;
+}
+
+[data-theme="dark"] details.acc-qa .details-content {
+    background: rgba(239, 68, 68, .08);
+}
+
+details.acc-qa .details-content p {
+    margin: 0;
+    font-size: .92rem;
+    line-height: 1.9;
+    text-align: justify;
+}
+
+details.acc-qa .details-content p strong {
+    color: #dc2626;
+    font-weight: 800;
+    margin-inline-end: 4px;
+}
+
+/* ============================================================
+   کارت تمرین
+============================================================ */
+.ex-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .25s ease, background-color .25s ease;
+}
+
+.ex-card:hover { box-shadow: var(--shadow-md); }
+
+.ex-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.ex-badge {
+    font-size: .72rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.ex-badge.project { background: rgba(225, 29, 72, .12); color: #e11d48; }
+.ex-badge.homework { background: rgba(37, 99, 235, .12); color: #2563eb; }
+
+[data-theme="dark"] .ex-badge.project { background: rgba(251, 113, 133, .18); color: #fb7185; }
+[data-theme="dark"] .ex-badge.homework { background: rgba(96, 165, 250, .18); color: #60a5fa; }
+
+.ex-head h3 {
+    margin: 0;
+    font-size: 1rem;
+    flex: 1;
+    min-width: 200px;
+    text-align: right;
+}
+
+.ex-head h3::before { display: none; }
+
+.ex-desc {
+    font-size: .92rem;
+    color: var(--text-soft);
+    line-height: 1.9;
+    margin-bottom: 12px;
+    text-align: justify;
+}
+
+/* ============================================================
+   کادر الگوریتم
+============================================================ */
+.algo {
+    background: var(--bg-soft);
+    border: 1px dashed var(--tc, var(--primary));
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 14px 0;
+}
+
+.algo ol { margin: 0; padding-inline-start: 20px; }
+
+.algo li {
+    font-size: .9rem;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+    line-height: 1.8;
+}
+
+.algo li:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   نوار جمع‌بندی
+============================================================ */
+.cheat {
+    background: linear-gradient(135deg, var(--primary-soft), rgba(14, 165, 233, .06));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin: 24px 0;
+}
+
+.cheat h3 { margin-top: 0; }
+.cheat ul.dot-list { margin-bottom: 0; }
+
+/* ============================================================
+   فلوچارت
+============================================================ */
+.flowchart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin: 22px 0;
+    padding: 22px 18px;
+    background: var(--bg-soft);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+}
+
+.fc-shape {
+    padding: 9px 20px;
+    font-size: .85rem;
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+    min-width: 140px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    direction: rtl;
+}
+
+.fc-oval {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 999px;
+    padding-inline: 26px;
+}
+
+.fc-process {
+    background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+    border-radius: 8px;
+}
+
+.fc-io {
+    background: linear-gradient(135deg, #10b981, #14b8a6);
+    transform: skewX(-12deg);
+    border-radius: 6px;
+}
+
+.fc-io > span { display: inline-block; transform: skewX(12deg); }
+
+.fc-decision {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0% 50%);
+    min-width: 160px;
+    min-height: 70px;
+    padding: 14px 30px;
+}
+
+.fc-arrow { color: var(--muted); line-height: 0; padding: 2px 0; }
+
+/* ============================================================
+   معماری تو در تو
+============================================================ */
+.arch-nested { margin: 22px 0; }
+
+.arch-level {
+    border-radius: 12px;
+    padding: 16px 18px;
+    border: 2px solid;
+    margin: 0;
+}
+
+.arch-jdk { background: rgba(99, 102, 241, .06); border-color: #6366f1; }
+.arch-jre { background: rgba(14, 165, 233, .06); border-color: #0ea5e9; margin-top: 12px; }
+.arch-jvm { background: rgba(16, 185, 129, .06); border-color: #10b981; margin-top: 12px; }
+
+[data-theme="dark"] .arch-jdk { background: rgba(99, 102, 241, .12); }
+[data-theme="dark"] .arch-jre { background: rgba(14, 165, 233, .12); }
+[data-theme="dark"] .arch-jvm { background: rgba(16, 185, 129, .12); }
+
+.arch-title {
+    font-size: .95rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.arch-jdk > .arch-title { color: #4f46e5; }
+.arch-jre > .arch-title { color: #0284c7; }
+.arch-jvm > .arch-title { color: #059669; }
+
+.arch-desc {
+    font-size: .88rem;
+    color: var(--text-soft);
+    margin: 0;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+/* ============================================================
+   فوتر
+============================================================ */
+.site-footer {
+    margin-top: 70px;
+    padding: 24px 0;
+    background: #f1f5f9;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    color: #64748b;
+    font-size: .85rem;
+}
+
+[data-theme="dark"] .site-footer {
+    background: #0a0f1c;
+    border-top-color: #1e293b;
+    color: #94a3b8;
+}
+
+.site-footer p { text-align: center; margin: 0; color: inherit; }
+.site-footer strong { color: #334155; }
+[data-theme="dark"] .site-footer strong { color: #e2e8f0; }
+
+/* ============================================================
+   دکمه بازگشت به بالا
+============================================================ */
+#toTop {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    padding: 12px 20px 12px 16px;
+    border-radius: 999px;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    font-family: inherit;
+    font-size: .85rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(79, 70, 229, .35);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: all .3s ease;
+    z-index: 90;
+}
+
+#toTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+#toTop:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(79, 70, 229, .45);
+}
+
+#toTop svg { flex-shrink: 0; display: block; }
+
+/* ============================================================
+   رسپانسیو
+============================================================ */
+@media (max-width: 640px) {
+    body { font-size: 15px; }
+    .container { padding: 0 14px; }
+    .hero { padding: 14px 0 20px; }
+    .hero-top { margin-bottom: 12px; }
+    .hero-title { font-size: 1.24rem; }
+    .hero-subtitle { font-size: .83rem; margin-bottom: 12px; }
+    .hero-desc { font-size: .9rem; margin-bottom: 14px; }
+    .goal { padding: 12px 14px; font-size: .88rem; }
+    .theme-btn { padding: 6px 10px; font-size: .74rem; }
+    .theme-btn .theme-label { display: none; }
+    .toc { padding: 18px; }
+    .toc-list { grid-template-columns: 1fr; }
+    .sec-head { gap: 12px; padding-bottom: 14px; }
+    .sec-num { flex-basis: 44px; height: 44px; font-size: 1.1rem; border-radius: 12px; }
+    .ex-card { padding: 16px 16px; }
+    pre { padding: 14px 16px; font-size: .78rem; }
+    .fc-shape { min-width: 120px; font-size: .8rem; }
+    .fc-decision { min-width: 140px; min-height: 62px; padding: 12px 24px; }
+    #toTop { bottom: 16px; right: 16px; padding: 12px; width: 44px; height: 44px; justify-content: center; }
+    #toTop .toTop-text { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     هدر
+============================================================ -->
+<header class="hero">
+    <div class="container">
+        <div class="hero-top">
+            <span class="hero-badge">هفته اول</span>
+            <button class="theme-btn" id="themeBtn" aria-label="تغییر تم">
+                <span class="theme-icon" id="themeIcon">🌙</span>
+                <span class="theme-label" id="themeLabel">تم تاریک</span>
+            </button>
+        </div>
+        <h1 class="hero-title">مبانی برنامه‌نویسی، معماری جاوا و اولین برنامه</h1>
+        <p class="hero-subtitle">جزوه آموزشی زبان برنامه‌نویسی جاوا — دوره مقدماتی</p>
+        <p class="hero-desc">
+            در این هفته، از دنیای روزمره وارد دنیای برنامه‌نویسی می‌شویم. ابتدا یاد می‌گیریم چطور برای هر
+            مسئله یک نقشه ذهنی منظم بسازیم، بعد با زبان جاوا و ساختار داخلی‌اش آشنا می‌شویم و در پایان،
+            اولین برنامه خودمان را روی سیستم‌عامل می‌نویسیم، کامپایل می‌کنیم و به اجرا درمی‌آوریم.
+        </p>
+        <div class="goal">
+            <strong>هدف هفته:</strong>
+            درک منطق برنامه‌نویسی بدون نیاز به کد، شناخت معماری داخلی جاوا و اجرای بدون خطای اولین
+            برنامه روی سیستم‌عامل. در پایان این هفته باید بتوانید یک مسئله ساده را به الگوریتم تبدیل
+            کنید و کد جاوا را به‌صورت دستی در ترمینال اجرا کنید.
+        </div>
+    </div>
+</header>
+
+<!-- ============================================================
+     فهرست
+============================================================ -->
+<div class="container">
+    <nav class="toc">
+        <div class="toc-title">فهرست مطالب</div>
+        <div class="toc-list">
+            <a class="toc-link" href="#s1" style="--tc: var(--sec-1)">
+                <span class="num">۱</span> الگوریتم و فلوچارت
+            </a>
+            <a class="toc-link" href="#s2" style="--tc: var(--sec-2)">
+                <span class="num">۲</span> تفکر محاسباتی
+            </a>
+            <a class="toc-link" href="#s3" style="--tc: var(--sec-3)">
+                <span class="num">۳</span> معرفی زبان جاوا
+            </a>
+            <a class="toc-link" href="#s4" style="--tc: var(--sec-4)">
+                <span class="num">۴</span> معماری جاوا
+            </a>
+            <a class="toc-link" href="#s5" style="--tc: var(--sec-6)">
+                <span class="num">۵</span> نصب محیط توسعه
+            </a>
+            <a class="toc-link" href="#s6" style="--tc: var(--sec-7)">
+                <span class="num">۶</span> اولین برنامه
+            </a>
+            <a class="toc-link" href="#exercises" style="--tc: var(--sec-5)">
+                <span class="num">۷</span> تمرین‌ها و راهنما
+            </a>
+            <a class="toc-link" href="#qa" style="--tc: var(--sec-9)">
+                <span class="num">۸</span> پرسش و پاسخ
+            </a>
+            <a class="toc-link" href="#summary" style="--tc: var(--sec-10)">
+                <span class="num">۹</span> جمع‌بندی
+            </a>
+        </div>
+    </nav>
+</div>
+
+<!-- ============================================================
+     بخش ۱ — الگوریتم و فلوچارت
+============================================================ -->
+<section class="section s1" id="s1">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۱</span>
+            <div>
+                <h2>الگوریتم و فلوچارت</h2>
+                <p>پایه همه چیز در برنامه‌نویسی — قبل از کد نوشتن، باید فکر کردن را یاد بگیریم</p>
+            </div>
+        </div>
+
+        <h3>الگوریتم چیست؟</h3>
+        <p>
+            فرض کنید می‌خواهید چای دم کنید. مراحلی که پشت سر هم انجام می‌دهید این‌ها هستند: آب را جوش
+            بیاورید، چای را در قوری بریزید، آب جوش را روی آن بریزید، چند دقیقه صبر کنید، در فنجان بریزید
+            و بنوشید. این مراحل، ترتیب مشخصی دارند و اگر جایشان عوض شود، نتیجه درست از آب درنمی‌آید.
+            به چنین مجموعه‌ای از گام‌های منظم و دقیق برای رسیدن به یک هدف، <strong>الگوریتم</strong> می‌گوییم.
+        </p>
+
+        <div class="def-box">
+            <strong>تعریف ساده</strong>
+            الگوریتم یک دستور کار گام‌به‌گام است که با دنبال کردن آن، مسئله‌ای مشخص در تعداد محدودی گام
+            حل می‌شود. الگوریتم هیچ ارتباطی به زبان برنامه‌نویسی ندارد؛ یک مفهوم منطقی است.
+        </div>
+
+        <h3>ویژگی‌های یک الگوریتم خوب</h3>
+        <p>هر الگوریتم قابل قبول باید چهار ویژگی اساسی داشته باشد:</p>
+
+        <ol class="steps">
+            <li><span class="step-num">۱</span><div class="step-body"><strong>ورودی مشخص:</strong> الگوریتم باید بداند با چه داده‌هایی کار می‌کند. مثلاً برای محاسبه معدل، باید نمرات را دریافت کند.</div></li>
+            <li><span class="step-num">۲</span><div class="step-body"><strong>خروجی مشخص:</strong> در پایان باید یک نتیجه روشن داشته باشد. معدل نهایی، بزرگ‌ترین عدد یا پیام موفقیت.</div></li>
+            <li><span class="step-num">۳</span><div class="step-body"><strong>دقت و صراحت:</strong> هر گام باید بدون ابهام باشد. نمی‌توانیم بنویسیم «کمی صبر کن»؛ باید بنویسیم «۳ دقیقه صبر کن».</div></li>
+            <li><span class="step-num">۴</span><div class="step-body"><strong>پایان‌پذیری:</strong> الگوریتم باید بعد از تعداد مشخصی گام تمام شود؛ نباید بی‌نهایت ادامه پیدا کند.</div></li>
+        </ol>
+
+        <h3>فلوچارت چیست؟</h3>
+        <p>
+            فلوچارت یعنی نمایش تصویری الگوریتم. به جای نوشتن مراحل با متن، آن‌ها را با شکل‌های استاندارد
+            رسم می‌کنیم تا در یک نگاه قابل فهم باشند. هر شکل، معنای مشخصی دارد و رنگ یا شکل آن
+            تصادفی نیست.
+        </p>
+
+        <div class="card-grid">
+            <div class="card" style="text-align: center;">
+                <div class="fc-shape fc-oval" style="margin: 0 auto 10px;">شروع / پایان</div>
+                <p style="text-align:center;"><strong>بیضی</strong> — آغاز و پایان الگوریتم</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <div class="fc-shape fc-io" style="margin: 0 auto 10px;"><span>ورودی / خروجی</span></div>
+                <p style="text-align:center;"><strong>متوازی‌الاضلاع</strong> — دریافت یا چاپ داده</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <div class="fc-shape fc-process" style="margin: 0 auto 10px;">پردازش</div>
+                <p style="text-align:center;"><strong>مستطیل</strong> — محاسبه یا عملیات</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <div class="fc-shape fc-decision" style="margin: 0 auto 10px;">تصمیم؟</div>
+                <p style="text-align:center;"><strong>لوزی</strong> — شرط و انتخاب مسیر</p>
+            </div>
+        </div>
+
+        <h3>یک نمونه فلوچارت ساده</h3>
+        <p>
+            الگوریتمی که دو عدد می‌گیرد و جمعشان را چاپ می‌کند، در قالب فلوچارت این‌طور رسم می‌شود:
+        </p>
+
+        <div class="flowchart">
+            <div class="fc-shape fc-oval">شروع</div>
+            <div class="fc-arrow">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+                    <path d="M7 0 V16 M1 11 L7 19 L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="fc-shape fc-io"><span>دریافت عدد a</span></div>
+            <div class="fc-arrow">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+                    <path d="M7 0 V16 M1 11 L7 19 L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="fc-shape fc-io"><span>دریافت عدد b</span></div>
+            <div class="fc-arrow">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+                    <path d="M7 0 V16 M1 11 L7 19 L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="fc-shape fc-process">sum = a + b</div>
+            <div class="fc-arrow">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+                    <path d="M7 0 V16 M1 11 L7 19 L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="fc-shape fc-io"><span>چاپ sum</span></div>
+            <div class="fc-arrow">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+                    <path d="M7 0 V16 M1 11 L7 19 L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="fc-shape fc-oval">پایان</div>
+        </div>
+
+        <div class="info-box">
+            <strong>چرا فلوچارت مهم است؟</strong>
+            فلوچارت باعث می‌شود قبل از نوشتن یک خط کد، منطق مسئله را کامل بفهمید. بسیاری از باگ‌هایی که
+            در برنامه‌های بزرگ می‌بینید، ریشه‌شان در منطق اشتباه است، نه در کد. اگر منطق درست باشد، کد
+            نوشتن ساده می‌شود.
+        </div>
+
+        <div class="tip-box">
+            <strong>توصیه</strong>
+            برای هر مسئله‌ای که به ذهنتان سخت می‌آید، اول روی کاغذ یک فلوچارت بکشید. حتی اگر ساده باشد.
+            این عادت، بزرگ‌ترین سرمایه شما در برنامه‌نویسی است.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۲ — تفکر محاسباتی
+============================================================ -->
+<section class="section s2" id="s2">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۲</span>
+            <div>
+                <h2>تفکر محاسباتی و تجزیه مسئله</h2>
+                <p>چطور یک مسئله بزرگ را به قطعات کوچک قابل حل بشکنیم</p>
+            </div>
+        </div>
+
+        <h3>تفکر محاسباتی چیست؟</h3>
+        <p>
+            برنامه‌نویسی قبل از هر چیز، یک مهارت فکری است. کسی که خوب برنامه می‌نویسد، قبل از هر چیز
+            خوب فکر می‌کند. به مجموعه مهارت‌هایی که کمک می‌کنند یک مسئله را مثل یک کامپیوتر تحلیل کنیم،
+            <strong>تفکر محاسباتی</strong> می‌گوییم. این مهارت چهار بخش اصلی دارد:
+        </p>
+
+        <div class="card-grid">
+            <div class="card">
+                <h4>تجزیه (Decomposition)</h4>
+                <p>شکستن یک مسئله بزرگ به چند مسئله کوچک‌تر و ساده‌تر.</p>
+            </div>
+            <div class="card">
+                <h4>تشخیص الگو</h4>
+                <p>پیدا کردن شباهت‌ها میان مسائل، برای استفاده دوباره از راه‌حل.</p>
+            </div>
+            <div class="card">
+                <h4>انتزاع (Abstraction)</h4>
+                <p>نادیده گرفتن جزئیات غیرضروری و تمرکز روی نکات مهم.</p>
+            </div>
+            <div class="card">
+                <h4>طراحی الگوریتم</h4>
+                <p>نوشتن گام‌های دقیق حل مسئله، به‌شکلی که کامپیوتر بفهمد.</p>
+            </div>
+        </div>
+
+        <h3>تجزیه مسئله — با یک مثال واقعی</h3>
+        <p>
+            فرض کنید می‌خواهید برای یک سفر یک هفته‌ای برنامه‌ریزی کنید. اگر یک‌باره به کل ماجرا فکر کنید،
+            گیج می‌شوید. اما اگر آن را به بخش‌های کوچک‌تر بشکنید، همه چیز ساده می‌شود:
+        </p>
+
+        <div class="algo">
+            <ol>
+                <li>انتخاب مقصد و تاریخ سفر.</li>
+                <li>بررسی بودجه و رزرو بلیت.</li>
+                <li>رزرو هتل و مشخص کردن مدت اقامت.</li>
+                <li>بستن چمدان و آماده کردن وسایل لازم.</li>
+                <li>مرتب کردن مدارک و برنامه روزانه.</li>
+            </ol>
+        </div>
+
+        <p>
+            هر کدام از این بخش‌ها، خودشان به بخش‌های ریزتر تقسیم می‌شوند. مثلاً «رزرو بلیت» خودش شامل
+            مقایسه قیمت‌ها، انتخاب زمان مناسب و پرداخت است. این کار را تا جایی ادامه می‌دهیم که هر
+            زیرمسئله آن‌قدر کوچک شود که حل کردنش ساده باشد.
+        </p>
+
+        <div class="info-box">
+            <strong>در برنامه‌نویسی چطور استفاده می‌شود؟</strong>
+            وقتی یک پروژه بزرگ مثل یک سیستم مدیریت فروشگاه می‌سازید، آن را به بخش‌های کوچک مثل «ثبت
+            محصول»، «محاسبه فاکتور»، «مدیریت مشتریان» و «گزارش‌گیری» می‌شکنید. بعد هر بخش را جداگانه
+            پیاده‌سازی می‌کنید. این کار، هم حل مسئله را ساده می‌کند، هم پیدا کردن باگ‌ها را آسان‌تر می‌کند.
+        </div>
+
+        <div class="tip-box">
+            <strong>توصیه</strong>
+            هر وقت مسئله‌ای را دیدید و احساس کردید بزرگ و پیچیده است، اولین کاری که بکنید این است:
+            با یک کاغذ و مداد، آن را به سه تا پنج بخش کوچک‌تر بشکنید. حتی اگر بخش‌ها هنوز هم ساده
+            نبودند، این تجزیه، ذهن شما را از حالت گیجی خارج می‌کند.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۳ — معرفی جاوا
+============================================================ -->
+<section class="section s3" id="s3">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۳</span>
+            <div>
+                <h2>معرفی زبان جاوا</h2>
+                <p>تاریخچه، ویژگی‌ها و جایگاه آن میان زبان‌ها</p>
+            </div>
+        </div>
+
+        <h3>یک نگاه کوتاه به تاریخچه</h3>
+        <p>
+            جاوا در سال ۱۹۹۵ توسط <strong>جیمز گاسلینگ</strong> در شرکت <strong>سان مایکروسیستمز</strong>
+            ساخته شد. هدف اولیه‌اش ساخت زبانی بود که روی دستگاه‌های مختلف (از تلویزیون تا رایانه)
+            بدون تغییر کار کند. همین ایده، به شعار معروف جاوا تبدیل شد: «یک بار بنویس، هر جا اجرا کن».
+            امروزه جاوا یکی از پرکاربردترین زبان‌های دنیاست و بخش بزرگی از سیستم‌های بانکی، اپلیکیشن‌های
+            اندروید و سرورهای اینترنتی با آن نوشته می‌شوند.
+        </p>
+
+        <h3>چرا جاوا این‌قدر محبوب است؟</h3>
+
+        <ul class="dot-list">
+            <li><strong>مستقل از سیستم‌عامل:</strong> یک برنامه جاوا که روی ویندوز کار می‌کند، روی مک و لینوکس هم بدون تغییر اجرا می‌شود.</li>
+            <li><strong>شیءگرا:</strong> ساختار برنامه‌نویسی‌اش منظم و نزدیک به دنیای واقعی است.</li>
+            <li><strong>مقاوم و ایمن:</strong> مدیریت حافظه در آن، بسیاری از خطاهای خطرناک زبان‌های دیگر را حذف می‌کند.</li>
+            <li><strong>کتابخانه عظیم:</strong> تقریباً برای هر کاری، ابزار آماده دارد.</li>
+            <li><strong>جامعه کاربران بزرگ:</strong> هر مشکلی که پیش بیاید، جوابش در اینترنت پیدا می‌شود.</li>
+        </ul>
+
+        <h3>زبان‌های کامپایلری و تفسیری</h3>
+        <p>
+            زبان‌های برنامه‌نویسی از نظر نحوه تبدیل به کد قابل اجرا، به دو دسته اصلی تقسیم می‌شوند. شناختن
+            این تفاوت، برای فهم چگونگی کار جاوا ضروری است.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ویژگی</th>
+                        <th>زبان کامپایلری</th>
+                        <th>زبان تفسیری</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>نحوه تبدیل</td>
+                        <td>کل کد یک‌جا به کد ماشین تبدیل می‌شود</td>
+                        <td>کد خط‌به‌خط هنگام اجرا ترجمه می‌شود</td>
+                    </tr>
+                    <tr>
+                        <td>سرعت اجرا</td>
+                        <td>سریع</td>
+                        <td>کندتر</td>
+                    </tr>
+                    <tr>
+                        <td>وابستگی به سیستم</td>
+                        <td>مخصوص سیستم‌عامل مقصد است</td>
+                        <td>روی هر سیستمی که مفسر دارد اجرا می‌شود</td>
+                    </tr>
+                    <tr>
+                        <td>مثال‌ها</td>
+                        <td>C، C++، Go</td>
+                        <td>Python، JavaScript، Ruby</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="info-box">
+            <strong>جایگاه جاوا</strong>
+            جاوا از هر دو ویژگی بهره می‌برد. کد شما ابتدا به یک زبان میانی به نام <strong>بایت‌کد</strong>
+            ترجمه می‌شود و سپس این بایت‌کد توسط ماشین مجازی جاوا (JVM) اجرا می‌گردد. به همین دلیل هم
+            سرعتش مناسب است و هم روی هر سیستم‌عاملی که JVM دارد، اجرا می‌شود. به این حالت، گاهی
+            «کامپایل به بایت‌کد و تفسیر در زمان اجرا» هم می‌گویند.
+        </div>
+
+        <h3>جاوا در کجا استفاده می‌شود؟</h3>
+        <ul class="dot-list">
+            <li><strong>اپلیکیشن‌های اندروید:</strong> بخش بزرگی از اپلیکیشن‌های موبایل با جاوا یا کاتلین (که روی JVM کار می‌کند) نوشته می‌شوند.</li>
+            <li><strong>سیستم‌های بانکی و سازمانی:</strong> بسیاری از نرم‌افزارهای داخلی بانک‌ها و شرکت‌های بزرگ با جاوا ساخته شده‌اند.</li>
+            <li><strong>سرورهای اینترنتی:</strong> پشت بسیاری از سایت‌های بزرگ، سرویس‌های جاوا در حال اجرا هستند.</li>
+            <li><strong>ابزارهای کلان‌داده:</strong> ابزارهایی مثل Hadoop و Spark به‌طور گسترده از جاوا استفاده می‌کنند.</li>
+        </ul>
+
+        <div class="tip-box">
+            <strong>توصیه</strong>
+            لازم نیست این فهرست را حفظ کنید. فقط بدانید جاوا زبانی است که در دنیای واقعی، کاربردهای
+            بسیار گسترده‌ای دارد و یادگیری‌اش، سرمایه‌گذاری بلندمدتی است.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۴ — معماری جاوا
+============================================================ -->
+<section class="section s4" id="s4">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۴</span>
+            <div>
+                <h2>معماری جاوا: JDK، JRE و JVM</h2>
+                <p>سه واژه‌ای که هر برنامه‌نویس جاوا باید بشناسد</p>
+            </div>
+        </div>
+
+        <p>
+            جاوا برای اینکه روی همه سیستم‌عامل‌ها کار کند، یک ساختار سه‌لایه دارد. هر لایه یک مسئولیت
+            مشخص دارد و برای فهم کامل جاوا، باید بدانید هر کدام چه کاری انجام می‌دهند. این سه لایه
+            به‌صورت تودرتو روی هم قرار می‌گیرند:
+        </p>
+
+        <div class="arch-nested">
+            <div class="arch-level arch-jdk">
+                <span class="arch-title">JDK — کیت توسعه جاوا</span>
+                <p class="arch-desc">برای نوشتن و ساخت برنامه. شامل کامپایلر <code>javac</code>، ابزارهای دیباگ، مستندات و از همه مهم‌تر، JRE.</p>
+                <div class="arch-level arch-jre">
+                    <span class="arch-title">JRE — محیط اجرای جاوا</span>
+                    <p class="arch-desc">برای اجرای برنامه. شامل کتابخانه‌های استاندارد و JVM.</p>
+                    <div class="arch-level arch-jvm">
+                        <span class="arch-title">JVM — ماشین مجازی جاوا</span>
+                        <p class="arch-desc">قلب ماجرا. بایت‌کد را می‌گیرد و روی هر سیستم‌عاملی اجرا می‌کند.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>هر کدام دقیقاً چه کاری انجام می‌دهند؟</h3>
+
+        <ul class="dot-list">
+            <li><strong>JVM (ماشین مجازی جاوا):</strong> برنامه‌ای است که فایل بایت‌کد را می‌خواند و دستوراتش را روی سیستم‌عامل اجرا می‌کند. هر سیستم‌عاملی، نسخه مخصوص خودش را از JVM دارد. همین باعث می‌شود یک برنامه جاوا روی ویندوز، لینوکس و مک یکسان کار کند.</li>
+            <li><strong>JRE (محیط اجرا):</strong> بسته‌ای است که JVM را در خود دارد، به‌علاوه کتابخانه‌های استاندارد جاوا. اگر فقط می‌خواهید یک برنامه جاوا را اجرا کنید (نه بسازید)، کافی است JRE داشته باشید.</li>
+            <li><strong>JDK (کیت توسعه):</strong> بسته‌ای است که JRE را در خود دارد، به‌علاوه ابزارهای ساخت برنامه، از جمله کامپایلر <code>javac</code>. برنامه‌نویسی که می‌خواهد کد جاوا بنویسد و اجرا کند، به JDK نیاز دارد، نه فقط JRE.</li>
+        </ul>
+
+        <div class="info-box">
+            <strong>یک قاعده ساده برای یادسپاری</strong>
+            JDK ⊃ JRE ⊃ JVM. یعنی هر JDK یک JRE در خود دارد و هر JRE یک JVM. اما عکسش درست نیست: یک
+            JVM به‌تنهایی نه JRE است و نه JDK.
+        </div>
+
+        <h3>مسیر کد تا اجرا</h3>
+        <p>
+            وقتی یک برنامه جاوا می‌نویسید، کد شما از چهار مرحله عبور می‌کند تا به نتیجه برسد:
+        </p>
+
+        <div class="flowchart">
+            <div class="fc-shape fc-process">فایل کد منبع</div>
+            <div class="fc-arrow">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+                    <path d="M7 0 V16 M1 11 L7 19 L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="fc-shape fc-process">javac (کامپایلر)</div>
+            <div class="fc-arrow">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+                    <path d="M7 0 V16 M1 11 L7 19 L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="fc-shape fc-io"><span>فایل بایت‌کد</span></div>
+            <div class="fc-arrow">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+                    <path d="M7 0 V16 M1 11 L7 19 L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="fc-shape fc-process">JVM</div>
+            <div class="fc-arrow">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+                    <path d="M7 0 V16 M1 11 L7 19 L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="fc-shape fc-oval">اجرای برنامه</div>
+        </div>
+
+        <p>
+            در گام اول، فایل متنی کد شما با پسوند <code>.java</code> ساخته می‌شود. کامپایلر
+            <code>javac</code> این فایل را می‌خواند و به فایل بایت‌کد با پسوند <code>.class</code>
+            تبدیل می‌کند. سپس JVM این فایل بایت‌کد را می‌خواند و روی سیستم‌عامل شما اجرا می‌کند.
+            همین ویژگی، همان شعار معروف «یک بار بنویس، هر جا اجرا کن» را ممکن می‌سازد.
+        </p>
+
+        <div class="warn-box">
+            <strong>اشتباه رایج</strong>
+            نصب JRE به‌تنهایی برای برنامه‌نویسی کافی نیست. اگر می‌خواهید کد بنویسید و آن را کامپایل
+            کنید، حتماً باید JDK نصب کرده باشید. بسیاری از خطاهای اولیه، به دلیل نصب JRE به‌جای JDK
+            رخ می‌دهد.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۵ — نصب محیط توسعه
+============================================================ -->
+<section class="section s6" id="s5">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۵</span>
+            <div>
+                <h2>نصب و راه‌اندازی محیط توسعه</h2>
+                <p>JDK 25 و IntelliJ IDEA — قدم‌به‌قدم</p>
+            </div>
+        </div>
+
+        <h3>پیش‌نیازها</h3>
+        <p>
+            برای شروع، به یک سیستم‌عامل (ویندوز، مک یا لینوکس) با حداقل ۴ گیگابایت رم و حدود ۳ گیگابایت
+            فضای خالی دیسک نیاز دارید. پس از این بخش، دو نرم‌افزار نصب خواهیم کرد: <strong>JDK</strong>
+            برای کامپایل و اجرای کد، و <strong>IntelliJ IDEA</strong> به‌عنوان محیط برنامه‌نویسی.
+        </p>
+
+        <h3>مرحله اول: دانلود و نصب JDK 25</h3>
+
+        <ol class="steps">
+            <li><span class="step-num">۱</span><div class="step-body">به سایت <code>adoptium.net</code> یا سایت رسمی Oracle مراجعه کنید و نسخه JDK 25 مخصوص سیستم‌عامل خودتان را دانلود کنید.</div></li>
+            <li><span class="step-num">۲</span><div class="step-body">فایل نصب را اجرا کنید. در ویندوز، مسیر نصب پیشنهادی را تغییر ندهید تا همه چیز پیش‌فرض بماند.</div></li>
+            <li><span class="step-num">۳</span><div class="step-body">در انتهای نصب، در صورتی که گزینه تنظیم خودکار متغیرهای محیطی (<code>JAVA_HOME</code> و <code>PATH</code>) را داشتید، آن را تیک بزنید.</div></li>
+        </ol>
+
+        <h3>مرحله دوم: تنظیم PATH (در صورت نیاز)</h3>
+        <p>
+            متغیر محیطی <code>PATH</code> به سیستم‌عامل می‌گوید وقتی دستور <code>javac</code> یا
+            <code>java</code> را در ترمینال می‌نویسید، فایل اجرایی مربوطه را از کجا پیدا کند. اگر نصب
+            خودکار این کار را انجام نداد، باید به‌صورت دستی تنظیم شود.
+        </p>
+
+        <ol class="steps">
+            <li><span class="step-num">۱</span><div class="step-body">در ویندوز، به «تنظیمات سیستم» و بعد «متغیرهای محیطی» بروید.</div></li>
+            <li><span class="step-num">۲</span><div class="step-body">در بخش <code>Path</code> یک مسیر جدید اضافه کنید که به پوشه <code>bin</code> داخل پوشه نصب JDK اشاره می‌کند؛ مثلاً <code>C:\Program Files\Java\jdk-25\bin</code>.</div></li>
+            <li><span class="step-num">۳</span><div class="step-body">ترمینال را ببندید و دوباره باز کنید تا تنظیمات جدید اعمال شوند.</div></li>
+        </ol>
+
+        <h3>مرحله سوم: بررسی نصب</h3>
+        <p>برای اینکه مطمئن شوید JDK درست نصب شده است، ترمینال را باز کنید و این دو دستور را بزنید:</p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Terminal</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>java -version
+javac -version</code></pre>
+        </div>
+
+        <p>
+            اگر هر دو دستور شماره نسخه‌ای مشابه <code>25</code> برگردانند، نصب شما سالم است. اگر
+            <code>java -version</code> کار کرد ولی <code>javac -version</code> خطا داد، یعنی فقط JRE
+            نصب شده است، نه JDK. باید JDK را دوباره نصب کنید.
+        </p>
+
+        <h3>مرحله چهارم: نصب IntelliJ IDEA</h3>
+
+        <ol class="steps">
+            <li><span class="step-num">۱</span><div class="step-body">به سایت <code>jetbrains.com/idea</code> بروید و نسخه <strong>Community</strong> را (که رایگان است) دانلود کنید.</div></li>
+            <li><span class="step-num">۲</span><div class="step-body">فایل نصب را اجرا کنید و مراحل را تا پایان ادامه دهید.</div></li>
+            <li><span class="step-num">۳</span><div class="step-body">پس از نصب، برنامه را باز کنید. اولین بار که پروژه جدید می‌سازید، IntelliJ به‌طور خودکار JDK نصب‌شده روی سیستم را شناسایی می‌کند.</div></li>
+        </ol>
+
+        <div class="tip-box">
+            <strong>چرا IntelliJ و نه یک ویرایشگر ساده؟</strong>
+            IntelliJ IDEA به‌طور خودکار کد را کامپایل و اجرا می‌کند، خطاها را زیر خط قرمز نشان می‌دهد و
+            تکمیل خودکار دارد. این ویژگی‌ها به‌ویژه در شروع کار، سرعت یادگیری را چند برابر می‌کند. اما
+            دانستن روش دستی (ترمینال) هم لازم است، چون درک عمیق‌تری از نحوه کار جاوا می‌دهد.
+        </div>
+
+        <div class="warn-box">
+            <strong>مشکل رایج</strong>
+            اگر بعد از نصب، در ترمینال خطای <code>'javac' is not recognized</code> دیدید، یعنی PATH
+            درست تنظیم نشده. یک بار ترمینال را ببندید، دوباره باز کنید. اگر حل نشد، مسیر پوشه <code>bin</code>
+            را دستی به PATH اضافه کنید.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۶ — اولین برنامه
+============================================================ -->
+<section class="section s7" id="s6">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۶</span>
+            <div>
+                <h2>اولین برنامه: Hello World</h2>
+                <p>نوشتن، کامپایل و اجرای اولین برنامه جاوا</p>
+            </div>
+        </div>
+
+        <h3>نوشتن کد</h3>
+        <p>
+            برنامه‌های جاوا در فایل‌هایی با پسوند <code>.java</code> ذخیره می‌شوند. برای شروع، یک فایل
+            متنی ساده با Notepad (یا هر ویرایشگر متنی دیگر) بسازید و آن را با نام
+            <code>HelloWorld.java</code> ذخیره کنید. سپس کد زیر را داخلش بنویسید:
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">public class</span> HelloWorld {
+    <span class="tok-kw">public static void</span> <span class="tok-fn">main</span>(String[] args) {
+        System.out.println(<span class="tok-str">"Hello, World!"</span>);
+    }
+}</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>نکته مهم درباره نام فایل</strong>
+            در جاوا، اگر کلاس را با کلمه <code>public</code> تعریف می‌کنید، نام فایل باید دقیقاً با نام
+            کلاس یکسان باشد. یعنی کلاس <code>HelloWorld</code> باید در فایل <code>HelloWorld.java</code>
+            ذخیره شود. حتی حرف بزرگ و کوچک هم مهم است.
+        </div>
+
+        <h3>کامپایل و اجرا</h3>
+        <p>
+            حالا باید این فایل متنی را به یک برنامه قابل اجرا تبدیل کنیم. ترمینال را باز کنید، به
+            پوشه‌ای بروید که فایل ذخیره شده و این دو دستور را به ترتیب اجرا کنید:
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Terminal</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>javac HelloWorld.java
+java HelloWorld</code></pre>
+        </div>
+
+        <p>
+            دستور اول، کد شما را کامپایل می‌کند. اگر همه چیز درست باشد، فایل جدیدی به نام
+            <code>HelloWorld.class</code> در همان پوشه ساخته می‌شود. دستور دوم، این فایل بایت‌کد را
+            اجرا می‌کند و باید روی صفحه عبارت <code>Hello, World!</code> را ببینید.
+        </p>
+
+        <h3>تحلیل ساختار main</h3>
+        <p>
+            حالا که برنامه اجرا شد، بیایید ببینیم آن خط طولانی <code>public static void main(String[] args)</code>
+            در واقع چه معنایی دارد. هر کدام از این کلمات، کار مشخصی انجام می‌دهند:
+        </p>
+
+        <div class="card-grid">
+            <div class="card">
+                <h4>public</h4>
+                <p>یعنی این متد از هر جایی قابل دسترسی است. JVM باید بتواند آن را صدا بزند.</p>
+            </div>
+            <div class="card">
+                <h4>static</h4>
+                <p>یعنی متد بدون ساختن شیء از کلاس اجرا می‌شود. JVM قبل از اجرای برنامه، شیئی نمی‌سازد.</p>
+            </div>
+            <div class="card">
+                <h4>void</h4>
+                <p>یعنی این متد چیزی برنمی‌گرداند. فقط اجرا می‌شود و تمام.</p>
+            </div>
+            <div class="card">
+                <h4>main</h4>
+                <p>نام متد است. JVM دقیقاً به دنبال همین نام می‌گردد تا اجرای برنامه را از آن شروع کند.</p>
+            </div>
+            <div class="card">
+                <h4>String[] args</h4>
+                <p>آرایه‌ای از رشته‌ها که می‌تواند ورودی‌های خط فرمان را نگه دارد.</p>
+            </div>
+            <div class="card">
+                <h4>println</h4>
+                <p>متدی برای چاپ متن روی صفحه و رفتن به خط بعدی.</p>
+            </div>
+        </div>
+
+        <h3>تفاوت print و println</h3>
+        <p>
+            در جاوا دو متد پرکاربرد برای چاپ داریم: <code>print</code> و <code>println</code>. تفاوتشان
+            در این است که بعد از چاپ، <code>println</code> به خط بعد می‌رود، اما <code>print</code> در همان
+            خط می‌ماند.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>System.out.print(<span class="tok-str">"Hello "</span>);
+System.out.print(<span class="tok-str">"World"</span>);
+<span class="tok-com">// خروجی: Hello World (در یک خط)</span>
+
+System.out.println(<span class="tok-str">"Hello"</span>);
+System.out.println(<span class="tok-str">"World"</span>);
+<span class="tok-com">// خروجی:
+// Hello
+// World</span></code></pre>
+        </div>
+
+        <h3>همین برنامه در IntelliJ IDEA</h3>
+        <p>
+            در IntelliJ، همه این مراحل به‌صورت خودکار انجام می‌شود. یک پروژه جدید می‌سازید، کلاس
+            <code>HelloWorld</code> را ایجاد می‌کنید، همان کد را می‌نویسید و روی دکمه سبز Run کلیک
+            می‌کنید. کامپایل و اجرا، به‌طور خودکار انجام می‌شوند. اما همان‌طور که اشاره کردیم، دانستن
+            روش دستی ترمینال هم مهم است، چون درک عمیق‌تری از فرایند اجرای جاوا می‌دهد.
+        </p>
+
+        <div class="danger-box">
+            <strong>خطاهای رایج در اولین برنامه</strong>
+            <ul class="dot-list" style="margin-top:6px;">
+                <li><strong>فراموش کردن سمی‌کالن:</strong> هر دستور باید با <code>;</code> تمام شود.</li>
+                <li><strong>اشتباه در نام فایل:</strong> نام فایل باید دقیقاً با نام کلاس عمومی یکسان باشد.</li>
+                <li><strong>خطای تایپی در println:</strong> اگر بنویسید <code>printline</code> یا <code>Println</code>، کامپایلر خطا می‌دهد.</li>
+                <li><strong>جا افتادن آکولاد:</strong> هر باز شدن <code>{</code> باید با یک بسته شدن <code>}</code> همراه باشد.</li>
+            </ul>
+        </div>
+
+        <div class="tip-box">
+            <strong>توصیه</strong>
+            اولین بار که این برنامه را اجرا می‌کنید، همان لحظه را جشن بگیرید. اولین «Hello, World» یک
+            نقطه عطف است. بعد از آن، سعی کنید نام و سن خودتان را هم چاپ کنید و با تغییرات کوچک، رفتار
+            برنامه را ببینید.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۷ — تمرین‌ها
+============================================================ -->
+<section class="section s5" id="exercises">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۷</span>
+            <div>
+                <h2>تمرین‌ها و راهنما</h2>
+                <p>دو تمرین برای تثبیت مطالب این هفته</p>
+            </div>
+        </div>
+
+        <!-- تمرین ۱ -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۱</span>
+                <h3>فلوچارت یافتن بزرگ‌ترین عدد میان سه عدد</h3>
+            </div>
+
+            <p class="ex-desc">
+                یک فلوچارت رسم کنید که سه عدد را از کاربر دریافت کند و مشخص کند کدام یک از آن‌ها
+                بزرگ‌ترین است. سپس عدد بزرگ‌تر را چاپ کند. حتماً از شکل‌های استاندارد فلوچارت
+                (بیضی، مستطیل، لوزی و متوازی‌الاضلاع) استفاده کنید.
+            </p>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">با یک بیضی «شروع» بزنید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">سه متوازی‌الاضلاع پشت‌سرهم برای دریافت سه عدد <code>a</code>، <code>b</code> و <code>c</code> رسم کنید.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">اولین لوزی را برای مقایسه <code>a</code> و <code>b</code> قرار دهید: آیا <code>a &gt; b</code> است؟</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">از هر شاخه لوزی، دوباره یک لوزی برای مقایسه برنده فعلی با <code>c</code> رسم کنید.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">در نهایت، در متوازی‌الاضلاع خروجی، بزرگ‌ترین عدد را چاپ کنید.</div></li>
+                        <li><span class="step-num">۶</span><div class="step-body">با بیضی «پایان» تمام کنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>مقایسه در یک مرحله:</strong> برای سه عدد، یک لوزی کافی نیست. باید دو مرحله مقایسه داشته باشید (اول a با b، بعد برنده با c).</li>
+                        <li><strong>فراموش کردن حالت برابری:</strong> اگر دو عدد مساوی بودند، فلوچارت باید باز هم نتیجه درستی بدهد. شرط <code>a &gt;= b</code> بهتر از <code>a &gt; b</code> است.</li>
+                        <li><strong>نداشتن شاخه بله و خیر:</strong> هر لوزی باید دو پیکان خروجی داشته باشد، یکی برای «بله» و یکی برای «خیر».</li>
+                        <li><strong>استفاده از شکل اشتباه:</strong> چاپ را در مستطیل ننویسید؛ چاپ یک خروجی است و باید در متوازی‌الاضلاع نوشته شود.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <!-- تمرین ۲ -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۲</span>
+                <h3>کامپایل و اجرای دستی برنامه نمایش مشخصات دانشجو</h3>
+            </div>
+
+            <p class="ex-desc">
+                یک برنامه جاوا بنویسید که مشخصات شما (نام، نام خانوادگی، سن، رشته تحصیلی) را در
+                خروجی چاپ کند. این برنامه را در یک فایل متنی ساده (مثلاً Notepad) بنویسید و سپس
+                از طریق ترمینال، بدون استفاده از IntelliJ، آن را کامپایل و اجرا کنید.
+            </p>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">Notepad (یا هر ویرایشگر متنی) را باز کنید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">یک کلاس عمومی به نام <code>StudentInfo</code> بسازید.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">درون کلاس، متد <code>main</code> را با همان ساختار <code>public static void main(String[] args)</code> بنویسید.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">برای هر خط از مشخصات، یک دستور <code>System.out.println</code> بنویسید. مثلاً خط اول: <code>System.out.println("Name: Ali");</code></div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">فایل را با نام دقیق <code>StudentInfo.java</code> ذخیره کنید. حتماً گزینه «Save as type» را روی All Files بگذارید تا پسوند <code>.txt</code> به آخر نام اضافه نشود.</div></li>
+                        <li><span class="step-num">۶</span><div class="step-body">ترمینال را باز کنید و با دستور <code>cd</code> به پوشه‌ای بروید که فایل در آن ذخیره شده است.</div></li>
+                        <li><span class="step-num">۷</span><div class="step-body">با دستور <code>javac StudentInfo.java</code> کامپایل کنید.</div></li>
+                        <li><span class="step-num">۸</span><div class="step-body">با دستور <code>java StudentInfo</code> اجرا کنید و خروجی را ببینید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>پسوند پنهان .txt:</strong> اگر در ویندوز پسوند فایل‌ها پنهان باشد، ممکن است فایل به‌صورت <code>StudentInfo.java.txt</code> ذخیره شود. کامپایلر آن را نمی‌شناسد.</li>
+                        <li><strong>عدم تطابق نام کلاس و فایل:</strong> اگر نام کلاس <code>StudentInfo</code> است، فایل هم باید دقیقاً <code>StudentInfo.java</code> باشد.</li>
+                        <li><strong>خطای <code>class not found</code>:</strong> یعنی فایل <code>.class</code> ساخته نشده. اول مطمئن شوید <code>javac</code> بدون خطا اجرا شده است.</li>
+                        <li><strong>خطای <code>javac is not recognized</code>:</strong> یعنی PATH درست تنظیم نشده. بخش نصب را دوباره چک کنید.</li>
+                        <li><strong>جا افتادن سمی‌کالن:</strong> هر خط از دستورات چاپ باید با <code>;</code> تمام شود.</li>
+                        <li><strong>اجرای برنامه با پسوند:</strong> دستور اجرا باید <code>java StudentInfo</code> باشد، نه <code>java StudentInfo.class</code> یا <code>java StudentInfo.java</code>.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۸ — پرسش و پاسخ
+============================================================ -->
+<section class="section s9" id="qa">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۸</span>
+            <div>
+                <h2>پرسش و پاسخ</h2>
+                <p>پرسش‌های پرتکرار این هفته و پاسخ روشن آن‌ها</p>
+            </div>
+        </div>
+
+        <p>
+            این بخش جمع‌بندی پرسش‌هایی است که معمولاً در هفته اول برای دانشجویان پیش می‌آید. اگر
+            پرسشی مشابه داشتید، پاسخ آن را همین‌جا پیدا می‌کنید.
+        </p>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: آیا برای یادگیری جاوا باید ریاضی قوی داشته باشم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> برای مباحث مقدماتی مثل متغیرها، شرط‌ها، حلقه‌ها و حتی مباحث شیءگرایی، فقط ریاضیات دبیرستان و کمی منطق کافی است. هر چه جلوتر بروید و وارد مباحثی مثل الگوریتم‌های پیچیده یا گرافیک شوید، ریاضیات بیشتری لازم می‌شود، اما در این دوره، هیچ پیش‌نیاز ریاضی خاصی نیاز نیست.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: تفاوت JDK و JRE و JVM دقیقاً چیست؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> JVM ماشین مجازی جاوا است که بایت‌کد را اجرا می‌کند. JRE یک بسته کامل‌تر است که JVM را در خود دارد، به‌همراه کتابخانه‌های استاندارد جاوا. JDK باز هم کامل‌تر است و علاوه بر JRE، ابزارهای توسعه مثل کامپایلر <code>javac</code> را در خود دارد. برای اجرای یک برنامه، JRE کافی است. برای نوشتن و کامپایل کردن برنامه، JDK لازم است.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چرا نام فایل باید با نام کلاس یکی باشد؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> این یکی از قواعد جاوا است. وقتی یک کلاس را با کلمه <code>public</code> تعریف می‌کنید، کامپایلر انتظار دارد فایل حاوی آن، دقیقاً همنام کلاس باشد. اگر نام‌ها متفاوت باشند، کامپایلر خطا می‌دهد. این قاعده به کامپایلر کمک می‌کند فایل‌ها را سریع‌تر پیدا کند. اگر کلاس را بدون <code>public</code> تعریف کنید، این اجبار برداشته می‌شود، اما در عمل همیشه از <code>public</code> استفاده می‌کنیم و نام فایل را هم‌نام کلاس می‌گذاریم.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: String[] args در main چه کاری انجام می‌دهد؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> این پارامتر یک آرایه از رشته‌ها است که اگر برنامه را از ترمینال با ورودی‌های اضافی اجرا کنید، آن ورودی‌ها در آن ذخیره می‌شوند. مثلاً اگر بنویسید <code>java MyProgram hello world</code>، آرایه args شامل دو عضو <code>"hello"</code> و <code>"world"</code> خواهد بود. در برنامه‌های ساده، از این پارامتر استفاده نمی‌کنیم، اما حذفش هم نمی‌توانیم بکنیم، چون JVM دقیقاً به این امضا نیاز دارد.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چرا main را با static تعریف می‌کنیم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> چون JVM برای شروع اجرای برنامه، هنوز هیچ شیئی از کلاس نساخته است. اگر main غیر static بود، JVM مجبور بود اول یک شیء از کلاس بسازد تا بتواند متد را صدا بزند. کلمه static اجازه می‌دهد متد بدون نیاز به شیء فراخوانی شود. این ساده‌ترین و مطمئن‌ترین راه برای شروع اجراست.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: تفاوت print و println چیست؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> هر دو یک متن را روی صفحه چاپ می‌کنند. تفاوت این است که <code>println</code> بعد از چاپ، به خط بعدی می‌رود و <code>print</code> در همان خط می‌ماند. یعنی اگر دو دستور <code>print</code> پشت‌سرهم بنویسید، خروجی‌شان در یک خط خواهد بود. اگر <code>println</code> بنویسید، هر کدام در یک خط جدا نمایش داده می‌شود.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: آیا حتماً باید از IntelliJ استفاده کنم یا می‌توانم از Notepad استفاده کنم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> برای نوشتن کد، هر ویرایشگر متنی کار می‌کند؛ حتی Notepad ساده. اما IntelliJ مزیت‌های بزرگی دارد: تکمیل خودکار کد، برجسته‌سازی خطاها به‌صورت زنده، دیباگر و مدیریت آسان پروژه‌های بزرگ. برای شروع، اگر با IntelliJ راحت‌تر هستید، از آن استفاده کنید. اگر می‌خواهید درک عمیق‌تری از فرایند کامپایل و اجرا داشته باشید، با Notepad هم می‌توانید شروع کنید. بهترین کار، استفاده از هر دو روش در کنار هم است.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: اگر بدون برنامه‌نویسی قبلی وارد این دوره شده باشم، عقب می‌مانم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> خیر. این دوره از صفر شروع می‌شود و هیچ پیش‌نیاز برنامه‌نویسی ندارد. مهم‌ترین پیش‌نیاز، صبر و تمرین منظم است. هر کسی که روزانه نیم ساعت تمرین کند، از هفته سوم به بعد به‌طور محسوس پیشرفت خودش را می‌بیند. تنها چیزی که لازم است، این است که وقتی چیزی را نفهمیدید، از سؤال کردن خجالت نکشید و کد را با دست خودتان بنویسید.</p>
+            </div>
+        </details>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۹ — جمع‌بندی
+============================================================ -->
+<section class="section s10" id="summary">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۹</span>
+            <div>
+                <h2>جمع‌بندی و نکات کلیدی</h2>
+                <p>مرور سریع مطالب این هفته</p>
+            </div>
+        </div>
+
+        <div class="cheat">
+            <h3>الگوریتم و فلوچارت</h3>
+            <ul class="dot-list">
+                <li>الگوریتم، مجموعه گام‌های منظم و دقیق برای حل یک مسئله است.</li>
+                <li>هر الگوریتم باید ورودی، خروجی، دقت و پایان‌پذیری داشته باشد.</li>
+                <li>فلوچارت نمایش تصویری الگوریتم است و هر شکل معنای مشخصی دارد.</li>
+                <li>بیضی برای شروع و پایان، مستطیل برای پردازش، لوزی برای تصمیم و متوازی‌الاضلاع برای ورودی/خروجی.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>تفکر محاسباتی</h3>
+            <ul class="dot-list">
+                <li>چهار ستون تفکر محاسباتی: تجزیه، تشخیص الگو، انتزاع و طراحی الگوریتم.</li>
+                <li>تجزیه یعنی شکستن مسئله بزرگ به بخش‌های کوچک‌تر قابل حل.</li>
+                <li>هر مسئله‌ای که بزرگ به نظر می‌رسد، با تجزیه ساده‌تر می‌شود.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>معرفی جاوا</h3>
+            <ul class="dot-list">
+                <li>جاوا در سال ۱۹۹۵ ساخته شد و امروز یکی از پرکاربردترین زبان‌های دنیاست.</li>
+                <li>شعار آن «یک بار بنویس، هر جا اجرا کن» است.</li>
+                <li>جاوا هم کامپایلری است و هم تفسیری: به بایت‌کد کامپایل می‌شود و در JVM اجرا می‌شود.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>معماری جاوا</h3>
+            <ul class="dot-list">
+                <li>JDK ⊃ JRE ⊃ JVM: هر لایه، لایه قبلی را در خود دارد.</li>
+                <li>JVM بایت‌کد را اجرا می‌کند، JRE برای اجرای برنامه کافی است و JDK برای توسعه لازم است.</li>
+                <li>مسیر کد: <code>.java</code> → <code>javac</code> → <code>.class</code> → JVM → اجرا.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>اولین برنامه</h3>
+            <ul class="dot-list">
+                <li>فایل برنامه‌های جاوا باید پسوند <code>.java</code> داشته باشد و نام آن با نام کلاس عمومی یکی باشد.</li>
+                <li>کامپایل با <code>javac</code> و اجرا با <code>java</code> انجام می‌شود.</li>
+                <li>ساختار <code>public static void main(String[] args)</code> نقطه شروع اجرای برنامه است.</li>
+                <li><code>println</code> چاپ می‌کند و به خط بعد می‌رود، <code>print</code> در همان خط می‌ماند.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     فوتر
+============================================================ -->
+<footer class="site-footer">
+    <div class="container">
+        <p><strong>هفته اول</strong> — مبانی برنامه‌نویسی، معماری جاوا و اولین برنامه</p>
+    </div>
+</footer>
+
+<!-- ============================================================
+     دکمه بازگشت به بالا
+============================================================ -->
+<button id="toTop" title="بازگشت به بالای صفحه" aria-label="بازگشت به بالای صفحه">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+    <span class="toTop-text">بازگشت به بالا</span>
+</button>
+
+<!-- ============================================================
+     اسکریپت
+============================================================ -->
+<script>
+/* ---------- تم روشن/تاریک ---------- */
+(function () {
+    const root = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+
+    const saved = localStorage.getItem('java-guide-theme');
+    if (saved === 'dark') apply('dark');
+
+    function apply(mode) {
+        if (mode === 'dark') {
+            root.setAttribute('data-theme', 'dark');
+            icon.textContent = '☀️';
+            label.textContent = 'تم روشن';
+        } else {
+            root.removeAttribute('data-theme');
+            icon.textContent = '🌙';
+            label.textContent = 'تم تاریک';
+        }
+    }
+
+    btn.addEventListener('click', function () {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        const next = isDark ? 'light' : 'dark';
+        apply(next);
+        localStorage.setItem('java-guide-theme', next);
+    });
+})();
+
+/* ---------- دکمه بازگشت به بالا ---------- */
+(function () {
+    const btn = document.getElementById('toTop');
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 400) btn.classList.add('show');
+        else btn.classList.remove('show');
+    });
+    btn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+})();
+
+/* ---------- هایلایت کد ---------- */
+(function () {
+    function esc(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    const KEYWORDS = new Set([
+        'abstract','assert','boolean','break','byte','case','catch','char','class','const',
+        'continue','default','do','double','else','enum','extends','final','finally','float',
+        'for','if','implements','import','instanceof','int','interface','long','native','new',
+        'package','private','protected','public','return','short','static','strictfp','super',
+        'switch','synchronized','this','throw','throws','transient','try','void','volatile',
+        'while','true','false','null','var','yield',
+        'String','StringBuilder','System','Scanner','Math','Integer','Double','Character','Boolean','Arrays'
+    ]);
+
+    function highlight(code) {
+        const re = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|\b(\d+(?:\.\d+)?[fFdDlL]?)\b|\b([A-Za-z_$][\w$]*)\b/g;
+        let out = '', last = 0, m;
+        while ((m = re.exec(code)) !== null) {
+            out += esc(code.slice(last, m.index));
+            const full = m[0];
+            if (m[1])      out += '<span class="tok-com">' + esc(full) + '</span>';
+            else if (m[2]) out += '<span class="tok-str">' + esc(full) + '</span>';
+            else if (m[3]) out += '<span class="tok-num">' + esc(full) + '</span>';
+            else if (m[4] && KEYWORDS.has(m[4])) out += '<span class="tok-kw">' + esc(full) + '</span>';
+            else           out += esc(full);
+            last = re.lastIndex;
+        }
+        out += esc(code.slice(last));
+        return out;
+    }
+
+    document.querySelectorAll('pre code').forEach(function (block) {
+        if (block.querySelector('span')) return;
+        const raw = block.textContent;
+        block.innerHTML = highlight(raw);
+    });
+})();
+
+/* ---------- دکمه کپی ---------- */
+(function () {
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const code = btn.closest('.code-block').querySelector('code').innerText;
+            const done = function () {
+                const original = btn.textContent;
+                btn.textContent = 'کپی شد ✓';
+                btn.style.background = '#10b981';
+                btn.style.borderColor = '#10b981';
+                btn.style.color = '#fff';
+                setTimeout(function () {
+                    btn.textContent = original;
+                    btn.style.background = '';
+                    btn.style.borderColor = '';
+                    btn.style.color = '';
+                }, 1500);
+            };
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(code).then(done).catch(function () { fallback(code, done); });
+            } else {
+                fallback(code, done);
+            }
+        });
+    });
+
+    function fallback(text, cb) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); cb(); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+    }
+})();
+</script>
+
+</body>
+</html>
