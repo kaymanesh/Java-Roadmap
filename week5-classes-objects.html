@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>هفته پنجم جاوا — کلاس، شیء، سازنده‌ها و کپسوله‌سازی</title>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #ffffff;
+    --bg-soft: #f8fafc;
+    --bg-card: #ffffff;
+    --text: #1e293b;
+    --text-soft: #475569;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --primary: #4f46e5;
+    --primary-soft: #eef2ff;
+
+    --sec-1: #2563eb;
+    --sec-2: #059669;
+    --sec-3: #d97706;
+    --sec-4: #7c3aed;
+    --sec-5: #e11d48;
+    --sec-6: #0891b2;
+    --sec-7: #c026d3;
+    --sec-8: #ea580c;
+    --sec-9: #0d9488;
+    --sec-10: #65a30d;
+
+    --code-bg: #0f172a;
+    --code-head: #1e293b;
+    --code-text: #e2e8f0;
+
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, .06);
+    --shadow-md: 0 6px 20px rgba(15, 23, 42, .08);
+}
+
+[data-theme="dark"] {
+    --bg: #0b1220;
+    --bg-soft: #111a2e;
+    --bg-card: #131d35;
+    --text: #e6ecf6;
+    --text-soft: #a9b6cc;
+    --muted: #7f8ba5;
+    --border: #25324d;
+    --border-strong: #34425f;
+    --primary: #818cf8;
+    --primary-soft: #1e2a4a;
+
+    --sec-1: #60a5fa;
+    --sec-2: #34d399;
+    --sec-3: #fbbf24;
+    --sec-4: #c084fc;
+    --sec-5: #fb7185;
+    --sec-6: #22d3ee;
+    --sec-7: #e879f9;
+    --sec-8: #fb923c;
+    --sec-9: #2dd4bf;
+    --sec-10: #a3e635;
+
+    --code-bg: #060c18;
+    --code-head: #0f172a;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, .4);
+    --shadow-md: 0 6px 20px rgba(0, 0, 0, .5);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Vazirmatn', Tahoma, system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.95;
+    font-size: 16px;
+    transition: background-color .25s ease, color .25s ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container { width: 100%; max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+/* ============ HERO ============ */
+.hero {
+    padding: 20px 0 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.hero-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-badge {
+    display: inline-block;
+    font-size: .78rem;
+    font-weight: 700;
+    padding: 5px 15px;
+    border-radius: 999px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.theme-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border-strong);
+    background: var(--bg-card);
+    color: var(--text);
+    font-family: inherit;
+    font-size: .8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s ease;
+    white-space: nowrap;
+}
+
+.theme-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
+.theme-btn .theme-icon { font-size: 1rem; line-height: 1; }
+
+.hero-title {
+    font-size: clamp(1.4rem, 3.8vw, 1.9rem);
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: -.4px;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.hero-subtitle {
+    font-size: .92rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.hero-desc {
+    font-size: .95rem;
+    color: var(--text-soft);
+    line-height: 2;
+    text-align: justify;
+    margin-bottom: 18px;
+}
+
+.goal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-inline-start: 4px solid var(--primary);
+    border-radius: 12px;
+    padding: 14px 18px;
+    box-shadow: var(--shadow-sm);
+    font-size: .93rem;
+    line-height: 1.9;
+    color: var(--text-soft);
+    text-align: justify;
+    transition: background-color .25s ease, border-color .25s ease;
+}
+.goal strong { color: var(--primary); font-weight: 800; }
+
+/* ============ TOC ============ */
+.toc {
+    margin: 32px 0 10px;
+    padding: 24px 26px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow-sm);
+}
+
+.toc-title { font-size: 1.02rem; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; color: var(--text); }
+.toc-title::before { content: ""; width: 5px; height: 20px; border-radius: 3px; background: linear-gradient(180deg, #38bdf8, #a855f7); }
+
+.toc-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+
+.toc-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .87rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+.toc-link:hover { border-color: var(--tc, var(--primary)); color: var(--tc, var(--primary)); transform: translateX(-3px); background: var(--bg-card); }
+.toc-link .num { flex: 0 0 30px; height: 30px; display: grid; place-items: center; border-radius: 8px; background: var(--tc, var(--primary)); color: #fff; font-weight: 800; font-size: .82rem; box-shadow: 0 3px 10px rgba(0, 0, 0, .15); }
+
+/* ============ SECTIONS ============ */
+.section { margin: 44px 0; scroll-margin-top: 20px; }
+.sec-head { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+.sec-num { flex: 0 0 52px; height: 52px; display: grid; place-items: center; border-radius: 15px; color: #fff; font-size: 1.3rem; font-weight: 800; box-shadow: 0 8px 20px rgba(0, 0, 0, .15); background: var(--tc, var(--primary)); }
+.sec-head h2 { font-size: clamp(1.15rem, 3vw, 1.4rem); font-weight: 800; line-height: 1.4; margin-bottom: 2px; text-align: right; }
+.sec-head p { color: var(--muted); font-size: .82rem; margin: 0; text-align: right; }
+
+.section.s1 { --tc: var(--sec-1); }
+.section.s2 { --tc: var(--sec-2); }
+.section.s3 { --tc: var(--sec-3); }
+.section.s4 { --tc: var(--sec-4); }
+.section.s5 { --tc: var(--sec-5); }
+.section.s6 { --tc: var(--sec-6); }
+.section.s7 { --tc: var(--sec-7); }
+.section.s8 { --tc: var(--sec-8); }
+.section.s9 { --tc: var(--sec-9); }
+.section.s10 { --tc: var(--sec-10); }
+
+h3 { font-size: 1.08rem; font-weight: 800; margin: 28px 0 12px; display: flex; align-items: center; gap: 10px; color: var(--text); text-align: right; }
+h3::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--tc, var(--primary)); box-shadow: 0 0 0 4px var(--primary-soft); flex-shrink: 0; }
+h4 { font-size: .95rem; font-weight: 800; margin: 20px 0 8px; color: var(--tc, var(--primary)); text-align: right; }
+p { margin-bottom: 14px; color: var(--text-soft); text-align: justify; }
+
+/* ============ LISTS ============ */
+ol.steps { list-style: none; padding: 0; margin: 16px 0; }
+ol.steps > li { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px dashed var(--border); color: var(--text-soft); font-size: .94rem; line-height: 1.85; }
+ol.steps > li:last-child { border-bottom: none; }
+ol.steps .step-num { flex: 0 0 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; background: var(--primary-soft); color: var(--tc, var(--primary)); font-size: .82rem; font-weight: 800; margin-top: 3px; }
+ol.steps .step-body { flex: 1; }
+
+ul.dot-list { list-style: none; padding: 0; margin: 12px 0; }
+ul.dot-list > li { position: relative; padding-right: 22px; margin-bottom: 8px; color: var(--text-soft); font-size: .94rem; line-height: 1.85; }
+ul.dot-list > li::before { content: ""; position: absolute; right: 0; top: 11px; width: 7px; height: 7px; border-radius: 50%; background: var(--tc, var(--primary)); }
+
+/* ============ BOXES ============ */
+.def-box, .tip-box, .warn-box, .info-box, .danger-box { border-radius: 12px; padding: 14px 18px; margin: 16px 0; font-size: .93rem; line-height: 1.9; color: var(--text-soft); }
+.def-box { background: var(--primary-soft); border-inline-start: 4px solid var(--primary); }
+.tip-box { background: rgba(16, 185, 129, .08); border-inline-start: 4px solid #10b981; }
+.warn-box { background: rgba(245, 158, 11, .10); border-inline-start: 4px solid #f59e0b; }
+.info-box { background: rgba(59, 130, 246, .08); border-inline-start: 4px solid #3b82f6; }
+.danger-box { background: rgba(239, 68, 68, .08); border-inline-start: 4px solid #ef4444; }
+[data-theme="dark"] .tip-box { background: rgba(16, 185, 129, .12); }
+[data-theme="dark"] .warn-box { background: rgba(245, 158, 11, .12); }
+[data-theme="dark"] .info-box { background: rgba(59, 130, 246, .12); }
+[data-theme="dark"] .danger-box { background: rgba(239, 68, 68, .12); }
+
+.def-box strong { color: var(--primary); font-weight: 700; }
+.tip-box strong { color: #059669; font-weight: 700; }
+.warn-box strong { color: #b45309; font-weight: 700; }
+.info-box strong { color: #1d4ed8; font-weight: 700; }
+.danger-box strong { color: #b91c1c; font-weight: 700; }
+
+.def-box > strong:first-child, .tip-box > strong:first-child, .warn-box > strong:first-child, .info-box > strong:first-child, .danger-box > strong:first-child { display: block; margin-bottom: 5px; font-size: .87rem; font-weight: 800; }
+
+/* ============ CODE ============ */
+.code-block { background: var(--code-bg); border-radius: 12px; overflow: hidden; margin: 16px 0; border: 1px solid #1e293b; box-shadow: var(--shadow-md); position: relative; }
+.code-head { display: flex; align-items: center; justify-content: space-between; padding: 9px 16px; background: var(--code-head); border-bottom: 1px solid #334155; }
+.code-lang { font-family: 'JetBrains Mono', Consolas, monospace; font-size: .72rem; font-weight: 700; letter-spacing: 1px; color: #94a3b8; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+.code-lang::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: #f59e0b; box-shadow: 15px 0 0 #10b981, 30px 0 0 #ef4444; margin-inline-end: 30px; }
+.copy-btn { font-family: 'Vazirmatn', sans-serif; font-size: .72rem; font-weight: 600; color: #cbd5e1; background: #334155; border: 1px solid #475569; padding: 4px 12px; border-radius: 7px; cursor: pointer; transition: all .2s ease; }
+.copy-btn:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+.copy-btn:active { transform: scale(.96); }
+pre { padding: 18px 20px; overflow-x: auto; direction: ltr; text-align: left; font-size: .85rem; line-height: 1.8; tab-size: 4; -webkit-overflow-scrolling: touch; }
+pre code { font-family: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace; color: var(--code-text); white-space: pre; }
+pre::-webkit-scrollbar { height: 8px; }
+pre::-webkit-scrollbar-track { background: #1e293b; }
+pre::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+
+.tok-kw  { color: #c084fc; font-weight: 600; }
+.tok-str { color: #86efac; }
+.tok-num { color: #fbbf24; }
+.tok-com { color: #64748b; font-style: italic; }
+.tok-fn  { color: #7dd3fc; }
+
+:not(pre) > code { font-family: 'JetBrains Mono', Consolas, Monaco, monospace; background: var(--bg-soft); color: #be185d; padding: 2px 7px; border-radius: 6px; font-size: .85em; border: 1px solid var(--border); font-weight: 600; white-space: nowrap; display: inline-block; direction: ltr; vertical-align: middle; }
+[data-theme="dark"] :not(pre) > code { background: rgba(244, 114, 182, .12); color: #f9a8d4; border-color: rgba(244, 114, 182, .25); }
+
+/* ============ TABLES ============ */
+.table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 12px; border: 1px solid var(--border); -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 480px; }
+thead th { background: var(--bg-soft); padding: 12px 14px; text-align: right; font-weight: 800; color: var(--text); font-size: .84rem; border-bottom: 2px solid var(--border); white-space: nowrap; }
+tbody td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text-soft); text-align: right; vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-soft); }
+td code { font-size: .82em; }
+
+/* ============ CARDS & DIAGRAMS ============ */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 18px 0; }
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow-sm); transition: all .22s ease; }
+.card:hover { border-color: var(--tc, var(--primary)); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.card h4 { margin: 0 0 6px; font-size: .92rem; color: var(--tc, var(--primary)); }
+.card p { font-size: .87rem; margin: 0; line-height: 1.8; text-align: right; }
+
+.diagram { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin: 16px 0; text-align: center; direction: ltr; overflow-x: auto; }
+.diagram-flow { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+.fbox { background: var(--bg-card); border: 2px solid var(--tc, var(--primary)); border-radius: 8px; padding: 8px 14px; direction: rtl; font-size: .88rem; font-weight: 700; color: var(--text); min-width: 100px; }
+.arrow { color: var(--muted); font-size: 1.2rem; font-weight: 700; }
+.memory-diagram { display: flex; gap: 20px; justify-content: center; min-width: 520px; text-align: right; direction: rtl; }
+.mem-box { flex: 1; border: 2px solid var(--border-strong); border-radius: 10px; padding: 12px; background: var(--bg-card); }
+.mem-box h5 { text-align: center; margin-bottom: 10px; color: var(--tc); font-size: .95rem; }
+.mem-cell { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 6px; padding: 8px; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; font-size: .8rem; direction: ltr; text-align: left; }
+.mem-cell.ref { border-color: var(--tc); }
+
+/* ============ ACCORDIONS ============ */
+details { margin: 12px 0; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-card); overflow: hidden; }
+details.acc-guide { --acc-color: var(--primary); --acc-bg: var(--primary-soft); }
+details.acc-mistakes { --acc-color: #d97706; --acc-bg: rgba(245, 158, 11, .10); }
+details.acc-qa { --acc-color: #059669; --acc-bg: rgba(16, 185, 129, .08); }
+[data-theme="dark"] details.acc-mistakes { --acc-bg: rgba(245, 158, 11, .14); }
+[data-theme="dark"] details.acc-qa { --acc-bg: rgba(16, 185, 129, .12); }
+details summary { cursor: pointer; padding: 13px 18px; font-size: .9rem; font-weight: 800; color: var(--acc-color); background: var(--acc-bg); list-style: none; user-select: none; transition: background .2s; display: flex; align-items: center; gap: 10px; }
+summary::-webkit-details-marker { display: none; }
+.chev { flex-shrink: 0; color: var(--acc-color); transition: transform .3s ease; transform: rotate(0deg); display: block; }
+details[open] .chev { transform: rotate(-90deg); }
+summary:hover { filter: brightness(.96); }
+.details-content { padding: 16px 20px; border-top: 1px solid var(--border); }
+.details-content > *:last-child { margin-bottom: 0; }
+details.acc-qa .details-content { border-inline-start: 3px solid #ef4444; background: rgba(239, 68, 68, .03); padding-inline-start: 16px; }
+[data-theme="dark"] details.acc-qa .details-content { background: rgba(239, 68, 68, .08); }
+details.acc-qa .details-content p { margin: 0; font-size: .92rem; line-height: 1.9; text-align: justify; }
+details.acc-qa .details-content p strong { color: #dc2626; font-weight: 800; margin-inline-end: 4px; }
+
+/* ============ EXERCISES ============ */
+.ex-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 22px 24px; margin-bottom: 18px; box-shadow: var(--shadow-sm); transition: box-shadow .25s ease, background-color .25s ease; }
+.ex-card:hover { box-shadow: var(--shadow-md); }
+.ex-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.ex-badge { font-size: .72rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
+.ex-badge.project { background: rgba(225, 29, 72, .12); color: #e11d48; }
+.ex-badge.homework { background: rgba(37, 99, 235, .12); color: #2563eb; }
+[data-theme="dark"] .ex-badge.project { background: rgba(251, 113, 133, .18); color: #fb7185; }
+[data-theme="dark"] .ex-badge.homework { background: rgba(96, 165, 250, .18); color: #60a5fa; }
+.ex-head h3 { margin: 0; font-size: 1rem; flex: 1; min-width: 200px; text-align: right; }
+.ex-head h3::before { display: none; }
+.ex-desc { font-size: .92rem; color: var(--text-soft); line-height: 1.9; margin-bottom: 12px; text-align: justify; }
+.algo { background: var(--bg-soft); border: 1px dashed var(--tc, var(--primary)); border-radius: 12px; padding: 14px 18px; margin: 14px 0; }
+.algo ol { margin: 0; padding-inline-start: 20px; }
+.algo li { font-size: .9rem; color: var(--text-soft); margin-bottom: 6px; line-height: 1.8; }
+.algo li:last-child { margin-bottom: 0; }
+
+/* ============ SUMMARY ============ */
+.cheat { background: linear-gradient(135deg, var(--primary-soft), rgba(14, 165, 233, .06)); border: 1px solid var(--border); border-radius: 16px; padding: 24px 26px; margin: 24px 0; }
+.cheat h3 { margin-top: 0; }
+.cheat ul.dot-list { margin-bottom: 0; }
+
+/* ============ FOOTER ============ */
+.site-footer { margin-top: 70px; padding: 24px 0; background: #f1f5f9; border-top: 1px solid #e2e8f0; text-align: center; color: #64748b; font-size: .85rem; }
+[data-theme="dark"] .site-footer { background: #0a0f1c; border-top-color: #1e293b; color: #94a3b8; }
+.site-footer p { text-align: center; margin: 0; color: inherit; }
+.site-footer strong { color: #334155; }
+[data-theme="dark"] .site-footer strong { color: #e2e8f0; }
+
+/* ============ TO TOP ============ */
+#toTop { position: fixed; bottom: 22px; right: 22px; padding: 12px 20px 12px 16px; border-radius: 999px; border: none; background: var(--primary); color: #fff; font-family: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; box-shadow: 0 8px 24px rgba(79, 70, 229, .35); display: flex; align-items: center; gap: 8px; opacity: 0; visibility: hidden; transform: translateY(15px); transition: all .3s ease; z-index: 90; }
+#toTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+#toTop:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(79, 70, 229, .45); }
+#toTop svg { flex-shrink: 0; display: block; }
+
+@media (max-width: 640px) {
+    body { font-size: 15px; }
+    .container { padding: 0 14px; }
+    .hero { padding: 14px 0 20px; }
+    .hero-top { margin-bottom: 12px; }
+    .hero-title { font-size: 1.24rem; }
+    .hero-subtitle { font-size: .83rem; margin-bottom: 12px; }
+    .hero-desc { font-size: .9rem; margin-bottom: 14px; }
+    .goal { padding: 12px 14px; font-size: .88rem; }
+    .theme-btn { padding: 6px 10px; font-size: .74rem; }
+    .theme-btn .theme-label { display: none; }
+    .toc { padding: 18px; }
+    .toc-list { grid-template-columns: 1fr; }
+    .sec-head { gap: 12px; padding-bottom: 14px; }
+    .sec-num { flex-basis: 44px; height: 44px; font-size: 1.1rem; border-radius: 12px; }
+    .ex-card { padding: 16px 16px; }
+    pre { padding: 14px 16px; font-size: .78rem; }
+    .memory-diagram { min-width: 100%; flex-direction: column; }
+    #toTop { bottom: 16px; right: 16px; padding: 12px; width: 44px; height: 44px; justify-content: center; }
+    #toTop .toTop-text { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="container">
+        <div class="hero-top">
+            <span class="hero-badge">هفته پنجم</span>
+            <button class="theme-btn" id="themeBtn" aria-label="تغییر تم">
+                <span class="theme-icon" id="themeIcon">🌙</span>
+                <span class="theme-label" id="themeLabel">تم تاریک</span>
+            </button>
+        </div>
+        <h1 class="hero-title">کلاس، شیء، سازنده‌ها و کپسوله‌سازی</h1>
+        <p class="hero-subtitle">جزوه آموزشی زبان برنامه‌نویسی جاوا — شروع شیءگرایی</p>
+        <p class="hero-desc">
+            تا این هفته، برنامه‌های ما مجموعه‌ای از متغیرها و متدهای پراکنده بودند. در برنامه‌های واقعی، داده‌ها و رفتارها باید در کنار هم و به‌صورت منظم سازمان‌دهی شوند. در این هفته با اولین و مهم‌ترین گام دنیای شیءگرایی آشنا می‌شویم: کلاس‌ها، ساخت اشیاء، مقداردهی اولیه با سازنده‌ها و محافظت از داده‌ها با کپسوله‌سازی.
+        </p>
+        <div class="goal">
+            <strong>هدف هفته:</strong>
+            انتقال به الگوی برنامه‌نویسی شیءگرا، درک تفاوت ارجاع و مقدار، و ساخت مدل‌های ایمن داده‌ای. در پایان این هفته باید بتوانید کلاس تعریف کنید، با سازنده‌ها شیء بسازید، تفاوت انواع داده اولیه و ارجاعی را در حافظه توضیح دهید و با private و Getter/Setter از داده‌ها محافظت کنید.
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <nav class="toc">
+        <div class="toc-title">فهرست مطالب</div>
+        <div class="toc-list">
+            <a class="toc-link" href="#s1" style="--tc: var(--sec-1)">
+                <span class="num">۱</span> کلاس و شیء (Class & Object)
+            </a>
+            <a class="toc-link" href="#s2" style="--tc: var(--sec-2)">
+                <span class="num">۲</span> حافظه، Stack و Heap
+            </a>
+            <a class="toc-link" href="#s3" style="--tc: var(--sec-3)">
+                <span class="num">۳</span> سازنده‌ها و کلمه this
+            </a>
+            <a class="toc-link" href="#s4" style="--tc: var(--sec-4)">
+                <span class="num">۴</span> سربارگذاری سازنده
+            </a>
+            <a class="toc-link" href="#s5" style="--tc: var(--sec-5)">
+                <span class="num">۵</span> کپسوله‌سازی و private
+            </a>
+            <a class="toc-link" href="#s6" style="--tc: var(--sec-6)">
+                <span class="num">۶</span> متدهای Getter و Setter
+            </a>
+            <a class="toc-link" href="#exercises" style="--tc: var(--sec-7)">
+                <span class="num">۷</span> تمرین‌ها و پروژه
+            </a>
+            <a class="toc-link" href="#qa" style="--tc: var(--sec-8)">
+                <span class="num">۸</span> پرسش و پاسخ
+            </a>
+            <a class="toc-link" href="#summary" style="--tc: var(--sec-9)">
+                <span class="num">۹</span> جمع‌بندی
+            </a>
+        </div>
+    </nav>
+</div>
+
+<!-- ==================== SECTION 1 ==================== -->
+<section class="section s1" id="s1">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۱</span>
+            <div>
+                <h2>کلاس و شیء (Class & Object)</h2>
+                <p>پایه و اساس تمام برنامه‌نویسی شیءگرا</p>
+            </div>
+        </div>
+
+        <h3>چرا به شیءگرایی نیاز داریم؟</h3>
+        <p>
+            فرض کنید می‌خواهید یک سیستم مدیریت فروشگاه بنویسید. در هفته‌های گذشته، برای ذخیره اطلاعات یک محصول باید چند متغیر جداگانه مثل <code>productName</code>، <code>productPrice</code> و <code>productStock</code> می‌ساختید. اگر فروشگاه ۱۰۰ محصول داشت، مدیریت ۳۰۰ متغیر پراکنده تقریباً غیرممکن می‌شد.
+        </p>
+        <p>
+            <strong>برنامه‌نویسی شیءگرا (OOP)</strong> راه‌حل این مشکل است. در این روش، داده‌ها (مثل نام و قیمت) و رفتارهای مرتبط با آن‌ها (مثل افزایش موجودی یا اعمال تخفیف) را در یک بسته واحد به نام <strong>کلاس</strong> کنار هم قرار می‌دهیم. سپس از روی این کلاس، نمونه‌های واقعی به نام <strong>شیء</strong> می‌سازیم.
+        </p>
+
+        <div class="def-box">
+            <strong>تعریف ساده کلاس و شیء</strong>
+            <strong>کلاس (Class)</strong> مثل یک نقشه ساختمان یا قالب شیرینی‌پزی است. خودش یک موجودیت واقعی نیست، بلکه مشخص می‌کند شیءهای ساخته‌شده از آن چه ویژگی‌ها و رفتارهایی خواهند داشت. <br>
+            <strong>شیء (Object)</strong> نمونه واقعی و قابل استفاده‌ای است که از روی آن نقشه ساخته می‌شود. هر شیء داده‌های مخصوص به خودش را دارد.
+        </div>
+
+        <h3>تفاوت کلاس و شیء در یک نگاه</h3>
+        <div class="diagram">
+            <div class="diagram-flow">
+                <div class="fbox">کلاس: Car<br><span style="font-size:.8rem;font-weight:normal">نقشه (Blueprint)</span></div>
+                <span class="arrow">←</span>
+                <div class="fbox">شیء: pride<br><span style="font-size:.8rem;font-weight:normal">مدل: پراید، رنگ: سفید</span></div>
+                <div class="fbox">شیء: peugeot<br><span style="font-size:.8rem;font-weight:normal">مدل: پژو، رنگ: آبی</span></div>
+            </div>
+        </div>
+
+        <h3>ساختار یک کلاس در جاوا</h3>
+        <p>
+            یک کلاس معمولاً شامل <strong>فیلدها (Fields)</strong> برای نگهداری داده و <strong>متدها (Methods)</strong> برای انجام رفتارهاست.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — تعریف کلاس و ساخت شیء</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">class</span> Car {
+    String model;
+    <span class="tok-kw">int</span> speed;
+
+    <span class="tok-kw">void</span> <span class="tok-fn">accelerate</span>(<span class="tok-kw">int</span> amount) {
+        speed += amount;
+    }
+}
+
+<span class="tok-kw">public class</span> CarDemo {
+    <span class="tok-kw">public static void</span> <span class="tok-fn">main</span>(String[] args) {
+        Car pride = <span class="tok-kw">new</span> Car(); <span class="tok-com">// ساخت شیء</span>
+        pride.model = <span class="tok-str">"Pride"</span>;
+        
+        Car peugeot = <span class="tok-kw">new</span> Car(); <span class="tok-com">// ساخت شیء دوم</span>
+        peugeot.model = <span class="tok-str">"Peugeot"</span>;
+
+        pride.accelerate(<span class="tok-num">20</span>);
+        peugeot.accelerate(<span class="tok-num">35</span>);
+        
+        System.out.println(pride.model + <span class="tok-str">": "</span> + pride.speed);
+        System.out.println(peugeot.model + <span class="tok-str">": "</span> + peugeot.speed);
+    }
+}</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>نکته درباره new</strong>
+            کلمه کلیدی <code>new</code> مسئول ساخت فضای جدید در حافظه و ساختن یک شیء واقعی است. تا زمانی که از <code>new</code> استفاده نکنید، متغیر شما فقط یک ارجاع خالی است.
+        </div>
+
+        <h3>چهار ستون اصلی شیءگرایی</h3>
+        <p>برنامه‌نویسی شیءگرا بر چهار پایه اصلی بنا شده است که در طول دوره با تمام آن‌ها آشنا می‌شوید:</p>
+        <div class="card-grid">
+            <div class="card">
+                <h4>کپسوله‌سازی</h4>
+                <p>پنهان‌سازی داده‌های داخلی و کنترل دسترسی به آن‌ها (موضوع اصلی این هفته).</p>
+            </div>
+            <div class="card">
+                <h4>انتزاع</h4>
+                <p>نمایش ویژگی‌های ضروری و پنهان‌سازی جزئیات پیچیده پیاده‌سازی.</p>
+            </div>
+            <div class="card">
+                <h4>وراثت</h4>
+                <p>ساخت کلاس‌های جدید بر اساس کلاس‌های موجود برای کاهش تکرار کد.</p>
+            </div>
+            <div class="card">
+                <h4>چندریختی</h4>
+                <p>توانایی یک شیء برای رفتار متفاوت در موقعیت‌های مختلف.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 2 ==================== -->
+<section class="section s2" id="s2">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۲</span>
+            <div>
+                <h2>حافظه، Stack، Heap و انواع ارجاعی</h2>
+                <p>درک تفاوت ارجاع و مقدار در حافظه</p>
+            </div>
+        </div>
+
+        <h3>RAM، Stack و Heap به زبان ساده</h3>
+        <p>
+            وقتی برنامه‌ای در حال اجراست، از حافظه اصلی سیستم (RAM) استفاده می‌کند. برای اینکه مدیریت داده‌ها ساده‌تر شود، جاوا این حافظه را به دو بخش مفهومی تقسیم می‌کند:
+        </p>
+        <ul class="dot-list">
+            <li><strong>Stack (پشته):</strong> بخش سریع و منظمی که متغیرهای محلی (Local Variables) و اطلاعات مسیر اجرای متدها را نگه می‌دارد. متغیرهای اولیه (Primitive) مقدار واقعی خود را مستقیماً در Stack نگه می‌دارند.</li>
+            <li><strong>Heap (کپه):</strong> بخش بزرگ‌تری که شیءهای ساخته‌شده با <code>new</code> در آن قرار می‌گیرند. متغیرهای ارجاعی (Reference) در Stack قرار دارند اما مقدار آن‌ها یک آدرس است که به شیء در Heap اشاره می‌کند.</li>
+        </ul>
+
+        <h3>تفاوت Primitive و Reference</h3>
+        <p>
+            در هفته دوم با انواع داده اولیه مثل <code>int</code> و <code>double</code> آشنا شدید. این‌ها داده را مستقیماً نگه می‌دارند. اما کلاس‌ها (مثل <code>String</code> یا کلاس‌هایی که خودتان می‌سازید) انواع ارجاعی هستند.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ویژگی</th>
+                        <th>نوع اولیه (Primitive)</th>
+                        <th>نوع ارجاعی (Reference)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>نمونه‌ها</td><td><code>int</code>، <code>double</code>، <code>boolean</code></td><td><code>String</code>، کلاس‌های ساخته‌شده، آرایه‌ها</td></tr>
+                    <tr><td>محل ذخیره</td><td>مستقیماً در Stack</td><td>آدرس در Stack، شیء در Heap</td></tr>
+                    <tr><td>عملگر =</td><td>کپی مقدار واقعی</td><td>کپی آدرس (اشاره به همان شیء)</td></tr>
+                    <tr><td>مقدار پیش‌فرض</td><td>0، 0.0، false</td><td><code>null</code></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>مثال عملی: کپی کردن مقدار در برابر کپی کردن ارجاع</h3>
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">int</span> a = <span class="tok-num">10</span>;
+<span class="tok-kw">int</span> b = a;    <span class="tok-com">// کپی مقدار: b یک 10 مستقل است</span>
+b = <span class="tok-num">99</span>;
+System.out.println(a); <span class="tok-com">// خروجی: 10</span>
+
+Car first = <span class="tok-kw">new</span> Car();
+first.model = <span class="tok-str">"Pride"</span>;
+Car second = first; <span class="tok-com">// کپی ارجاع: هر دو به یک شیء اشاره می‌کنند</span>
+second.model = <span class="tok-str">"Peugeot"</span>;
+System.out.println(first.model); <span class="tok-com">// خروجی: Peugeot</span></code></pre>
+        </div>
+
+        <div class="diagram">
+            <div class="memory-diagram">
+                <div class="mem-box">
+                    <h5>Stack (متغیرهای محلی)</h5>
+                    <div class="mem-cell">int a = 10</div>
+                    <div class="mem-cell">int b = 99</div>
+                    <div class="mem-cell ref">Car first → آدرس #A1</div>
+                    <div class="mem-cell ref">Car second → آدرس #A1</div>
+                </div>
+                <div class="mem-box">
+                    <h5>Heap (شیءها)</h5>
+                    <div class="mem-cell ref" style="border:2px solid var(--tc);padding:12px;">
+                        <strong>#A1: Car</strong><br>
+                        model = "Peugeot"<br>
+                        speed = 0
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>null و خطای NullPointerException</h3>
+        <p>
+            مقدار <code>null</code> یعنی متغیر ارجاعی شما به هیچ شیئی در حافظه اشاره نمی‌کند. این با یک رشته خالی (<code>""</code>) یا عدد صفر کاملاً متفاوت است.
+        </p>
+
+        <div class="danger-box">
+            <strong>NullPointerException</strong>
+            اگر سعی کنید به فیلد یا متدی از یک شیء دسترسی پیدا کنید در حالی که آن شیء <code>null</code> است، برنامه با خطای زمان اجرای <code>NullPointerException</code> متوقف می‌شود. این یکی از رایج‌ترین خطاهای برنامه‌نویسان در تمام سطوح است.
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>Car myCar = <span class="tok-kw">null</span>;
+System.out.println(myCar.model); <span class="tok-com">// خطا: NullPointerException</span>
+
+<span class="tok-com">// راه صحیح:</span>
+<span class="tok-kw">if</span> (myCar != <span class="tok-kw">null</span>) {
+    System.out.println(myCar.model);
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 3 ==================== -->
+<section class="section s3" id="s3">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۳</span>
+            <div>
+                <h2>سازنده‌ها (Constructors) و کلمه کلیدی this</h2>
+                <p>مقداردهی اولیه شیء از لحظه تولد</p>
+            </div>
+        </div>
+
+        <h3>سازنده چیست؟</h3>
+        <p>
+            فرض کنید یک کلاس <code>Student</code> دارید. وقتی می‌نویسید <code>new Student()</code>، جاوا باید بداند نام دانشجو و سن او را از کجا بیاورد. سازنده یک متد ویژه است که دقیقاً در لحظه ساخت شیء با <code>new</code> اجرا می‌شود و وظیفه آن مقداردهی اولیه فیلدهاست.
+        </p>
+
+        <div class="def-box">
+            <strong>سه ویژگی مهم سازنده</strong>
+            ۱. نام سازنده باید دقیقاً برابر با نام کلاس باشد (با همان حروف بزرگ و کوچک).<br>
+            ۲. سازنده هیچ نوع بازگشتی ندارد (حتی <code>void</code> هم نمی‌نویسیم).<br>
+            ۳. به‌طور خودکار هنگام ساخت شیء با <code>new</code> فراخوانی می‌شود.
+        </div>
+
+        <h3>سازنده پیش‌فرض در برابر سازنده پارامتردار</h3>
+        <p>
+            اگر شما هیچ سازنده‌ای در کلاس تعریف نکنید، جاوا یک سازنده پیش‌فرض (بدون پارامتر) به‌طور خودکار در اختیار شما قرار می‌دهد که هیچ کاری انجام نمی‌دهد. اما اگر خودتان حتی یک سازنده پارامتردار بنویسید، سازنده پیش‌فرض حذف می‌شود.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">class</span> Student {
+    String name;
+    <span class="tok-kw">int</span> age;
+
+    <span class="tok-com">// سازنده بدون پارامتر (پیش‌فرض دستی)</span>
+    Student() {
+        <span class="tok-kw">this</span>(<span class="tok-str">"Unknown"</span>, <span class="tok-num">18</span>);
+    }
+
+    <span class="tok-com">// سازنده پارامتردار</span>
+    Student(String name, <span class="tok-kw">int</span> age) {
+        <span class="tok-kw">this</span>.name = name;
+        <span class="tok-kw">this</span>.age = age;
+    }
+}</code></pre>
+        </div>
+
+        <h3>کلمه کلیدی this</h3>
+        <p>
+            وقتی پارامترهای یک سازنده با نام فیلدهای کلاس هم‌نام باشند (مثل <code>name</code> و <code>name</code>)، جاوا نمی‌داند کدام را باید مقداردهی کند. کلمه کلیدی <code>this</code> به معنای «همین شیء فعلی» است. با نوشتن <code>this.name</code> به فیلد کلاس اشاره می‌کنیم و با نوشتن <code>name</code> ساده به پارامتر ورودی.
+        </p>
+
+        <div class="tip-box">
+            <strong>نکته</strong>
+            استفاده از <code>this</code> همیشه اجباری نیست. اگر نام پارامترها را متفاوت انتخاب کنید (مثلاً <code>newName</code>) نیازی به <code>this</code> نیست، اما در پروژه‌های واقعی استفاده از <code>this</code> برای خوانایی بیشتر و جلوگیری از ابهام بسیار رایج است.
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 4 ==================== -->
+<section class="section s4" id="s4">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۴</span>
+            <div>
+                <h2>سربارگذاری سازنده (Constructor Overloading)</h2>
+                <p>ساخت شیء با مسیرهای مختلف</p>
+            </div>
+        </div>
+
+        <h3>چرا به چند سازنده نیاز داریم؟</h3>
+        <p>
+            گاهی می‌خواهید یک شیء را با داده‌های کامل بسازید، گاهی فقط با نام، و گاهی بدون هیچ داده‌ای (مثلاً یک شیء خالی). جاوا اجازه می‌دهد چندین سازنده با نام یکسان در یک کلاس داشته باشید، به شرطی که <strong>لیست پارامترهای آن‌ها (تعداد یا نوع) متفاوت باشد</strong>.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">class</span> Product {
+    String name;
+    <span class="tok-kw">double</span> price;
+
+    Product() {
+        <span class="tok-kw">this</span>(<span class="tok-str">"Unknown"</span>, <span class="tok-num">0.0</span>);
+    }
+
+    Product(String name) {
+        <span class="tok-kw">this</span>(name, <span class="tok-num">0.0</span>);
+    }
+
+    Product(String name, <span class="tok-kw">double</span> price) {
+        <span class="tok-kw">this</span>.name = name;
+        <span class="tok-kw">this</span>.price = price;
+    }
+}</code></pre>
+        </div>
+
+        <h3>فراخوانی سازنده دیگر با this(...)</h3>
+        <p>
+            در مثال بالا، سازنده بدون پارامتر با نوشتن <code>this("Unknown", 0.0)</code> سازنده پارامتردار را صدا می‌زند. این کار از تکرار کد جلوگیری می‌کند. نکته مهم این است که اگر از <code>this(...)</code> استفاده می‌کنید، باید <strong>اولین دستور</strong> در بدنه سازنده باشد.
+        </p>
+
+        <div class="warn-box">
+            <strong>خطاهای رایج در سربارگذاری</strong>
+            فقط تغییر نام پارامترها (مثلاً <code>int a</code> به <code>int b</code>) برای سربارگذاری کافی نیست و خطای کامپایل می‌دهد. همچنین فقط تغییر نوع بازگشتی (که سازنده اصلاً ندارد) مجاز نیست.
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 5 ==================== -->
+<section class="section s5" id="s5">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۵</span>
+            <div>
+                <h2>کپسوله‌سازی (Encapsulation) و private</h2>
+                <p>محافظت از داده‌ها در برابر دستکاری‌های ناخواسته</p>
+            </div>
+        </div>
+
+        <h3>کپسوله‌سازی چیست؟</h3>
+        <p>
+            تصور کنید یک حساب بانکی دارید. اگر تمام اطلاعات و موجودی حساب به‌صورت عمومی در دسترس باشد، هر کسی می‌تواند موجودی را بدون واریز کردن پول، دستکاری کند! کپسوله‌سازی یعنی پنهان کردن داده‌های حساس داخلی و اجازه دادن به دنیای بیرون که فقط از طریق راه‌های مشخص و کنترل‌شده (متدها) با این داده‌ها تعامل کند.
+        </p>
+
+        <div class="def-box">
+            <strong>تعریف</strong>
+            کپسوله‌سازی اولین ستون OOP است و به معنای بسته‌بندی داده‌ها (فیلدها) و رفتارها (متدها) در یک واحد (کلاس) و محدود کردن دسترسی مستقیم به داده‌ها از خارج کلاس است.
+        </div>
+
+        <h3>تعیین‌کننده‌های دسترسی (Access Modifiers)</h3>
+        <p>
+            جاوا چهار سطح دسترسی اصلی دارد، اما تمرکز ما در این هفته روی دو مورد اصلی است:
+        </p>
+        <ul class="dot-list">
+            <li><strong><code>public</code>:</strong> همه‌جا قابل دسترسی است (مثل درِ ورودی مغازه).</li>
+            <li><strong><code>private</code>:</strong> فقط داخل همان کلاس قابل دسترسی است (مثل گاوصندوق مغازه).</li>
+            <li><strong><code>protected</code>:</strong> همان پکیج و کلاس‌های فرزند (در هفته‌های بعد توضیح داده می‌شود).</li>
+            <li><strong>Default (بدون کلمه کلیدی):</strong> فقط در همان پکیج قابل دسترسی است.</li>
+        </ul>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — دسترسی مستقیم ممنوع!</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">class</span> BankAccount {
+    <span class="tok-kw">private double</span> balance; <span class="tok-com">// فقط داخل این کلاس قابل دسترسی است</span>
+
+    BankAccount(<span class="tok-kw">double</span> initial) {
+        <span class="tok-kw">if</span> (initial >= <span class="tok-num">0</span>) {
+            <span class="tok-kw">this</span>.balance = initial;
+        }
+    }
+}
+
+<span class="tok-kw">class</span> Demo {
+    <span class="tok-kw">public static void</span> <span class="tok-fn">main</span>(String[] args) {
+        BankAccount acc = <span class="tok-kw">new</span> BankAccount(<span class="tok-num">100</span>);
+        <span class="tok-com">// acc.balance = -500; // خطای کامپایل! دسترسی غیرمجاز</span>
+    }
+}</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>نکته مهم</strong>
+            <code>private</code> کردن فیلدها به‌تنهایی کافی نیست. اگر برای تغییر آن‌ها هیچ راهی نگذارید، شیء شما بی‌فایده می‌شود. راه صحیح، ساختن متدهای Getter و Setter است.
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 6 ==================== -->
+<section class="section s6" id="s6">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۶</span>
+            <div>
+                <h2>متدهای Getter و Setter</h2>
+                <p>پل‌های ارتباطی امن با داده‌های خصوصی</p>
+            </div>
+        </div>
+
+        <h3>Getter و Setter چه کاری انجام می‌دهند؟</h3>
+        <p>
+            متدهای <strong>Getter</strong> (گیرنده) برای خواندن مقدار یک فیلد خصوصی استفاده می‌شوند. متدهای <strong>Setter</strong> (تنظیم‌کننده) برای تغییر مقدار آن به کار می‌روند. Setterها این امکان را به ما می‌دهند که قبل از ذخیره مقدار جدید، آن را بررسی کنیم (اعتبارسنجی یا Validation).
+        </p>
+
+        <h3>قرارداد نام‌گذاری استاندارد</h3>
+        <p>
+            در جاوا، استاندارد (JavaBeans) این است که نام Getter با <code>get</code> شروع شود و نام فیلد با حرف بزرگ ادامه یابد (مثلاً <code>getName</code>). برای فیلدهای boolean از <code>is</code> استفاده می‌شود (مثلاً <code>isActive</code>). Setterها با <code>set</code> شروع می‌شوند (مثلاً <code>setName</code>).
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — کپسوله‌سازی کامل</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code><span class="tok-kw">class</span> Student {
+    <span class="tok-kw">private</span> String name;
+    <span class="tok-kw">private int</span> age;
+
+    Student(String name, <span class="tok-kw">int</span> age) {
+        <span class="tok-kw">this</span>.name = name;
+        setAge(age); <span class="tok-com">// استفاده از متد برای اعتبارسنجی حتی در سازنده</span>
+    }
+
+    <span class="tok-com">// Getter</span>
+    <span class="tok-kw">public</span> String <span class="tok-fn">getName</span>() {
+        <span class="tok-kw">return</span> name;
+    }
+
+    <span class="tok-kw">public int</span> <span class="tok-fn">getAge</span>() {
+        <span class="tok-kw">return</span> age;
+    }
+
+    <span class="tok-com">// Setter با اعتبارسنجی</span>
+    <span class="tok-kw">public void</span> <span class="tok-fn">setName</span>(String name) {
+        <span class="tok-kw">if</span> (name != <span class="tok-kw">null</span> &amp;&amp; !name.isBlank()) {
+            <span class="tok-kw">this</span>.name = name;
+        }
+    }
+
+    <span class="tok-kw">public boolean</span> <span class="tok-fn">setAge</span>(<span class="tok-kw">int</span> age) {
+        <span class="tok-kw">if</span> (age &lt; <span class="tok-num">0</span> || age &gt; <span class="tok-num">120</span>) {
+            <span class="tok-kw">return false</span>; <span class="tok-com">// رد کردن مقدار نامعتبر</span>
+        }
+        <span class="tok-kw">this</span>.age = age;
+        <span class="tok-kw">return true</span>;
+    }
+}</code></pre>
+        </div>
+
+        <div class="warn-box">
+            <strong>Setter همیشه لازم نیست</strong>
+            اگر قرار نیست یک فیلد بعد از ساخت شیء تغییر کند (مثل شماره حساب بانکی)، نیازی به Setter برای آن نیست. فقط Getter کافی است تا شیء شما «فقط‌خواندنی» (Read-only) شود.
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 7 ==================== -->
+<section class="section s7" id="exercises">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۷</span>
+            <div>
+                <h2>تمرین‌ها و پروژه‌های عملی</h2>
+                <p>تثبیت مفاهیم با چالش‌های واقعی</p>
+            </div>
+        </div>
+
+        <!-- پروژه ۱ -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge project">پروژه کارگاهی</span>
+                <h3>سیستم حساب بانکی (BankAccount)</h3>
+            </div>
+            <p class="ex-desc">
+                یک کلاس <code>BankAccount</code> طراحی کنید. فیلدها باید شامل شماره حساب (String)، نام صاحب حساب (String) و موجودی (double) باشند. همه فیلدها باید کپسوله (private) شوند. متد <code>deposit(double amount)</code> برای واریز و <code>withdraw(double amount)</code> برای برداشت بنویسید.
+            </p>
+            <div class="algo">
+                <strong style="display:block;margin-bottom:6px;color:var(--tc);">قوانین منطقی</strong>
+                <ol>
+                    <li>موجودی حساب هرگز نباید منفی شود.</li>
+                    <li>مبلغ واریز باید بزرگ‌تر از صفر باشد.</li>
+                    <li>مبلغ برداشت نباید بیشتر از موجودی فعلی باشد.</li>
+                </ol>
+            </div>
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">کلاس را با سه فیلد private تعریف کنید. برای موجودی یک Getter بسازید اما Setter نگذارید (تا از بیرون مستقیماً تغییر نکند).</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">یک سازنده (Constructor) بنویسید تا هنگام ساخت حساب، شماره حساب و نام مالک مشخص شوند و موجودی اولیه صفر یا مقدار معتبر داده شود.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">در متد <code>deposit</code>، ابتدا بررسی کنید که آیا مبلغ بزرگ‌تر از صفر است یا خیر. اگر بود، به موجودی اضافه کنید.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">در متد <code>withdraw</code>، ابتدا بررسی کنید که مبلغ بزرگ‌تر از صفر و کوچک‌تر یا مساوی موجودی باشد. در صورت موفقیت، مبلغ را از موجودی کم کنید.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">در متد main یک شیء بسازید، چند واریز و برداشت انجام دهید و سعی کنید با برداشت بیش از حد، سیستم را به چالش بکشید.</div></li>
+                    </ol>
+                </div>
+            </details>
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>اشتباهات رایج</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>فراموش کردن بررسی منفی بودن:</strong> اگر مبلغ ورودی منفی باشد، در متد deposit موجودی کم می‌شود. حتماً شرط <code>amount > 0</code> را بگذارید.</li>
+                        <li><strong>اجازه برداشت بیش از موجودی:</strong> اگر موجودی ۵۰ است و کاربر درخواست برداشت ۱۰۰ می‌کند، برنامه نباید موجودی را ۵۰- کند.</li>
+                        <li><strong>تنظیم مستقیم موجودی در main:</strong> اگر برای موجودی Setter بگذارید، کد بیرونی می‌تواند قانون را دور بزند. فقط Getter بگذارید و تغییرات را از طریق deposit/withdraw انجام دهید.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <!-- تمرین ۱ -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۱</span>
+                <h3>طراحی کلاس محصول (Product)</h3>
+            </div>
+            <p class="ex-desc">
+                برای یک فروشگاه اینترنتی یک کلاس <code>Product</code> بسازید. ویژگی‌ها شامل شناسه (int)، نام (String)، قیمت (double) و موجودی انبار (int) است. تمام فیلدها کپسوله شوند. متدهایی برای افزایش موجودی و اعمال تخفیف درصدی روی قیمت بنویسید.
+            </p>
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">کلاس را با فیلدهای private تعریف کرده و برای همه Getter بگذارید. برای قیمت و موجودی Setter مستقیم نگذارید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">متد <code>increaseStock(int amount)</code> بسازید که فقط مقادیر مثبت را قبول کند و به موجودی اضافه کند.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">متد <code>applyDiscount(double percent)</code> بسازید. بررسی کنید درصد بین ۰ تا ۱۰۰ باشد. سپس قیمت جدید را محاسبه کنید: <code>price = price - (price * percent / 100)</code>.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">در main یک شیء بسازید و سناریوهای مختلف (درصد منفی، درصد بالای ۱۰۰) را تست کنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>اشتباهات رایج</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>تخفیف نامعتبر:</strong> اگر درصد تخفیف ۱۵۰ باشد، قیمت منفی می‌شود. حتماً محدوده را چک کنید.</li>
+                        <li><strong>استفاده از Setter برای قیمت:</strong> اگر Setter عمومی بگذارید، کاربر می‌تواند قیمت را دستی به ۰ تغییر دهد. تغییر قیمت فقط باید از طریق متد تخفیف باشد.</li>
+                        <li><strong>عدم بررسی ورودی موجودی:</strong> افزایش موجودی با عدد منفی در واقع یعنی کاهش موجودی. باید جلوی آن گرفته شود.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <!-- تمرین ۲ -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۲</span>
+                <h3>کپی ارجاع و بررسی حافظه</h3>
+            </div>
+            <p class="ex-desc">
+                یک کلاس ساده <code>Book</code> با فیلدهای <code>title</code> و <code>author</code> بسازید. دو شیء متفاوت بسازید. سپس ارجاع شیء دوم را به یک متغیر سوم بدهید و از طریق متغیر سوم، عنوان را تغییر دهید. با چاپ مقادیر، ثابت کنید که شیء دوم تغییر کرده اما شیء اول دست‌نخورده مانده است.
+            </p>
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">کلاس <code>Book</code> را با فیلدهای public (برای ساده‌تر بودن این تمرین خاص) بسازید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">در main دو شیء <code>b1</code> و <code>b2</code> بسازید و عنوان‌های متفاوت بدهید.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">متغیر <code>b3 = b2</code> را تعریف کنید.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">مقدار <code>b3.title</code> را تغییر دهید.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">عنوان <code>b1</code> و <code>b2</code> را چاپ کنید و ببینید که <code>b2</code> تغییر کرده ولی <code>b1</code> نه. دلیل آن را بر اساس Stack و Heap توضیح دهید.</div></li>
+                    </ol>
+                </div>
+            </details>
+        </div>
+
+        <!-- تمرین ۳ -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۳</span>
+                <h3>شکار خطای NullPointerException</h3>
+            </div>
+            <p class="ex-desc">
+                برنامه‌ای بنویسید که یک شیء از کلاس <code>Student</code> را تعریف کند اما آن را با <code>new</code> نسازد (یعنی null باشد). سپس سعی کنید نام آن را چاپ کنید تا خطا را ببینید. سپس برنامه را طوری اصلاح کنید که خطا رخ ندهد و پیام مناسبی چاپ شود.
+            </p>
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">کلاس <code>Student</code> را با یک فیلد <code>name</code> بسازید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">در main بنویسید: <code>Student s = null;</code> و سپس <code>System.out.println(s.name);</code></div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">برنامه را اجرا کنید و پیام خطا را در کنسول ببینید (Stack Trace).</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">کد را اصلاح کنید: یک شرط <code>if (s != null)</code> اضافه کنید یا شیء را با <code>new Student()</code> مقداردهی کنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+        </div>
+
+        <!-- تمرین ۴ -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۴</span>
+                <h3>مقایسه سربارگذاری سازنده</h3>
+            </div>
+            <p class="ex-desc">
+                کلاسی به نام <code>Course</code> طراحی کنید که سه سازنده داشته باشد: یکی بدون پارامتر (نام: "نامشخص")، یکی فقط با نام درس، و یکی با نام و تعداد واحدها. با استفاده از <code>this(...)</code> از تکرار کد جلوگیری کنید. هر سه حالت را در main تست کنید.
+            </p>
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">کلاس را با فیلدهای <code>name</code> و <code>credits</code> تعریف کنید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">سازنده سه‌پارامتری را به‌عنوان سازنده اصلی بنویسید که مقادیر را تنظیم می‌کند.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">در سازنده تک‌پارامتری بنویسید: <code>this(name, 3)</code> (۳ واحد پیش‌فرض).</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">در سازنده بدون پارامتر بنویسید: <code>this("نامشخص", 0)</code>.</div></li>
+                    </ol>
+                </div>
+            </details>
+        </div>
+
+        <!-- تمرین ۵ -->
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۵</span>
+                <h3>فقط‌خواندنی کردن داده‌ها (Read-Only)</h3>
+            </div>
+            <p class="ex-desc">
+                کلاسی برای یک کارمند (<code>Employee</code>) طراحی کنید که شماره پرسنلی او پس از ساخت هرگز نباید تغییر کند. برای شماره پرسنلی فقط Getter بگذارید و هیچ Setter ننویسید. متد main را طوری بنویسید که ثابت کند امکان تغییر مستقیم وجود ندارد.
+            </p>
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">فیلد <code>employeeId</code> را private تعریف کنید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">در سازنده، مقدار آن را تنظیم کنید.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">متد Getter بسازید اما Setter نگذارید.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">در main تلاش کنید مقدار فیلد را تغییر دهید و ببینید که کامپایلر خطا می‌دهد.</div></li>
+                    </ol>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SECTION 8 ==================== -->
+<section class="section s8" id="qa">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۸</span>
+            <div>
+                <h2>پرسش و پاسخ</h2>
+                <p>پاسخ به ابهامات رایج دانشجویان</p>
+            </div>
+        </div>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                <span>پرسش: تفاوت دقیق بین کلاس و شیء چیست؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> کلاس یک «نقشه» یا قالب است. خودش در حافظه RAM شیء واقعی ندارد. شیء «نمونه» ساخته‌شده از روی آن نقشه است که دارای فضای واقعی در حافظه (Heap) است. شما می‌توانید از روی یک کلاس، هزاران شیء با ویژگی‌های متفاوت بسازید.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                <span>پرسش: آیا هر کلاس حتماً باید سازنده داشته باشد؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> خیر. اگر شما هیچ سازنده‌ای ننویسید، جاوا به‌طور خودکار یک «سازنده پیش‌فرض» بدون پارامتر برای شما می‌سازد که فیلدها را با مقادیر پیش‌فرض (مثل 0 و null) پر می‌کند. اما اگر خودتان یک سازنده بنویسید، دیگر خبری از سازنده پیش‌فرض خودکار نیست.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                <span>پرسش: چرا باید از private استفاده کنیم؟ مگر public راحت‌تر نیست؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> public راحت است اما خطرناک. اگر فیلدی public باشد، هر بخشی از برنامه می‌تواند مقدار نامعتبر به آن بدهد (مثلاً سن منفی). با private کردن فیلد و استفاده از Setter، شما کنترل می‌کنید که فقط داده‌های صحیح و منطقی وارد شیء شوند.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                <span>پرسش: چرا وقتی اینتلیجی می‌گوید getAge، من باید تایپ کنم؟ نمی‌شود فیلد را public کرد؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> در محیط‌های توسعه مثل IntelliJ، با زدن کلیدهای میانبر (Alt+Insert) می‌توانید تمام Getter و Setterها را در یک ثانیه تولید کنید. پس تایپ دستی لازم نیست. مزیت بزرگ Getter و Setter این است که بعداً می‌توانید درون آن‌ها منطق (مثل اعتبارسنجی یا لاگ‌گذاری) اضافه کنید بدون اینکه کدهای بیرونی به‌هم بریزند.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                <span>پرسش: تفاوت this.name و name در یک متد چیست؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> <code>this.name</code> به فیلد (متغیر عضو) کلاس اشاره می‌کند. <code>name</code> ساده به متغیر محلی (پارامتر) اشاره می‌کند. وقتی نام پارامتر با نام فیلد یکی باشد، برای جلوگیری از سردرگمی و مقداردهی درست، باید از this استفاده کنید.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                <span>پرسش: اگر یک شیء را برابر null بگذارم، آیا آن شیء از حافظه پاک می‌شود؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> شما فقط ارتباط متغیر خود را با شیء قطع کرده‌اید. شیء در حافظه Heap باقی می‌ماند تا زمانی که Garbage Collector (زباله‌روب جاوا) آن را پیدا کرده و فضای حافظه را آزاد کند. این فرآیند خودکار است و شما نیازی به مدیریت دستی حافظه ندارید.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                <span>پرسش: آیا سازنده‌ها می‌توانند private باشند؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> بله. اگر سازنده‌ای private باشد، فقط خود کلاس می‌تواند از آن استفاده کند و کدهای بیرونی نمی‌توانند مستقیماً شیء بسازند. این تکنیک در الگوی طراحی Singleton (ساخت تنها یک نمونه از کلاس) بسیار استفاده می‌شود.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                <span>پرسش: چرا کلاس String در جاوا با اینکه ارجاعی است، مثل نوع اولیه رفتار می‌کند؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> String در جاوا یک کلاس تغییرناپذیر (Immutable) است و در String Pool نگهداری می‌شود. این طراحی خاص باعث می‌شود جاوا بتواند در مصرف حافظه صرفه‌جویی کند. اما همچنان یک نوع ارجاعی است و با null برابر می‌شود و در Heap نگه داشته می‌شود.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                <span>پرسش: اگر برای فیلدی هم Getter بگذارم هم Setter، آیا هنوز کپسوله‌سازی محسوب می‌شود؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> بله، اما کیفیت آن پایین است. کپسوله‌سازی واقعی یعنی کنترل. اگر Getter و Setter بدون هیچ منطق و اعتبارسنجی باشند، در واقع همان دسترسی مستقیم public را شبیه‌سازی کرده‌اید با کد اضافه. بهترین کار این است که در Setter منطق مناسب (مثل بررسی محدوده) بگذارید.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                <span>پرسش: چه زمانی باید از Setter استفاده نکنم و فیلد را فقط‌خواندنی بگذارم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> هر زمان که داده هویتی و شناسایی‌کننده باشد (مثل شماره حساب بانکی، کد ملی، شماره پرسنلی، تاریخ تولد). این داده‌ها نباید پس از ساخته شدن شیء تغییر کنند، بنابراین فقط Getter گذاشتن و پرهیز از Setter طراحی ایمن‌تری است.</p>
+            </div>
+        </details>
+    </div>
+</section>
+
+<!-- ==================== SECTION 9 ==================== -->
+<section class="section s9" id="summary">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۹</span>
+            <div>
+                <h2>جمع‌بندی و نکات کلیدی</h2>
+                <p>مرور فشرده هفته پنجم</p>
+            </div>
+        </div>
+
+        <div class="cheat">
+            <h3>کلاس و شیء</h3>
+            <ul class="dot-list">
+                <li>کلاس نقشه (Blueprint) و شیء نمونه واقعی ساخته‌شده از روی آن است.</li>
+                <li>شیءها با استفاده از کلمه کلیدی <code>new</code> در حافظه Heap ساخته می‌شوند.</li>
+                <li>هر شیء دارای وضعیت مستقل خود است، حتی اگر از یک کلاس باشند.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>حافظه و ارجاع‌ها</h3>
+            <ul class="dot-list">
+                <li>انواع داده اولیه (int, double) مقدار خود را در Stack نگه می‌دارند.</li>
+                <li>انواع داده ارجاعی (کلاس‌ها) آدرس شیء در Stack و خود شیء را در Heap نگه می‌دارند.</li>
+                <li><code>null</code> به معنای نبودن ارجاع است و دسترسی به فیلد آن باعث <code>NullPointerException</code> می‌شود.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>سازنده‌ها (Constructors)</h3>
+            <ul class="dot-list">
+                <li>متدی ویژه برای مقداردهی اولیه است، هم‌نام کلاس است و نوع بازگشتی ندارد.</li>
+                <li>با استفاده از <code>this()</code> می‌توان از یک سازنده دیگر در همان کلاس استفاده کرد تا کد تکراری کاهش یابد.</li>
+                <li>سربارگذاری سازنده یعنی چند سازنده با پارامترهای متفاوت.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>کپسوله‌سازی</h3>
+            <ul class="dot-list">
+                <li>پنهان کردن داده‌ها با کلمه کلیدی <code>private</code> برای جلوگیری از دسترسی مستقیم.</li>
+                <li>استفاده از متدهای <code>Getter</code> برای خواندن و <code>Setter</code> برای تغییر کنترل‌شده.</li>
+                <li>Setterها باید شامل منطق اعتبارسنجی (Validation) باشند تا از خراب شدن وضعیت شیء جلوگیری شود.</li>
+                <li>همه فیلدها نیاز به Setter ندارند (فیلدهای فقط‌خواندنی).</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="container">
+        <p><strong>هفته پنجم</strong> — کلاس، شیء، سازنده‌ها و کپسوله‌سازی</p>
+    </div>
+</footer>
+
+<button id="toTop" title="بازگشت به بالای صفحه" aria-label="بازگشت به بالای صفحه">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+    <span class="toTop-text">بازگشت به بالا</span>
+</button>
+
+<script>
+(function () {
+    const root = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+
+    const saved = localStorage.getItem('java-guide-theme');
+    if (saved === 'dark') apply('dark');
+
+    function apply(mode) {
+        if (mode === 'dark') {
+            root.setAttribute('data-theme', 'dark');
+            icon.textContent = '☀️';
+            label.textContent = 'تم روشن';
+        } else {
+            root.removeAttribute('data-theme');
+            icon.textContent = '🌙';
+            label.textContent = 'تم تاریک';
+        }
+    }
+
+    btn.addEventListener('click', function () {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        const next = isDark ? 'light' : 'dark';
+        apply(next);
+        localStorage.setItem('java-guide-theme', next);
+    });
+})();
+
+(function () {
+    const btn = document.getElementById('toTop');
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 400) btn.classList.add('show');
+        else btn.classList.remove('show');
+    });
+    btn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+})();
+
+(function () {
+    function esc(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    const KEYWORDS = new Set([
+        'abstract','assert','boolean','break','byte','case','catch','char','class','const',
+        'continue','default','do','double','else','enum','extends','final','finally','float',
+        'for','if','implements','import','instanceof','int','interface','long','native','new',
+        'package','private','protected','public','return','short','static','strictfp','super',
+        'switch','synchronized','this','throw','throws','transient','try','void','volatile',
+        'while','true','false','null','var','yield',
+        'String','StringBuilder','System','Scanner','Math','Integer','Double','Character','Boolean','Arrays'
+    ]);
+
+    function highlight(code) {
+        const re = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|\b(\d+(?:\.\d+)?[fFdDlL]?)\b|\b([A-Za-z_$][\w$]*)\b/g;
+        let out = '', last = 0, m;
+        while ((m = re.exec(code)) !== null) {
+            out += esc(code.slice(last, m.index));
+            const full = m[0];
+            if (m[1])      out += '<span class="tok-com">' + esc(full) + '</span>';
+            else if (m[2]) out += '<span class="tok-str">' + esc(full) + '</span>';
+            else if (m[3]) out += '<span class="tok-num">' + esc(full) + '</span>';
+            else if (m[4] && KEYWORDS.has(m[4])) out += '<span class="tok-kw">' + esc(full) + '</span>';
+            else           out += esc(full);
+            last = re.lastIndex;
+        }
+        out += esc(code.slice(last));
+        return out;
+    }
+
+    document.querySelectorAll('pre code').forEach(function (block) {
+        if (block.querySelector('span')) return;
+        const raw = block.textContent;
+        block.innerHTML = highlight(raw);
+    });
+})();
+
+(function () {
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const code = btn.closest('.code-block').querySelector('code').innerText;
+            const done = function () {
+                const original = btn.textContent;
+                btn.textContent = 'کپی شد ✓';
+                btn.style.background = '#10b981';
+                btn.style.borderColor = '#10b981';
+                btn.style.color = '#fff';
+                setTimeout(function () {
+                    btn.textContent = original;
+                    btn.style.background = '';
+                    btn.style.borderColor = '';
+                    btn.style.color = '';
+                }, 1500);
+            };
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(code).then(done).catch(function () { fallback(code, done); });
+            } else {
+                fallback(code, done);
+            }
+        });
+    });
+
+    function fallback(text, cb) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); cb(); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+    }
+})();
+</script>
+
+</body>
+</html>
