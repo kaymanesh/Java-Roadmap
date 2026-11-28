@@ -1,0 +1,3368 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>هفته چهارم جاوا — آرایه‌ها، متدها، رشته‌ها و عیب‌یابی</title>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #ffffff;
+    --bg-soft: #f8fafc;
+    --bg-card: #ffffff;
+    --text: #1e293b;
+    --text-soft: #475569;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --primary: #4f46e5;
+    --primary-soft: #eef2ff;
+
+    --sec-1: #2563eb;
+    --sec-2: #059669;
+    --sec-3: #d97706;
+    --sec-4: #7c3aed;
+    --sec-5: #e11d48;
+    --sec-6: #0891b2;
+    --sec-7: #c026d3;
+    --sec-8: #ea580c;
+    --sec-9: #0d9488;
+    --sec-10: #65a30d;
+
+    --code-bg: #0f172a;
+    --code-head: #1e293b;
+    --code-text: #e2e8f0;
+
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, .06);
+    --shadow-md: 0 6px 20px rgba(15, 23, 42, .08);
+}
+
+[data-theme="dark"] {
+    --bg: #0b1220;
+    --bg-soft: #111a2e;
+    --bg-card: #131d35;
+    --text: #e6ecf6;
+    --text-soft: #a9b6cc;
+    --muted: #7f8ba5;
+    --border: #25324d;
+    --border-strong: #34425f;
+    --primary: #818cf8;
+    --primary-soft: #1e2a4a;
+
+    --sec-1: #60a5fa;
+    --sec-2: #34d399;
+    --sec-3: #fbbf24;
+    --sec-4: #c084fc;
+    --sec-5: #fb7185;
+    --sec-6: #22d3ee;
+    --sec-7: #e879f9;
+    --sec-8: #fb923c;
+    --sec-9: #2dd4bf;
+    --sec-10: #a3e635;
+
+    --code-bg: #060c18;
+    --code-head: #0f172a;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, .4);
+    --shadow-md: 0 6px 20px rgba(0, 0, 0, .5);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Vazirmatn', Tahoma, system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.95;
+    font-size: 16px;
+    transition: background-color .25s ease, color .25s ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.hero {
+    padding: 20px 0 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.hero-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-badge {
+    display: inline-block;
+    font-size: .78rem;
+    font-weight: 700;
+    padding: 5px 15px;
+    border-radius: 999px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.theme-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border-strong);
+    background: var(--bg-card);
+    color: var(--text);
+    font-family: inherit;
+    font-size: .8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s ease;
+    white-space: nowrap;
+}
+
+.theme-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.theme-btn .theme-icon { font-size: 1rem; line-height: 1; }
+
+.hero-title {
+    font-size: clamp(1.4rem, 3.8vw, 1.9rem);
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: -.4px;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.hero-subtitle {
+    font-size: .92rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.hero-desc {
+    font-size: .95rem;
+    color: var(--text-soft);
+    line-height: 2;
+    text-align: justify;
+    margin-bottom: 18px;
+}
+
+.goal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-inline-start: 4px solid var(--primary);
+    border-radius: 12px;
+    padding: 14px 18px;
+    box-shadow: var(--shadow-sm);
+    font-size: .93rem;
+    line-height: 1.9;
+    color: var(--text-soft);
+    text-align: justify;
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.goal strong { color: var(--primary); font-weight: 800; }
+
+.toc {
+    margin: 32px 0 10px;
+    padding: 24px 26px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow-sm);
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.toc-title {
+    font-size: 1.02rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+}
+
+.toc-title::before {
+    content: "";
+    width: 5px;
+    height: 20px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #38bdf8, #a855f7);
+}
+
+.toc-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 10px;
+}
+
+.toc-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--text);
+    text-decoration: none;
+    font-size: .87rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.toc-link:hover {
+    border-color: var(--tc, var(--primary));
+    color: var(--tc, var(--primary));
+    transform: translateX(-3px);
+    background: var(--bg-card);
+}
+
+.toc-link .num {
+    flex: 0 0 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--tc, var(--primary));
+    color: #fff;
+    font-weight: 800;
+    font-size: .82rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .15);
+}
+
+.section { margin: 44px 0; scroll-margin-top: 20px; }
+
+.sec-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+}
+
+.sec-num {
+    flex: 0 0 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 15px;
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 800;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+    background: var(--tc, var(--primary));
+}
+
+.sec-head h2 {
+    font-size: clamp(1.15rem, 3vw, 1.4rem);
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 2px;
+    text-align: right;
+}
+
+.sec-head p {
+    color: var(--muted);
+    font-size: .82rem;
+    margin: 0;
+    text-align: right;
+}
+
+.section.s1 { --tc: var(--sec-1); }
+.section.s2 { --tc: var(--sec-2); }
+.section.s3 { --tc: var(--sec-3); }
+.section.s4 { --tc: var(--sec-4); }
+.section.s5 { --tc: var(--sec-5); }
+.section.s6 { --tc: var(--sec-6); }
+.section.s7 { --tc: var(--sec-7); }
+.section.s8 { --tc: var(--sec-8); }
+.section.s9 { --tc: var(--sec-9); }
+.section.s10 { --tc: var(--sec-10); }
+
+h3 {
+    font-size: 1.08rem;
+    font-weight: 800;
+    margin: 28px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    text-align: right;
+}
+
+h3::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--tc, var(--primary));
+    box-shadow: 0 0 0 4px var(--primary-soft);
+    flex-shrink: 0;
+}
+
+h4 {
+    font-size: .95rem;
+    font-weight: 800;
+    margin: 20px 0 8px;
+    color: var(--tc, var(--primary));
+    text-align: right;
+}
+
+p { margin-bottom: 14px; color: var(--text-soft); text-align: justify; }
+
+ol.steps {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+}
+
+ol.steps > li {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+    color: var(--text-soft);
+    font-size: .94rem;
+    line-height: 1.85;
+}
+
+ol.steps > li:last-child { border-bottom: none; }
+
+ol.steps .step-num {
+    flex: 0 0 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--primary-soft);
+    color: var(--tc, var(--primary));
+    font-size: .82rem;
+    font-weight: 800;
+    margin-top: 3px;
+}
+
+ol.steps .step-body { flex: 1; }
+
+ul.dot-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0;
+}
+
+ul.dot-list > li {
+    position: relative;
+    padding-right: 22px;
+    margin-bottom: 8px;
+    color: var(--text-soft);
+    font-size: .94rem;
+    line-height: 1.85;
+}
+
+ul.dot-list > li::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 11px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--tc, var(--primary));
+}
+
+.def-box, .tip-box, .warn-box, .info-box, .danger-box {
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: .93rem;
+    line-height: 1.9;
+    color: var(--text-soft);
+}
+
+.def-box { background: var(--primary-soft); border-inline-start: 4px solid var(--primary); }
+.tip-box { background: rgba(16, 185, 129, .08); border-inline-start: 4px solid #10b981; }
+.warn-box { background: rgba(245, 158, 11, .10); border-inline-start: 4px solid #f59e0b; }
+.info-box { background: rgba(59, 130, 246, .08); border-inline-start: 4px solid #3b82f6; }
+.danger-box { background: rgba(239, 68, 68, .08); border-inline-start: 4px solid #ef4444; }
+
+[data-theme="dark"] .tip-box { background: rgba(16, 185, 129, .12); }
+[data-theme="dark"] .warn-box { background: rgba(245, 158, 11, .12); }
+[data-theme="dark"] .info-box { background: rgba(59, 130, 246, .12); }
+[data-theme="dark"] .danger-box { background: rgba(239, 68, 68, .12); }
+
+.def-box strong { color: var(--primary); font-weight: 700; }
+.tip-box strong { color: #059669; font-weight: 700; }
+.warn-box strong { color: #b45309; font-weight: 700; }
+.info-box strong { color: #1d4ed8; font-weight: 700; }
+.danger-box strong { color: #b91c1c; font-weight: 700; }
+
+.def-box > strong:first-child,
+.tip-box > strong:first-child,
+.warn-box > strong:first-child,
+.info-box > strong:first-child,
+.danger-box > strong:first-child {
+    display: block;
+    margin-bottom: 5px;
+    font-size: .87rem;
+    font-weight: 800;
+}
+
+.code-block {
+    background: var(--code-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 16px 0;
+    border: 1px solid #1e293b;
+    box-shadow: var(--shadow-md);
+    position: relative;
+}
+
+.code-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 16px;
+    background: var(--code-head);
+    border-bottom: 1px solid #334155;
+}
+
+.code-lang {
+    font-family: 'JetBrains Mono', Consolas, monospace;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.code-lang::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #f59e0b;
+    box-shadow: 15px 0 0 #10b981, 30px 0 0 #ef4444;
+    margin-inline-end: 30px;
+}
+
+.copy-btn {
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: .72rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    background: #334155;
+    border: 1px solid #475569;
+    padding: 4px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.copy-btn:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+.copy-btn:active { transform: scale(.96); }
+
+pre {
+    padding: 18px 20px;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    font-size: .85rem;
+    line-height: 1.8;
+    tab-size: 4;
+    -webkit-overflow-scrolling: touch;
+}
+
+pre code {
+    font-family: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace;
+    color: var(--code-text);
+    white-space: pre;
+}
+
+pre::-webkit-scrollbar { height: 8px; }
+pre::-webkit-scrollbar-track { background: #1e293b; }
+pre::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+
+.tok-kw  { color: #c084fc; font-weight: 600; }
+.tok-str { color: #86efac; }
+.tok-num { color: #fbbf24; }
+.tok-com { color: #64748b; font-style: italic; }
+.tok-fn  { color: #7dd3fc; }
+
+:not(pre) > code {
+    font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+    background: var(--bg-soft);
+    color: #be185d;
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: .85em;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    white-space: nowrap;
+    display: inline-block;
+    direction: ltr;
+    vertical-align: middle;
+}
+
+[data-theme="dark"] :not(pre) > code {
+    background: rgba(244, 114, 182, .12);
+    color: #f9a8d4;
+    border-color: rgba(244, 114, 182, .25);
+}
+
+.table-wrap {
+    overflow-x: auto;
+    margin: 16px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+    min-width: 480px;
+}
+
+thead th {
+    background: var(--bg-soft);
+    padding: 12px 14px;
+    text-align: right;
+    font-weight: 800;
+    color: var(--text);
+    font-size: .84rem;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+}
+
+tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-soft);
+    text-align: right;
+    vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-soft); }
+td code { font-size: .82em; }
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+}
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow-sm);
+    transition: all .22s ease;
+}
+
+.card:hover {
+    border-color: var(--tc, var(--primary));
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.card h4 {
+    margin: 0 0 6px;
+    font-size: .92rem;
+    color: var(--tc, var(--primary));
+}
+
+.card p { font-size: .87rem; margin: 0; line-height: 1.8; text-align: right; }
+
+details {
+    margin: 12px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-card);
+    overflow: hidden;
+}
+
+details.acc-guide { --acc-color: var(--primary); --acc-bg: var(--primary-soft); }
+details.acc-mistakes { --acc-color: #d97706; --acc-bg: rgba(245, 158, 11, .10); }
+details.acc-qa { --acc-color: #059669; --acc-bg: rgba(16, 185, 129, .08); }
+
+[data-theme="dark"] details.acc-mistakes { --acc-bg: rgba(245, 158, 11, .14); }
+[data-theme="dark"] details.acc-qa { --acc-bg: rgba(16, 185, 129, .12); }
+
+details summary {
+    cursor: pointer;
+    padding: 13px 18px;
+    font-size: .9rem;
+    font-weight: 800;
+    color: var(--acc-color);
+    background: var(--acc-bg);
+    list-style: none;
+    user-select: none;
+    transition: background .2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+.chev {
+    flex-shrink: 0;
+    color: var(--acc-color);
+    transition: transform .3s ease;
+    transform: rotate(0deg);
+    display: block;
+}
+
+details[open] .chev { transform: rotate(-90deg); }
+
+summary:hover { filter: brightness(.96); }
+
+.details-content {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+}
+
+.details-content > *:last-child { margin-bottom: 0; }
+.details-content ol.steps { margin: 0; }
+.details-content ul.dot-list { margin: 0; }
+
+details.acc-qa .details-content {
+    border-inline-start: 3px solid #ef4444;
+    background: rgba(239, 68, 68, .03);
+    padding-inline-start: 16px;
+}
+
+[data-theme="dark"] details.acc-qa .details-content {
+    background: rgba(239, 68, 68, .08);
+}
+
+details.acc-qa .details-content p {
+    margin: 0;
+    font-size: .92rem;
+    line-height: 1.9;
+    text-align: justify;
+}
+
+details.acc-qa .details-content p strong {
+    color: #dc2626;
+    font-weight: 800;
+    margin-inline-end: 4px;
+}
+
+.ex-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .25s ease, background-color .25s ease;
+}
+
+.ex-card:hover { box-shadow: var(--shadow-md); }
+
+.ex-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.ex-badge {
+    font-size: .72rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.ex-badge.project { background: rgba(225, 29, 72, .12); color: #e11d48; }
+.ex-badge.homework { background: rgba(37, 99, 235, .12); color: #2563eb; }
+
+[data-theme="dark"] .ex-badge.project { background: rgba(251, 113, 133, .18); color: #fb7185; }
+[data-theme="dark"] .ex-badge.homework { background: rgba(96, 165, 250, .18); color: #60a5fa; }
+
+.ex-head h3 {
+    margin: 0;
+    font-size: 1rem;
+    flex: 1;
+    min-width: 200px;
+    text-align: right;
+}
+
+.ex-head h3::before { display: none; }
+
+.ex-desc {
+    font-size: .92rem;
+    color: var(--text-soft);
+    line-height: 1.9;
+    margin-bottom: 12px;
+    text-align: justify;
+}
+
+.algo {
+    background: var(--bg-soft);
+    border: 1px dashed var(--tc, var(--primary));
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 14px 0;
+}
+
+.algo ol { margin: 0; padding-inline-start: 20px; }
+
+.algo li {
+    font-size: .9rem;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+    line-height: 1.8;
+}
+
+.algo li:last-child { margin-bottom: 0; }
+
+.cheat {
+    background: linear-gradient(135deg, var(--primary-soft), rgba(14, 165, 233, .06));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin: 24px 0;
+}
+
+.cheat h3 { margin-top: 0; }
+.cheat ul.dot-list { margin-bottom: 0; }
+
+.arr-viz {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin: 20px 0;
+    padding: 16px;
+    background: var(--bg-soft);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    direction: ltr;
+}
+
+.arr-cells {
+    display: flex;
+    gap: 0;
+}
+
+.arr-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1.5px solid var(--border-strong);
+    min-width: 62px;
+    border-right: none;
+    background: var(--bg-card);
+}
+
+.arr-cell:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+.arr-cell:last-child { border-right: 1.5px solid var(--border-strong); border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+
+.arr-idx {
+    font-size: .7rem;
+    font-weight: 700;
+    color: var(--muted);
+    padding: 3px 0;
+    border-bottom: 1px solid var(--border);
+    width: 100%;
+    text-align: center;
+    background: var(--bg-soft);
+}
+
+.arr-val {
+    padding: 10px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--text);
+    font-size: .9rem;
+    width: 100%;
+    text-align: center;
+}
+
+.grid2d {
+    display: inline-grid;
+    gap: 5px;
+    margin: 20px 0;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    direction: ltr;
+}
+
+.grid2d .g-cell {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-strong);
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--text);
+    font-size: .82rem;
+}
+
+.site-footer {
+    margin-top: 70px;
+    padding: 24px 0;
+    background: #f1f5f9;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    color: #64748b;
+    font-size: .85rem;
+}
+
+[data-theme="dark"] .site-footer {
+    background: #0a0f1c;
+    border-top-color: #1e293b;
+    color: #94a3b8;
+}
+
+.site-footer p { text-align: center; margin: 0; color: inherit; }
+.site-footer strong { color: #334155; }
+[data-theme="dark"] .site-footer strong { color: #e2e8f0; }
+
+#toTop {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    padding: 12px 20px 12px 16px;
+    border-radius: 999px;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    font-family: inherit;
+    font-size: .85rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(79, 70, 229, .35);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: all .3s ease;
+    z-index: 90;
+}
+
+#toTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+#toTop:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(79, 70, 229, .45);
+}
+
+#toTop svg { flex-shrink: 0; display: block; }
+
+@media (max-width: 640px) {
+    body { font-size: 15px; }
+    .container { padding: 0 14px; }
+    .hero { padding: 14px 0 20px; }
+    .hero-top { margin-bottom: 12px; }
+    .hero-title { font-size: 1.24rem; }
+    .hero-subtitle { font-size: .83rem; margin-bottom: 12px; }
+    .hero-desc { font-size: .9rem; margin-bottom: 14px; }
+    .goal { padding: 12px 14px; font-size: .88rem; }
+    .theme-btn { padding: 6px 10px; font-size: .74rem; }
+    .theme-btn .theme-label { display: none; }
+    .toc { padding: 18px; }
+    .toc-list { grid-template-columns: 1fr; }
+    .sec-head { gap: 12px; padding-bottom: 14px; }
+    .sec-num { flex-basis: 44px; height: 44px; font-size: 1.1rem; border-radius: 12px; }
+    .ex-card { padding: 16px 16px; }
+    pre { padding: 14px 16px; font-size: .78rem; }
+    #toTop { bottom: 16px; right: 16px; padding: 12px; width: 44px; height: 44px; justify-content: center; }
+    #toTop .toTop-text { display: none; }
+    .arr-cell { min-width: 52px; }
+    .grid2d .g-cell { width: 40px; height: 40px; font-size: .78rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="container">
+        <div class="hero-top">
+            <span class="hero-badge">هفته چهارم</span>
+            <button class="theme-btn" id="themeBtn" aria-label="تغییر تم">
+                <span class="theme-icon" id="themeIcon">🌙</span>
+                <span class="theme-label" id="themeLabel">تم تاریک</span>
+            </button>
+        </div>
+        <h1 class="hero-title">آرایه‌ها، متدها، رشته‌ها و عیب‌یابی</h1>
+        <p class="hero-subtitle">جزوه آموزشی زبان برنامه‌نویسی جاوا — دوره مقدماتی</p>
+        <p class="hero-desc">
+            تا اینجا برنامه‌های ما فقط با چند متغیر ساده کار می‌کردند. اما برنامه‌های واقعی با حجم زیادی
+            از داده سروکار دارند. در این هفته یاد می‌گیریم چطور ده‌ها یا صدها مقدار را در یک ساختار
+            منظم نگه داریم، چطور کدهای طولانی را به بخش‌های کوچک و قابل استفاده مجدد بشکنیم، چطور با
+            متن‌ها حرفه‌ای‌تر کار کنیم و در نهایت یاد بگیریم وقتی برنامه رفتار اشتباهی دارد، چطور علت
+            را پیدا کنیم.
+        </p>
+        <div class="goal">
+            <strong>هدف هفته:</strong>
+            ساختاردهی به داده‌های هم‌نوع، تفکیک کد به بخش‌های کوچک قابل استفاده مجدد، کار با متن‌ها
+            و عیب‌یابی کدهای نوشته شده. در پایان این هفته باید بتوانید آرایه‌های یک‌بعدی و دوبعدی
+            بسازید و پیمایش کنید، متدهای خودتان را تعریف کنید، با رشته‌ها و StringBuilder کار کنید و
+            با ابزار Debugger خطاها را پیدا کنید.
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <nav class="toc">
+        <div class="toc-title">فهرست مطالب</div>
+        <div class="toc-list">
+            <a class="toc-link" href="#s1" style="--tc: var(--sec-1)">
+                <span class="num">۱</span> آرایه‌های یک‌بعدی
+            </a>
+            <a class="toc-link" href="#s2" style="--tc: var(--sec-2)">
+                <span class="num">۲</span> آرایه‌های دوبعدی
+            </a>
+            <a class="toc-link" href="#s3" style="--tc: var(--sec-3)">
+                <span class="num">۳</span> متدها
+            </a>
+            <a class="toc-link" href="#s4" style="--tc: var(--sec-4)">
+                <span class="num">۴</span> Overloading و Type Casting
+            </a>
+            <a class="toc-link" href="#s5" style="--tc: var(--sec-5)">
+                <span class="num">۵</span> رشته‌ها (String)
+            </a>
+            <a class="toc-link" href="#s6" style="--tc: var(--sec-6)">
+                <span class="num">۶</span> StringBuilder و String Pool
+            </a>
+            <a class="toc-link" href="#s7" style="--tc: var(--sec-7)">
+                <span class="num">۷</span> Debugger و عیب‌یابی
+            </a>
+            <a class="toc-link" href="#exercises" style="--tc: var(--sec-8)">
+                <span class="num">۸</span> تمرین‌ها و پروژه
+            </a>
+            <a class="toc-link" href="#qa" style="--tc: var(--sec-9)">
+                <span class="num">۹</span> پرسش و پاسخ
+            </a>
+            <a class="toc-link" href="#summary" style="--tc: var(--sec-10)">
+                <span class="num">۱۰</span> جمع‌بندی
+            </a>
+        </div>
+    </nav>
+</div>
+
+<!-- ============================================================
+     بخش ۱ — آرایه‌های یک‌بعدی
+============================================================ -->
+<section class="section s1" id="s1">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۱</span>
+            <div>
+                <h2>آرایه‌های یک‌بعدی</h2>
+                <p>نگهداری چند مقدار هم‌نوع در یک ساختار منظم</p>
+            </div>
+        </div>
+
+        <h3>چرا به آرایه نیاز داریم؟</h3>
+        <p>
+            فرض کنید می‌خواهید نمرات ۳۰ دانشجو را در برنامه ذخیره کنید. اگر بخواهید با متغیرهای
+            ساده کار کنید، باید ۳۰ متغیر با ۳۰ نام مختلف بسازید: <code>score1</code>،
+            <code>score2</code>، تا <code>score30</code>. این کار نه‌تنها خسته‌کننده است، بلکه
+            مدیریتش تقریباً غیرممکن می‌شود. برای محاسبه میانگین باید ۳۰ متغیر را با هم جمع کنید،
+            برای پیدا کردن بالاترین نمره باید ۳۰ بار مقایسه انجام دهید و برای مرتب‌سازی کار
+            پیچیده‌تر هم می‌شود.
+        </p>
+        <p>
+            <strong>آرایه</strong> یک ساختار است که چند مقدار <em>از یک نوع</em> را در یک ردیف
+            کنار هم نگه می‌دارد و با یک نام واحد به همه دسترسی می‌دهد. با آرایه، همان ۳۰ نمره
+            در یک متغیر با نام <code>scores</code> ذخیره می‌شوند و با یک حلقه می‌توان همه‌شان را
+            پردازش کرد.
+        </p>
+
+        <div class="def-box">
+            <strong>تعریف ساده</strong>
+            آرایه مثل یک ردیف جعبه شماره‌دار است. همه جعبه‌ها هم‌جنس‌اند و هر کدام یک شماره
+            (اندیس) دارند. با شماره هر جعبه می‌توانیم مقدار داخلش را بخوانیم یا عوض کنیم. تعداد
+            جعبه‌ها هنگام ساخت مشخص می‌شود و بعد از آن قابل تغییر نیست.
+        </div>
+
+        <h3>سه مرحله ساخت آرایه</h3>
+        <p>
+            هر وقت با آرایه کار می‌کنید، سه مرحله را از هم جدا نگه دارید. این تفکیک، هم درک
+            برنامه را بالا می‌برد و هم در رفع خطا کمک می‌کند.
+        </p>
+
+        <ol class="steps">
+            <li><span class="step-num">۱</span><div class="step-body"><strong>اعلان (Declaration):</strong> یک متغیر تعریف می‌کنیم که می‌تواند به یک آرایه اشاره کند. در این مرحله هنوز هیچ فضایی در حافظه ساخته نشده است.</div></li>
+            <li><span class="step-num">۲</span><div class="step-body"><strong>تخصیص حافظه (Allocation):</strong> با کلمه کلیدی <code>new</code> فضای لازم در حافظه ساخته می‌شود. تعداد خانه‌ها در همین مرحله مشخص می‌شود.</div></li>
+            <li><span class="step-num">۳</span><div class="step-body"><strong>مقداردهی (Initialization):</strong> مقادیر اولیه در خانه‌ها قرار می‌گیرند. این کار می‌تواند هنگام ساخت انجام شود یا بعداً خانه‌به‌خانه پر شود.</div></li>
+        </ol>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — سه مرحله جداگانه</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[] scores;              // declaration
+        scores = new int[3];       // allocation: سه خانه
+        scores[0] = 18;            // initialization
+        scores[1] = 15;
+        scores[2] = 20;
+        System.out.println(scores[1]);
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>15</code></pre>
+        </div>
+
+        <p>
+            برای آرایه‌های کوچک می‌توان هر سه مرحله را در یک خط جمع کرد. جاوا از این شکل استقبال
+            می‌کند و خوانایی برنامه هم بالاتر می‌رود.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — مقداردهی یکجا</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[] scores = {18, 15, 20};
+        System.out.println(scores.length);
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>3</code></pre>
+        </div>
+
+        <h3>شکل آرایه در حافظه</h3>
+        <p>آرایه <code>int[] scores = {18, 15, 20};</code> در حافظه این‌طور دیده می‌شود:</p>
+
+        <div class="arr-viz">
+            <div class="arr-cells">
+                <div class="arr-cell"><span class="arr-idx">0</span><span class="arr-val">18</span></div>
+                <div class="arr-cell"><span class="arr-idx">1</span><span class="arr-val">15</span></div>
+                <div class="arr-cell"><span class="arr-idx">2</span><span class="arr-val">20</span></div>
+            </div>
+        </div>
+
+        <h3>مقادیر پیش‌فرض</h3>
+        <p>
+            وقتی آرایه‌ای با <code>new</code> می‌سازید، همه خانه‌ها به‌طور خودکار با مقدار پیش‌فرض
+            پر می‌شوند. این مقدار بر اساس نوع داده تعیین می‌شود.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>نوع آرایه</th>
+                        <th>مقدار پیش‌فرض</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>int</code>، <code>long</code>، <code>short</code>، <code>byte</code></td><td><code>0</code></td></tr>
+                    <tr><td><code>double</code>، <code>float</code></td><td><code>0.0</code></td></tr>
+                    <tr><td><code>boolean</code></td><td><code>false</code></td></tr>
+                    <tr><td><code>char</code></td><td><code>'\u0000'</code></td></tr>
+                    <tr><td>کلاس‌ها (مثل <code>String</code>)</td><td><code>null</code></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — نمایش مقدار پیش‌فرض</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[] counts = new int[2];
+        String[] names = new String[2];
+        boolean[] ready = new boolean[2];
+        System.out.println(counts[0]);
+        System.out.println(names[0]);
+        System.out.println(ready[0]);
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>0
+null
+false</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>تفاوت مهم با متغیرهای محلی</strong>
+            متغیرهای محلی که داخل متدها تعریف می‌شوند، مقدار پیش‌فرض ندارند و حتماً باید قبل از
+            استفاده مقداردهی شوند. اما خانه‌های یک آرایه که با <code>new</code> ساخته شده‌اند،
+            همیشه مقدار پیش‌فرض می‌گیرند. این تفاوت را در ذهن داشته باشید، چون یکی از رایج‌ترین
+            نقاط سردرگمی مبتدیان است.
+        </div>
+
+        <h3>اندیس و طول آرایه</h3>
+        <p>
+            شماره هر خانه را <strong>اندیس</strong> می‌گوییم. در جاوا اولین خانه اندیس <code>0</code>
+            دارد، نه ۱. برای آرایه‌ای با <code>n</code> خانه، اندیس‌های معتبر از <code>0</code> تا
+            <code>n - 1</code> هستند. تعداد خانه‌ها را با ویژگی <code>length</code> می‌خوانیم که
+            بعد از نام آرایه و بدون پرانتز می‌آید.
+        </p>
+
+        <div class="arr-viz">
+            <div style="font-weight:800;color:var(--tc);margin-bottom:6px;">length = 5</div>
+            <div class="arr-cells">
+                <div class="arr-cell"><span class="arr-idx">0</span><span class="arr-val">10</span></div>
+                <div class="arr-cell"><span class="arr-idx">1</span><span class="arr-val">20</span></div>
+                <div class="arr-cell"><span class="arr-idx">2</span><span class="arr-val">30</span></div>
+                <div class="arr-cell"><span class="arr-idx">3</span><span class="arr-val">40</span></div>
+                <div class="arr-cell"><span class="arr-idx">4</span><span class="arr-val">50</span></div>
+            </div>
+            <div style="color:var(--muted);font-size:.82rem;margin-top:6px;">بزرگ‌ترین اندیس معتبر: 4</div>
+        </div>
+
+        <div class="danger-box">
+            <strong>خطای رایج: ArrayIndexOutOfBoundsException</strong>
+            اگر بخواهید به خانه‌ای با اندیس نامعتبر دسترسی پیدا کنید (مثلاً <code>scores[5]</code>
+            برای آرایه‌ای با ۵ خانه)، برنامه در زمان اجرا با خطای
+            <code>ArrayIndexOutOfBoundsException</code> متوقف می‌شود. این خطا هنگام نوشتن کد
+            ظاهر نمی‌شود، فقط وقتی برنامه اجرا شود و به آن خانه دسترسی پیدا کند.
+        </div>
+
+        <h3>پیمایش آرایه</h3>
+        <p>
+            برای دیدن یا پردازش همه خانه‌ها، از حلقه استفاده می‌کنیم. دو شکل رایج وجود دارد که
+            هر کدام کاربرد خودش را دارد.
+        </p>
+
+        <h4>شکل اول: حلقه for با اندیس</h4>
+        <p>
+            در این شکل، متغیر شمارنده نقش اندیس را دارد. هر وقت به شماره خانه نیاز داشته باشید
+            (مثلاً برای تغییر مقدار یا مقایسه با خانه دیگر)، باید از این شکل استفاده کنید.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[] values = {4, 7, 2};
+        for (int i = 0; i < values.length; i++) {
+            System.out.println(values[i]);
+        }
+    }
+}</code></pre>
+        </div>
+
+        <h4>شکل دوم: حلقه enhanced for</h4>
+        <p>
+            اگر فقط می‌خواهید مقادیر را بخوانید و به شماره خانه کاری ندارید، می‌توانید از
+            <strong>enhanced for</strong> استفاده کنید. این شکل خواناتر است و امکان اشتباه در
+            اندیس را از بین می‌برد.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[] values = {4, 7, 2};
+        for (int value : values) {
+            System.out.println(value);
+        }
+    }
+}</code></pre>
+        </div>
+
+        <div class="tip-box">
+            <strong>کدام شکل را انتخاب کنیم؟</strong>
+            اگر در بدنه حلقه به اندیس نیاز دارید یا می‌خواهید خانه‌ها را تغییر دهید، از
+            <code>for</code> با اندیس استفاده کنید. اگر فقط می‌خواهید مقادیر را بخوانید و
+            پردازش کنید، <code>enhanced for</code> خواناتر و امن‌تر است.
+        </div>
+
+        <h3>تغییر عناصر آرایه</h3>
+        <p>
+            برای تغییر مقدار یک خانه، از اندیس استفاده می‌کنیم. مثال زیر همه خانه‌ها را دو برابر
+            می‌کند:
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[] values = {3, 5, 8};
+        for (int i = 0; i < values.length; i++) {
+            values[i] = values[i] * 2;
+        }
+        for (int value : values) {
+            System.out.println(value);
+        }
+    }
+}</code></pre>
+        </div>
+
+        <div class="warn-box">
+            <strong>enhanced for برای تغییر مناسب نیست</strong>
+            اگر در <code>enhanced for</code> متغیر <code>value</code> را تغییر دهید، مقدار داخل
+            آرایه عوض نمی‌شود. متغیر <code>value</code> فقط یک کپی از مقدار خانه است. برای تغییر
+            واقعی خانه‌ها، حتماً از <code>values[i] = ...</code> استفاده کنید.
+        </div>
+
+        <h3>عملیات رایج روی آرایه</h3>
+        <p>
+            برخی عملیات‌ها را تقریباً همیشه با آرایه انجام می‌دهید: محاسبه مجموع، پیدا کردن
+            بزرگ‌ترین یا کوچک‌ترین مقدار، شمارش عناصر خاص و جستجو. این‌ها پایه بسیاری از
+            تمرین‌های برنامه‌نویسی هستند.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — مجموع و میانگین</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[] scores = {18, 15, 20, 12, 17};
+        int sum = 0;
+        for (int score : scores) {
+            sum += score;
+        }
+        double average = (double) sum / scores.length;
+        System.out.println("Sum: " + sum);
+        System.out.println("Average: " + average);
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — بزرگ‌ترین مقدار</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[] scores = {18, 15, 20, 12, 17};
+        int max = scores[0];
+        for (int i = 1; i < scores.length; i++) {
+            if (scores[i] > max) {
+                max = scores[i];
+            }
+        }
+        System.out.println("Max: " + max);
+    }
+}</code></pre>
+        </div>
+
+        <div class="warn-box">
+            <strong>مقدار اولیه درست انتخاب کنید</strong>
+            برای پیدا کردن بزرگ‌ترین مقدار، متغیر <code>max</code> را با <code>scores[0]</code>
+            شروع کنید، نه با صفر. اگر همه مقادیر آرایه منفی باشند، شروع از صفر نتیجه غلط می‌دهد
+            چون صفر از همه آن‌ها بزرگ‌تر است.
+        </div>
+
+        <h3>کپی کردن آرایه</h3>
+        <p>
+            یک نکته ظریف: اگر بنویسید <code>int[] copy = original;</code>، در واقع دو نام برای
+            یک آرایه ساخته‌اید، نه دو آرایه جداگانه. برای کپی واقعی، باید خانه‌ها را یکی‌یکی
+            کپی کنید یا از متدهای آماده استفاده کنید.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — کپی واقعی آرایه</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>import java.util.Arrays;
+
+public class Lesson {
+    public static void main(String[] args) {
+        int[] original = {1, 2, 3};
+
+        // روش اول: حلقه
+        int[] copy1 = new int[original.length];
+        for (int i = 0; i < original.length; i++) {
+            copy1[i] = original[i];
+        }
+
+        // روش دوم: متد آماده
+        int[] copy2 = Arrays.copyOf(original, original.length);
+
+        copy1[0] = 99;
+        System.out.println(original[0]);   // 1
+        System.out.println(copy1[0]);      // 99
+    }
+}</code></pre>
+        </div>
+
+        <h3>متدهای آماده کلاس Arrays</h3>
+        <p>
+            جاوا یک کلاس کمکی به نام <code>Arrays</code> دارد که کارهای رایج را بسیار ساده می‌کند.
+            باید در ابتدای فایل آن را import کنید: <code>import java.util.Arrays;</code>
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>متد</th>
+                        <th>کار</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>Arrays.toString(arr)</code></td><td>تبدیل آرایه به رشته خوانا برای چاپ</td></tr>
+                    <tr><td><code>Arrays.sort(arr)</code></td><td>مرتب‌سازی صعودی (برای اعداد)</td></tr>
+                    <tr><td><code>Arrays.fill(arr, val)</code></td><td>پر کردن همه خانه‌ها با یک مقدار</td></tr>
+                    <tr><td><code>Arrays.copyOf(arr, len)</code></td><td>ساخت کپی از آرایه با طول مشخص</td></tr>
+                    <tr><td><code>Arrays.equals(a, b)</code></td><td>مقایسه محتوای دو آرایه</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — نمونه استفاده از Arrays</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>import java.util.Arrays;
+
+public class Lesson {
+    public static void main(String[] args) {
+        int[] numbers = {5, 2, 8, 1, 9};
+        Arrays.sort(numbers);
+        System.out.println(Arrays.toString(numbers));
+
+        int[] filled = new int[3];
+        Arrays.fill(filled, 7);
+        System.out.println(Arrays.toString(filled));
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>[1, 2, 5, 8, 9]
+[7, 7, 7]</code></pre>
+        </div>
+
+        <div class="tip-box">
+            <strong>چاپ مستقیم آرایه</strong>
+            اگر بنویسید <code>System.out.println(numbers);</code> چیزی شبیه
+            <code>[I@1b6d3586</code> می‌بینید. این آدرس حافظه است، نه محتوا. همیشه برای چاپ
+            آرایه از <code>Arrays.toString(numbers)</code> استفاده کنید.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۲ — آرایه‌های دوبعدی
+============================================================ -->
+<section class="section s2" id="s2">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۲</span>
+            <div>
+                <h2>آرایه‌های دوبعدی</h2>
+                <p>نمایش جدول‌های سطری-ستونی در حافظه</p>
+            </div>
+        </div>
+
+        <h3>آرایه دوبعدی چیست؟</h3>
+        <p>
+            گاهی داده‌ها دو بُعد دارند؛ مثلاً نمرات سه آزمون از چهار دانشجو یک جدول ۴ در ۳ می‌سازد.
+            برای چنین حالتی از <strong>آرایه دوبعدی</strong> استفاده می‌کنیم. در واقع آرایه دوبعدی
+            در جاوا «آرایه‌ای از آرایه‌ها» است؛ یعنی هر سطر، خودش یک آرایه است.
+        </p>
+
+        <div class="def-box">
+            <strong>تعریف ساده</strong>
+            آرایه دوبعدی مثل یک جدول است که هم سطر دارد هم ستون. برای دسترسی به هر خانه، باید
+            دو اندیس بدهید: اول شماره سطر، بعد شماره ستون.
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — ساخت آرایه دوبعدی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        // روش اول: با new و ابعاد مشخص
+        int[][] grid = new int[2][3];   // 2 سطر × 3 ستون
+
+        // روش دوم: مقداردهی یکجا
+        int[][] matrix = {
+            {1, 2, 3},
+            {4, 5, 6}
+        };
+
+        System.out.println(matrix[1][2]);   // 6
+    }
+}</code></pre>
+        </div>
+
+        <p>آرایه <code>matrix</code> در حافظه این‌طور دیده می‌شود:</p>
+
+        <div class="grid2d" style="grid-template-columns:repeat(3,46px);">
+            <div class="g-cell">1</div><div class="g-cell">2</div><div class="g-cell">3</div>
+            <div class="g-cell">4</div><div class="g-cell">5</div><div class="g-cell">6</div>
+        </div>
+
+        <p>
+            اندیس سطر از صفر شروع می‌شود و اندیس ستون هم از صفر. پس <code>matrix[0][0]</code>
+            برابر ۱ است و <code>matrix[1][2]</code> برابر ۶.
+        </p>
+
+        <h3>پیمایش با دو حلقه تودرتو</h3>
+        <p>
+            برای پیمایش همه خانه‌های یک آرایه دوبعدی، به دو حلقه نیاز داریم: یک حلقه بیرونی برای
+            سطرها و یک حلقه درونی برای ستون‌ها.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — چاپ جدول</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[][] table = {
+            {1, 2, 3},
+            {4, 5, 6}
+        };
+        for (int row = 0; row < table.length; row++) {
+            for (int col = 0; col < table[row].length; col++) {
+                System.out.print(table[row][col] + " ");
+            }
+            System.out.println();
+        }
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>1 2 3 
+4 5 6 </code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>length در آرایه دوبعدی</strong>
+            <code>table.length</code> تعداد سطرها را می‌دهد. <code>table[row].length</code> تعداد
+            ستون‌های همان سطر را. برای اطمینان از درستی حلقه، در شرط داخلی از
+            <code>table[row].length</code> استفاده کنید، نه <code>table.length</code>.
+        </div>
+
+        <h3>آرایه‌های دندانه‌دار (Jagged)</h3>
+        <p>
+            چون هر سطر خودش یک آرایه مستقل است، می‌توان سطرهایی با طول متفاوت داشت. به چنین
+            ساختاری <strong>آرایه دندانه‌دار</strong> یا <strong>jagged array</strong> می‌گوییم.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — سطرهای با طول متفاوت</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[][] jagged = new int[3][];
+        jagged[0] = new int[] {7, 8};
+        jagged[1] = new int[] {9};
+        jagged[2] = new int[] {1, 2, 3};
+
+        for (int row = 0; row < jagged.length; row++) {
+            for (int col = 0; col < jagged[row].length; col++) {
+                System.out.print(jagged[row][col] + " ");
+            }
+            System.out.println();
+        }
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>7 8 
+9 
+1 2 3 </code></pre>
+        </div>
+
+        <div class="danger-box">
+            <strong>سطرهای null</strong>
+            وقتی می‌نویسید <code>new int[3][]</code>، سه جایگاه برای سطر ساخته می‌شود، اما خود
+            سطرها هنوز ساخته نشده‌اند و مقدارشان <code>null</code> است. اگر قبل از ساختن سطر،
+            بخواهید طول یا خانه‌های آن را بخوانید، برنامه با
+            <code>NullPointerException</code> متوقف می‌شود. اول باید هر سطر را با
+            <code>new int[...]</code> بسازید، بعد از آن استفاده کنید.
+        </div>
+
+        <h3>مثال کاربردی: مجموع هر سطر</h3>
+        <p>
+            یکی از رایج‌ترین کارها روی آرایه دوبعدی، محاسبه مجموع هر سطر یا هر ستون است. مثال زیر
+            مجموع هر سطر را جداگانه حساب می‌کند.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — مجموع هر سطر</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[][] sales = {
+            {10, 20, 30},
+            {5, 15, 25}
+        };
+
+        for (int row = 0; row < sales.length; row++) {
+            int rowSum = 0;
+            for (int col = 0; col < sales[row].length; col++) {
+                rowSum += sales[row][col];
+            }
+            System.out.println("Row " + row + " sum: " + rowSum);
+        }
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>Row 0 sum: 60
+Row 1 sum: 45</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۳ — متدها
+============================================================ -->
+<section class="section s3" id="s3">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۳</span>
+            <div>
+                <h2>متدها</h2>
+                <p>شکستن کد به بخش‌های کوچک، نام‌دار و قابل استفاده مجدد</p>
+            </div>
+        </div>
+
+        <h3>چرا به متد نیاز داریم؟</h3>
+        <p>
+            تا اینجا همه کد را داخل <code>main</code> می‌نوشتیم. اما وقتی برنامه بزرگ‌تر می‌شود،
+            <code>main</code> به یک بلوک طولانی و غیرقابل فهم تبدیل می‌شود. سه مشکل اصلی پیش
+            می‌آید. اول، پیدا کردن بخش‌های خاص کد سخت می‌شود. دوم، اگر جایی نیاز به تکرار یک منطق
+            باشد، مجبورید همان کد را چند بار بنویسید. سوم، اگر بعداً بخواهید همان منطق را تغییر
+            دهید، باید همه‌جا را دست بزنید و احتمال فراموش کردن یکی از نسخه‌ها زیاد است.
+        </p>
+        <p>
+            <strong>متد</strong> یک بسته کد نام‌دار است که یک کار مشخص انجام می‌دهد. با متد، همان
+            منطق یک بار نوشته می‌شود و هر جا لازم شد فقط با نامش صدایش می‌زنیم. نتیجه این است که
+            <code>main</code> کوتاه و خوانا می‌ماند، تکرار کد کم می‌شود و تغییر منطق در یک نقطه
+            کافی است.
+        </p>
+
+        <div class="def-box">
+            <strong>تعریف ساده</strong>
+            متد مثل یک دستور آشپزی است: یک اسم دارد، ممکن است چند مواد اولیه (پارامتر) بگیرد،
+            و یک نتیجه بدهد. هر وقت خواستیم، فقط اسم دستور را صدا می‌زنیم.
+        </div>
+
+        <h3>ساختار یک متد</h3>
+        <p>شکل کلی تعریف متد در جاوا به این صورت است:</p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — ساختار کلی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>returnType methodName(parameterList) {
+    // body
+    return value;
+}</code></pre>
+        </div>
+
+        <p>هر بخش این ساختار یک نقش مشخص دارد:</p>
+
+        <ul class="dot-list">
+            <li><strong>نوع بازگشتی (Return Type):</strong> نوع داده‌ای که متد در پایان برمی‌گرداند؛ مثلاً <code>int</code>، <code>double</code>، <code>boolean</code> یا <code>String</code>. اگر متد چیزی برنگرداند، می‌نویسیم <code>void</code>.</li>
+            <li><strong>نام متد:</strong> یک اسم معنادار که کارش را برساند. طبق سبک Camel Case نوشته می‌شود.</li>
+            <li><strong>لیست پارامترها:</strong> ورودی‌هایی که متد برای انجام کارش لازم دارد. می‌تواند خالی باشد، یک پارامتر داشته باشد یا چند پارامتر.</li>
+            <li><strong>بدنه:</strong> دستوراتی که هنگام اجرای متد انجام می‌شوند.</li>
+            <li><strong>return:</strong> مقدار نتیجه را برمی‌گرداند. اگر نوع بازگشتی <code>void</code> است، این خط اختیاری است یا می‌تواند برای خروج زودتر استفاده شود.</li>
+        </ul>
+
+        <h3>یک مثال ساده</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int result = add(5, 7);
+        System.out.println(result);
+    }
+
+    static int add(int a, int b) {
+        return a + b;
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>12</code></pre>
+        </div>
+
+        <p>
+            وقتی برنامه به خط <code>add(5, 7)</code> می‌رسد، کنترل به بدنه متد می‌رود. پارامتر
+            <code>a</code> مقدار ۵ و پارامتر <code>b</code> مقدار ۷ می‌گیرد. مقدار <code>a + b</code>
+            محاسبه می‌شود و نتیجه ۱۲ با <code>return</code> برمی‌گردد. سپس برنامه ادامه می‌یابد و
+            مقدار ۱۲ در متغیر <code>result</code> ذخیره می‌شود.
+        </p>
+
+        <h3>پارامتر و آرگومان</h3>
+        <p>
+            دو اصطلاح نزدیک به هم وجود دارد که برخی افراد آن‌ها را با هم اشتباه می‌گیرند. تفاوت
+            در جای استفاده است، نه در ماهیت.
+        </p>
+
+        <ul class="dot-list">
+            <li><strong>پارامتر:</strong> متغیری که در <em>تعریف</em> متد نوشته می‌شود. مثلاً <code>int a, int b</code> در تعریف <code>add</code>.</li>
+            <li><strong>آرگومان:</strong> مقدار واقعی که هنگام <em>فراخوانی</em> متد داده می‌شود. مثلاً ۵ و ۷ در <code>add(5, 7)</code>.</li>
+        </ul>
+
+        <p>
+            هنگام فراخوانی، آرگومان‌ها داخل پارامترها کپی می‌شوند و متد با آن کپی‌ها کار می‌کند.
+            یعنی اگر داخل متد پارامتر را تغییر دهید، متغیر اصلی که در فراخوانی استفاده کردید
+            تغییر نمی‌کند. تنها استثنا آرایه‌ها هستند که در بخش بعدی توضیح داده می‌شوند.
+        </p>
+
+        <h3>void یا return؟</h3>
+        <p>
+            دو نوع متد داریم. متدی که نتیجه‌ای برای استفاده بیرون برمی‌گرداند، و متدی که فقط کاری
+            انجام می‌دهد. تفاوت در نوع بازگشتی است.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>نوع بازگشتی</th>
+                        <th>معنی</th>
+                        <th>مثال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>void</code></td>
+                        <td>متد چیزی برنمی‌گرداند، فقط کاری انجام می‌دهد (مثلاً چاپ)</td>
+                        <td><code>void greet() { ... }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>int</code>، <code>double</code>، <code>boolean</code> و...</td>
+                        <td>متد یک مقدار از آن نوع برمی‌گرداند</td>
+                        <td><code>int square(int x) { ... }</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — نمونه void و return</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        showWelcome();
+        int nextAge = nextYearAge(10);
+        System.out.println(nextAge);
+    }
+
+    static void showWelcome() {
+        System.out.println("Welcome!");
+    }
+
+    static int nextYearAge(int age) {
+        return age + 1;
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>Welcome!
+11</code></pre>
+        </div>
+
+        <div class="warn-box">
+            <strong>void و return</strong>
+            اگر نوع بازگشتی متد <code>void</code> نباشد، متد حتماً باید در جایی از بدنه‌اش از
+            <code>return</code> استفاده کند و مقداری از همان نوع برگرداند. اگر این کار را نکند،
+            کامپایلر خطا می‌دهد. حتی اگر شرطی داشته باشید که در برخی مسیرها به return نرسد،
+            کامپایلر خطا می‌دهد.
+        </div>
+
+        <h3>ارسال آرایه به متد</h3>
+        <p>
+            وقتی یک آرایه را به متد می‌فرستید، در واقع مرجع (آدرس حافظه) آن آرایه فرستاده می‌شود،
+            نه یک کپی از کل محتوا. یعنی اگر متد محتوای آرایه را تغییر بدهد، این تغییر روی آرایه
+            اصلی هم دیده می‌شود. این نکته با متغیرهای ساده متفاوت است و درک آن اهمیت زیادی دارد.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — تغییر آرایه در متد</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3};
+        doubleAll(numbers);
+        for (int n : numbers) {
+            System.out.println(n);
+        }
+    }
+
+    static void doubleAll(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = arr[i] * 2;
+        }
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>2
+4
+6</code></pre>
+        </div>
+
+        <h3>متدهایی با آرایه به‌عنوان پارامتر و مقدار بازگشتی</h3>
+        <p>
+            ترکیب آرایه و متد خیلی رایج است. می‌توانید آرایه بگیرید، پردازش کنید و نتیجه‌ای از
+            هر نوع (نه لزوماً آرایه) برگردانید. مثال زیر دو متد کاربردی با آرایه نشان می‌دهد.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — sum و average روی آرایه</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int[] values = {4, 9, 2};
+        System.out.println(sum(values));
+        System.out.println(average(values));
+    }
+
+    static int sum(int[] items) {
+        int total = 0;
+        for (int item : items) {
+            total += item;
+        }
+        return total;
+    }
+
+    static double average(int[] items) {
+        return (double) sum(items) / items.length;
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>15
+5.0</code></pre>
+        </div>
+
+        <div class="tip-box">
+            <strong>نکته مهم در محاسبه میانگین</strong>
+            حتماً دقت کنید که <code>(double)</code> قبل از تقسیم باشد. اگر <code>sum / count</code>
+            بنویسید، تقسیم صحیح انجام می‌شود و بخش اعشاری از دست می‌رود. جزئیات این موضوع در بخش
+            Type Casting توضیح داده می‌شود.
+        </div>
+
+        <h3>متغیر محلی و دامنه (Scope)</h3>
+        <p>
+            هر متغیری که داخل یک متد تعریف می‌شود، فقط تا پایان همان متد زنده است. به این محدوده،
+            <strong>دامنه متغیر</strong> یا <strong>Scope</strong> می‌گوییم. یعنی متغیری که داخل
+            متد <code>add</code> ساخته شده، از بیرون آن متد قابل دسترسی نیست.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — دامنه متغیر</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        int x = 10;   // متغیر main
+        System.out.println(x);
+    }
+
+    static void demo() {
+        // System.out.println(x);   // خطا: x اینجا وجود ندارد
+        int y = 20;   // متغیر فقط داخل demo
+        System.out.println(y);
+    }
+}</code></pre>
+        </div>
+
+        <h3>کلمه static به چه معناست؟</h3>
+        <p>
+            در همه متدهایی که تا اینجا دیدیم، از کلمه <code>static</code> استفاده کردیم. فعلاً
+            کافی است بدانید این کلمه اجازه می‌دهد متد را بدون ساختن شیء از کلاس صدا بزنید. چون
+            در این مرحله هنوز با مفهوم شیء و کلاس به معنای کامل آشنا نشده‌ایم، همین سطح از درک
+            کافی است. توضیح کامل <code>static</code> در مباحث شیءگرایی می‌آید.
+        </p>
+
+        <div class="tip-box">
+            <strong>یک قاعده ساده</strong>
+            برای متدهایی که فقط محاسبه می‌کنند و به داده‌های یک شیء خاص کاری ندارند،
+            <code>static</code> انتخاب طبیعی است. مثل <code>sum</code>، <code>max</code>،
+            <code>average</code>.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۴ — Overloading و Type Casting
+============================================================ -->
+<section class="section s4" id="s4">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۴</span>
+            <div>
+                <h2>Overloading و Type Casting</h2>
+                <p>چند متد با یک نام و تبدیل نوع داده</p>
+            </div>
+        </div>
+
+        <h3>Method Overloading چیست؟</h3>
+        <p>
+            جاوا اجازه می‌دهد چند متد با <strong>نام یکسان</strong> اما <strong>لیست پارامترهای
+            متفاوت</strong> داشته باشیم. به این کار <strong>Overloading</strong> می‌گوییم. کامپایلر
+            هنگام فراخوانی، بر اساس تعداد و نوع آرگومان‌ها تصمیم می‌گیرد کدام نسخه را اجرا کند.
+        </p>
+
+        <p>
+            کاربرد این ویژگی زمانی است که یک عملیات منطقی واحد دارید اما می‌خواهید با انواع یا
+            تعداد مختلفی از داده کار کند. مثلاً یک متد <code>add</code> که هم دو عدد صحیح جمع
+            کند، هم سه عدد صحیح، هم دو عدد اعشاری. بدون overloading باید برای هر نسخه یک نام
+            جداگانه می‌گذاشتید: <code>addInts</code>، <code>addThreeInts</code>،
+            <code>addDoubles</code>. با overloading، همه با نام <code>add</code> صدا زده می‌شوند.
+        </p>
+
+        <h4>Overloading بر اساس تعداد پارامترها</h4>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        System.out.println(add(2, 3));
+        System.out.println(add(1, 2, 3));
+    }
+
+    static int add(int a, int b) {
+        return a + b;
+    }
+
+    static int add(int a, int b, int c) {
+        return a + b + c;
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>5
+6</code></pre>
+        </div>
+
+        <h4>Overloading بر اساس نوع پارامترها</h4>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        System.out.println(add(2, 3));
+        System.out.println(add(2.5, 3.5));
+    }
+
+    static int add(int a, int b) {
+        return a + b;
+    }
+
+    static double add(double a, double b) {
+        return a + b;
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>5
+6.0</code></pre>
+        </div>
+
+        <h4>چه چیزی overloading نیست؟</h4>
+        <p>
+            دو مورد وجود دارد که ممکن است شبیه overloading به نظر برسند، اما کامپایلر آن‌ها را
+            رد می‌کند.
+        </p>
+
+        <ul class="dot-list">
+            <li><strong>فقط تفاوت در نام پارامتر:</strong> اگر دو متد با نام یکسان و پارامترهای یکسان داشته باشید، فقط نام پارامترها متفاوت باشد، کامپایلر می‌گوید این دو متد یکسان‌اند و خطا می‌دهد.</li>
+            <li><strong>فقط تفاوت در نوع بازگشتی:</strong> اگر دو متد دقیقاً یک امضا داشته باشند و فقط <code>return type</code> متفاوت باشد، باز هم خطا می‌دهد. نوع بازگشتی بخشی از امضای متد نیست.</li>
+        </ul>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — مثال خطا (اجرا نکنید)</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>// خطا: فقط نام پارامترها متفاوت است
+int add(int a, int b) { return a + b; }
+int add(int x, int y) { return x + y; }
+
+// خطا: فقط نوع بازگشتی متفاوت است
+int add(int a, int b) { return a + b; }
+double add(int a, int b) { return a + b; }</code></pre>
+        </div>
+
+        <div class="warn-box">
+            <strong>امضای متد</strong>
+            امضای متد (Method Signature) شامل نام متد و لیست پارامترها است. نوع بازگشتی جزو امضا
+            نیست. به همین دلیل برای overloading باید یا تعداد پارامترها یا نوع پارامترها متفاوت
+            باشد.
+        </div>
+
+        <h3>Type Casting چیست؟</h3>
+        <p>
+            <strong>Type Casting</strong> یعنی تبدیل یک مقدار از یک نوع داده به نوع دیگر. در جاوا
+            دو حالت دارد: تبدیل گسترده‌کننده که خودکار انجام می‌شود، و تبدیل محدودکننده که باید
+            صریحاً نوشته شود.
+        </p>
+
+        <h4>تبدیل گسترده‌کننده (Widening)</h4>
+        <p>
+            وقتی از یک نوع کوچک‌تر (مثل <code>int</code>) به یک نوع بزرگ‌تر (مثل
+            <code>double</code>) تبدیل می‌کنید، هیچ اطلاعاتی از دست نمی‌رود. جاوا این تبدیل را
+            خودکار انجام می‌دهد.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — widening</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>int whole = 7;
+double widened = whole;   // 7.0 — خودکار</code></pre>
+        </div>
+
+        <h4>تبدیل محدودکننده (Narrowing)</h4>
+        <p>
+            وقتی از یک نوع بزرگ‌تر به یک نوع کوچک‌تر تبدیل می‌کنید، ممکن است بخشی از داده از دست
+            برود. مثلاً تبدیل <code>double</code> به <code>int</code> بخش اعشاری را حذف می‌کند.
+            این تبدیل باید صریحاً نوشته شود.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — narrowing</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>double price = 2.9;
+int narrowed = (int) price;   // 2 — بخش اعشاری حذف می‌شود</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>نکته مهم</strong>
+            تبدیل <code>double</code> به <code>int</code> بخش اعشاری را حذف می‌کند، نه گرد. یعنی
+            2.9 می‌شود 2، نه 3. اگر می‌خواهید گرد کنید، باید از <code>Math.round</code> استفاده
+            کنید که در هفته‌های بعد توضیح داده می‌شود.
+        </div>
+
+        <h3>تقسیم صحیح و تله رایج</h3>
+        <p>
+            یکی از رایج‌ترین اشتباهات مبتدیان، انتظار نتیجه اعشاری از تقسیم دو عدد صحیح است. وقتی
+            هر دو طرف تقسیم از نوع <code>int</code> باشند، جاوا تقسیم صحیح انجام می‌دهد و بخش
+            اعشاری را کاملاً حذف می‌کند.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>int a = 7;
+int b = 2;
+
+System.out.println(a / b);              // 3
+System.out.println((double) a / b);     // 3.5
+System.out.println((double) (a / b));   // 3.0</code></pre>
+        </div>
+
+        <div class="danger-box">
+            <strong>ترتیب cast اهمیت دارد</strong>
+            <code>(double) a / b</code> ابتدا <code>a</code> را به <code>double</code> تبدیل
+            می‌کند و بعد تقسیم انجام می‌شود. نتیجه اعشاری است. اما <code>(double) (a / b)</code>
+            ابتدا تقسیم صحیح را انجام می‌دهد (نتیجه 3)، بعد آن را به <code>double</code> تبدیل
+            می‌کند (نتیجه 3.0). تفاوت خیلی مهم است.
+        </div>
+
+        <h3>کاربرد در متد average</h3>
+        <p>
+            حالا می‌فهمید چرا در متد <code>average</code> از <code>(double)</code> استفاده
+            کردیم. اگر <code>sum</code> و <code>count</code> هر دو <code>int</code> باشند،
+            تقسیم صحیح نتیجه اعشاری نمی‌دهد.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — مقایسه دو حالت</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>int sum = 15;
+int count = 3;
+
+// غلط: تقسیم صحیح
+System.out.println(sum / count);              // 5
+
+// درست: cast قبل از تقسیم
+System.out.println((double) sum / count);     // 5.0</code></pre>
+        </div>
+
+        <div class="tip-box">
+            <strong>قاعده کلی</strong>
+            هر وقت میانگین می‌خواهید حساب کنید، قبل از تقسیم حتماً یکی از طرفین را به
+            <code>double</code> تبدیل کنید. این کار جلوی از دست رفتن دقت اعشاری را می‌گیرد.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۵ — رشته‌ها
+============================================================ -->
+<section class="section s5" id="s5">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۵</span>
+            <div>
+                <h2>رشته‌ها (String)</h2>
+                <p>کار حرفه‌ای با متن‌ها در جاوا</p>
+            </div>
+        </div>
+
+        <h3>String چیست؟</h3>
+        <p>
+            برخلاف <code>int</code> و <code>double</code> که نوع اولیه هستند، <code>String</code>
+            یک <strong>کلاس</strong> است. یعنی یک شیء با متدهای فراوان که کار با متن را ساده
+            می‌کند. به همین دلیل با حرف بزرگ <code>S</code> نوشته می‌شود.
+        </p>
+        <p>
+            <code>String</code> دنباله‌ای از کاراکترهاست. متغیر <code>char</code> فقط یک کاراکتر
+            نگه می‌دارد، اما <code>String</code> می‌تواند هر تعداد کاراکتر داشته باشد.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class Lesson {
+    public static void main(String[] args) {
+        char grade = 'A';
+        String name = "Java";
+        System.out.println(grade);
+        System.out.println(name);
+        System.out.println(name.length());
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">خروجی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>A
+Java
+4</code></pre>
+        </div>
+
+        <h3>اندیس کاراکترها</h3>
+        <p>
+            هر کاراکتر در رشته یک اندیس دارد که از صفر شروع می‌شود. رشته <code>"Java"</code>
+            چهار کاراکتر دارد با اندیس‌های ۰ تا ۳.
+        </p>
+
+        <div class="arr-viz">
+            <div class="arr-cells">
+                <div class="arr-cell"><span class="arr-idx">0</span><span class="arr-val">J</span></div>
+                <div class="arr-cell"><span class="arr-idx">1</span><span class="arr-val">a</span></div>
+                <div class="arr-cell"><span class="arr-idx">2</span><span class="arr-val">v</span></div>
+                <div class="arr-cell"><span class="arr-idx">3</span><span class="arr-val">a</span></div>
+            </div>
+        </div>
+
+        <h3>متدهای پرکاربرد String</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>متد</th>
+                        <th>کار</th>
+                        <th>مثال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>length()</code></td><td>تعداد کاراکترها</td><td><code>"Java".length() → 4</code></td></tr>
+                    <tr><td><code>charAt(i)</code></td><td>کاراکتر در اندیس i</td><td><code>"Java".charAt(1) → 'a'</code></td></tr>
+                    <tr><td><code>substring(a, b)</code></td><td>بخشی از رشته از a تا قبل از b</td><td><code>"Java 25".substring(0, 4) → "Java"</code></td></tr>
+                    <tr><td><code>substring(a)</code></td><td>بخشی از رشته از a تا انتها</td><td><code>"Java 25".substring(5) → "25"</code></td></tr>
+                    <tr><td><code>indexOf(s)</code></td><td>اندیس اولین وقوع s</td><td><code>"Java".indexOf("va") → 2</code></td></tr>
+                    <tr><td><code>lastIndexOf(s)</code></td><td>اندیس آخرین وقوع s</td><td><code>"banana".lastIndexOf("a") → 5</code></td></tr>
+                    <tr><td><code>replace(a, b)</code></td><td>جایگزینی a با b</td><td><code>"Java".replace("a", "o") → "Jovo"</code></td></tr>
+                    <tr><td><code>split(s)</code></td><td>برش رشته با جداکننده s</td><td><code>"a,b,c".split(",") → [a, b, c]</code></td></tr>
+                    <tr><td><code>toLowerCase()</code></td><td>همه حروف کوچک</td><td><code>"JAVA".toLowerCase() → "java"</code></td></tr>
+                    <tr><td><code>toUpperCase()</code></td><td>همه حروف بزرگ</td><td><code>"java".toUpperCase() → "JAVA"</code></td></tr>
+                    <tr><td><code>trim()</code> / <code>strip()</code></td><td>حذف فاصله‌های ابتدا و انتها</td><td><code>"  Hi  ".strip() → "Hi"</code></td></tr>
+                    <tr><td><code>isEmpty()</code></td><td>بررسی خالی بودن</td><td><code>"".isEmpty() → true</code></td></tr>
+                    <tr><td><code>isBlank()</code></td><td>خالی یا فقط فاصله بودن</td><td><code>"   ".isBlank() → true</code></td></tr>
+                    <tr><td><code>equals(s)</code></td><td>مقایسه محتوا</td><td><code>"Java".equals("Java") → true</code></td></tr>
+                    <tr><td><code>equalsIgnoreCase(s)</code></td><td>مقایسه بدون توجه به حروف</td><td><code>"java".equalsIgnoreCase("Java") → true</code></td></tr>
+                    <tr><td><code>contains(s)</code></td><td>بررسی وجود s در رشته</td><td><code>"Java 25".contains("25") → true</code></td></tr>
+                    <tr><td><code>startsWith(s)</code></td><td>شروع شدن با s</td><td><code>"Java".startsWith("Ja") → true</code></td></tr>
+                    <tr><td><code>endsWith(s)</code></td><td>پایان یافتن با s</td><td><code>"Java".endsWith("va") → true</code></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>نمونه‌های عملی</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — طول، کاراکتر و جستجو</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>String text = "Java";
+System.out.println(text.length());          // 4
+System.out.println(text.charAt(2));         // v
+System.out.println(text.indexOf("va"));     // 2
+System.out.println(text.indexOf("xy"));     // -1 (پیدا نشد)
+System.out.println("banana".lastIndexOf("a")); // 5</code></pre>
+        </div>
+
+        <div class="warn-box">
+            <strong>indexOf و مقدار ۱-</strong>
+            اگر متنی که به <code>indexOf</code> می‌دهید در رشته وجود نداشته باشد، مقدار
+            <code>-1</code> برمی‌گردد. اگر این مقدار را قبل از <code>charAt</code> بررسی نکنید،
+            برنامه با خطای <code>StringIndexOutOfBoundsException</code> متوقف می‌شود.
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — substring</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>String text = "Java 25";
+System.out.println(text.substring(5));      // 25
+System.out.println(text.substring(0, 4));   // Java</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>substring و انتهای بازه</strong>
+            در <code>substring(a, b)</code> کاراکتر در اندیس <code>a</code> شامل می‌شود، اما
+            کاراکتر در اندیس <code>b</code> شامل نمی‌شود. یعنی بازه نیم‌باز است. مثلاً
+            <code>substring(0, 4)</code> چهار کاراکتر از اندیس ۰ تا ۳ برمی‌گرداند.
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — بزرگ و کوچک کردن حروف</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>String text = "Java Java";
+System.out.println(text.toUpperCase());          // JAVA JAVA
+System.out.println(text.toLowerCase());          // java java
+System.out.println(text.replace("Java", "Code")); // Code Code</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — تقسیم به آرایه</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>String colors = "red,green,blue";
+String[] words = colors.split(",");
+for (String word : words) {
+    System.out.println(word);
+}</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>split و regex</strong>
+            متد <code>split</code> در واقع یک <strong>الگوی regex</strong> می‌گیرد، نه یک رشته
+            ساده. برای کاما و اکثر کاراکترهای معمولی مشکلی پیش نمی‌آید، اما برای نقطه باید
+            دقت کنید. نقطه در regex معنای ویژه دارد، پس برای جدا کردن با نقطه واقعی باید بنویسید
+            <code>split("\\.")</code>.
+        </div>
+
+        <h3>مقایسه رشته‌ها: equals در برابر ==</h3>
+        <p>
+            این یکی از رایج‌ترین دام‌های مبتدیان است. برای مقایسه محتوای رشته‌ها هرگز از
+            <code>==</code> استفاده نکنید.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>String a = new String("Java");
+String b = new String("Java");
+
+System.out.println(a == b);      // false
+System.out.println(a.equals(b)); // true</code></pre>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>عملگر / متد</th>
+                        <th>چه چیزی را مقایسه می‌کند</th>
+                        <th>نتیجه برای دو رشته هم‌محتوا</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>==</code></td>
+                        <td>آدرس حافظه (آیا هر دو به یک شیء اشاره می‌کنند)</td>
+                        <td>معمولاً <code>false</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>equals()</code></td>
+                        <td>محتوای دو رشته</td>
+                        <td><code>true</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="danger-box">
+            <strong>قانون طلایی</strong>
+            برای مقایسه محتوای رشته‌ها همیشه از <code>equals()</code> استفاده کنید. تنها استثنا
+            زمانی است که واقعاً می‌خواهید بدانید آیا هر دو متغیر به یک شیء یکسان اشاره می‌کنند.
+        </div>
+
+        <h3>مثال کاربردی: استخراج نام کاربری از ایمیل</h3>
+        <p>
+            با ترکیب <code>indexOf</code> و <code>substring</code> می‌توان کارهای مفیدی انجام
+            داد. مثال زیر بخش قبل از <code>@</code> را از ایمیل جدا می‌کند.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>String email = "sara@example.com";
+int at = email.indexOf("@");
+if (at >= 0) {
+    String username = email.substring(0, at);
+    System.out.println(username);   // sara
+} else {
+    System.out.println("Invalid email");
+}</code></pre>
+        </div>
+
+        <div class="warn-box">
+            <strong>همیشه حالت پیدا نشدن را بررسی کنید</strong>
+            اگر <code>indexOf</code> مقدار <code>-1</code> بدهد و شما بدون بررسی از آن در
+            <code>substring</code> استفاده کنید، برنامه با خطا متوقف می‌شود. شرط
+            <code>if (at >= 0)</code> این مشکل را حل می‌کند.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۶ — StringBuilder و String Pool
+============================================================ -->
+<section class="section s6" id="s6">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۶</span>
+            <div>
+                <h2>StringBuilder و String Pool</h2>
+                <p>تغییرناپذیری، حافظه و انتخاب ابزار مناسب</p>
+            </div>
+        </div>
+
+        <h3>تغییرناپذیری String</h3>
+        <p>
+            رشته‌ها در جاوا <strong>تغییرناپذیر</strong> یا <strong>immutable</strong> هستند.
+            یعنی بعد از ساخت، محتوایشان قابل تغییر نیست. اگر به نظر برسد که داریم محتوای رشته
+            را تغییر می‌دهیم، در واقع یک رشته <strong>جدید</strong> ساخته می‌شود و متغیر به آن
+            اشاره می‌کند.
+        </p>
+
+        <div class="def-box">
+            <strong>تصویر ذهنی</strong>
+            فرض کنید روی یک کاغذ نوشته‌اید «Java». نمی‌توانید «J» را پاک کنید و «K» بنویسید.
+            برای اینکه «Kava» داشته باشید، باید یک کاغذ جدید بردارید. رشته‌ها در جاوا همین‌طورند.
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — تغییرناپذیری در عمل</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>String first = "Java";
+first.concat("!");              // نتیجه نادیده گرفته می‌شود
+System.out.println(first);     // Java
+
+String second = first.concat("!");
+System.out.println(first);     // Java
+System.out.println(second);    // Java!</code></pre>
+        </div>
+
+        <h3>String Pool</h3>
+        <p>
+            <strong>String Pool</strong> یک ناحیه ویژه در حافظه است که جاوا رشته‌های literal را
+            در آن نگه می‌دارد. وقتی می‌نویسید <code>String s = "Java";</code>، جاوا ابتدا بررسی
+            می‌کند آیا رشته‌ای با همین محتوا در Pool وجود دارد یا نه. اگر باشد، همان شیء موجود
+            استفاده می‌شود. اگر نباشد، یک شیء جدید ساخته و در Pool ذخیره می‌شود.
+        </p>
+        <p>
+            اما اگر از <code>new String("Java")</code> استفاده کنید، جاوا یک شیء جدید در Heap
+            بیرون از Pool می‌سازد. به همین دلیل دو متغیری که با literal مقداردهی شده‌اند به یک
+            شیء اشاره می‌کنند، ولی یکی که با <code>new</code> ساخته شده به شیء جداگانه.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>String s1 = "Java";              // literal، در Pool
+String s2 = "Java";              // همان شیء از Pool
+String s3 = new String("Java");  // شیء جدید، بیرون از Pool
+
+System.out.println(s1 == s2);      // true
+System.out.println(s1 == s3);      // false
+System.out.println(s1.equals(s3)); // true</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>نکته عملی</strong>
+            برای همین است که مقایسه با <code>==</code> قابل اعتماد نیست. حتی اگر امروز جواب
+            درست بدهد، در آینده با تغییر جزئی در کد ممکن است جواب متفاوت بدهد. همیشه از
+            <code>equals</code> استفاده کنید.
+        </div>
+
+        <h3>StringBuilder: ابزار تغییرپذیر</h3>
+        <p>
+            چون <code>String</code> تغییرناپذیر است، هر بار که محتوای آن را عوض می‌کنید، در واقع
+            یک شیء جدید ساخته می‌شود. اگر در یک حلقه هزار بار این کار را انجام دهید، هزار شیء
+            ساخته و دور ریخته می‌شود. برای این حالت‌ها، از <strong>StringBuilder</strong>
+            استفاده می‌کنیم که <strong>تغییرپذیر</strong> است. متدهای <code>append</code>،
+            <code>insert</code>، <code>delete</code> و <code>reverse</code> محتوای همان شیء را
+            تغییر می‌دهند، نه ساختن شیء جدید.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — ساخت و append</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>StringBuilder builder = new StringBuilder("Java");
+builder.append(" 25");
+System.out.println(builder);   // Java 25</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — insert و delete</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>StringBuilder builder = new StringBuilder("Java 25");
+builder.insert(4, "-");
+System.out.println(builder);   // Java- 25
+
+builder.delete(4, 5);
+System.out.println(builder);   // Java 25</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — reverse و toString</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>StringBuilder builder = new StringBuilder("Java 25");
+builder.reverse();
+String result = builder.toString();
+System.out.println(result);   // 52 avaJ</code></pre>
+        </div>
+
+        <h4>متدهای مهم StringBuilder</h4>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>متد</th>
+                        <th>کار</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>append(x)</code></td><td>اضافه کردن x به انتهای متن</td></tr>
+                    <tr><td><code>insert(i, x)</code></td><td>درج x در موقعیت i</td></tr>
+                    <tr><td><code>delete(a, b)</code></td><td>حذف از a تا قبل از b</td></tr>
+                    <tr><td><code>deleteCharAt(i)</code></td><td>حذف کاراکتر در اندیس i</td></tr>
+                    <tr><td><code>replace(a, b, s)</code></td><td>جایگزینی بازه a تا b با s</td></tr>
+                    <tr><td><code>reverse()</code></td><td>معکوس کردن متن</td></tr>
+                    <tr><td><code>length()</code></td><td>تعداد کاراکترها</td></tr>
+                    <tr><td><code>charAt(i)</code></td><td>کاراکتر در اندیس i</td></tr>
+                    <tr><td><code>setCharAt(i, c)</code></td><td>جایگزینی کاراکتر در اندیس i با c</td></tr>
+                    <tr><td><code>toString()</code></td><td>تبدیل به String معمولی</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>String یا StringBuilder؟ کدام را انتخاب کنیم؟</h3>
+
+        <div class="card-grid">
+            <div class="card">
+                <h4>String را انتخاب کنید</h4>
+                <p>وقتی متن ثابت است یا تغییرات اندک دارد. وقتی می‌خواهید در فیلد یا پارامتر از آن استفاده کنید. وقتی خوانایی مهم‌تر از بهینه‌سازی است.</p>
+            </div>
+            <div class="card">
+                <h4>StringBuilder را انتخاب کنید</h4>
+                <p>وقتی در حلقه یا به تعداد زیاد متن را تغییر می‌دهید. وقتی می‌خواهید از ساخت و دور ریختن مکرر شیء جلوگیری کنید. برای پردازش متن‌های بزرگ.</p>
+            </div>
+        </div>
+
+        <div class="tip-box">
+            <strong>تبدیل بین دو</strong>
+            از <code>String</code> به <code>StringBuilder</code> با <code>new StringBuilder(s)</code>
+            و از <code>StringBuilder</code> به <code>String</code> با <code>sb.toString()</code>.
+            برای مقایسه محتوای دو <code>StringBuilder</code>، همیشه اول به <code>String</code>
+            تبدیل کنید و بعد <code>equals</code> بزنید.
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۷ — Debugger و عیب‌یابی
+============================================================ -->
+<section class="section s7" id="s7">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۷</span>
+            <div>
+                <h2>Debugger و عیب‌یابی</h2>
+                <p>وقتی برنامه کار نکرد، چطور علت را پیدا کنیم</p>
+            </div>
+        </div>
+
+        <h3>سه دسته خطا</h3>
+        <p>
+            خطاهای برنامه‌نویسی به سه دسته اصلی تقسیم می‌شوند. شناختن این دسته‌ها، اولین قدم
+            برای عیب‌یابی درست است.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>دسته</th>
+                        <th>کِی رخ می‌دهد</th>
+                        <th>مثال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>خطای کامپایل</strong></td>
+                        <td>قبل از اجرا، هنگام ترجمه کد</td>
+                        <td>جا افتادن سمی‌کالن، اشتباه تایپی، نوع داده ناسازگار</td>
+                    </tr>
+                    <tr>
+                        <td><strong>خطای زمان اجرا</strong></td>
+                        <td>در حین اجرای برنامه</td>
+                        <td>تقسیم بر صفر، اندیس آرایه نامعتبر، null بودن متغیر</td>
+                    </tr>
+                    <tr>
+                        <td><strong>خطای منطقی</strong></td>
+                        <td>در حین اجرا، اما برنامه متوقف نمی‌شود</td>
+                        <td>خروجی اشتباه، شرط با ترتیب غلط، محاسبه نادرست</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>خطاهای کامپایل</h3>
+        <p>
+            خطاهای کامپایل قبل از اجرای برنامه رخ می‌دهند. کد حتی یک خط هم اجرا نمی‌شود. این
+            خطاها معمولاً واضح‌اند و کامپایلر می‌گوید مشکل در کدام خط است.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — چند نمونه خطای کامپایل</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>System.out.println("Hi"     // خطا: پرانتز بسته نشده
+
+int n = "3";                // خطا: نوع ناسازگار
+
+pritn(n);                   // خطا: نام متد اشتباه
+
+int x;
+System.out.println(x);      // خطا: متغیر مقداردهی نشده</code></pre>
+        </div>
+
+        <h3>خطاهای زمان اجرا</h3>
+        <p>
+            این خطاها هنگام اجرای برنامه رخ می‌دهند. یعنی کد کامپایل شده، اما در مسیر اجرا به
+            مشکل خورده و برنامه متوقف شده است. هر خطای زمان اجرا یک نام دارد که معمولاً به
+            <code>Exception</code> ختم می‌شود.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>نام خطا</th>
+                        <th>علت</th>
+                        <th>مثال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>ArrayIndexOutOfBoundsException</code></td><td>دسترسی به اندیس نامعتبر آرایه</td><td><code>arr[10]</code> برای آرایه سه‌عضوی</td></tr>
+                    <tr><td><code>NullPointerException</code></td><td>استفاده از شیئی که null است</td><td><code>String s = null; s.length();</code></td></tr>
+                    <tr><td><code>ArithmeticException</code></td><td>تقسیم بر صفر</td><td><code>10 / 0</code></td></tr>
+                    <tr><td><code>NumberFormatException</code></td><td>تبدیل رشته غیرعددی به عدد</td><td><code>Integer.parseInt("abc")</code></td></tr>
+                    <tr><td><code>StringIndexOutOfBoundsException</code></td><td>اندیس نامعتبر در رشته</td><td><code>"Java".charAt(10)</code></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>خواندن پیام خطا</h3>
+        <p>
+            وقتی خطایی رخ می‌دهد، جاوا یک پیام با جزئیات می‌دهد که به آن <strong>Stack Trace</strong>
+            می‌گویند. این پیام دو بخش مهم دارد: نوع خطا و محل خطا.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Stack Trace نمونه</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 5 out of bounds for length 3
+    at Lesson.main(Lesson.java:5)</code></pre>
+        </div>
+
+        <p>در این پیام:</p>
+        <ul class="dot-list">
+            <li><strong>نوع خطا:</strong> <code>ArrayIndexOutOfBoundsException</code>. یعنی به اندیس نامعتبر دسترسی پیدا کرده‌اید.</li>
+            <li><strong>جزئیات:</strong> <code>Index 5 out of bounds for length 3</code>. یعنی اندیس ۵ در آرایه‌ای با طول ۳ استفاده شده.</li>
+            <li><strong>محل:</strong> <code>Lesson.java:5</code>. یعنی خط ۵ فایل Lesson.java.</li>
+        </ul>
+
+        <div class="tip-box">
+            <strong>Stack Trace را از پایین به بالا بخوانید</strong>
+            آخرین خط معمولاً می‌گوید دقیقاً چه نوع خطایی رخ داده و در کدام خط از کد شما. بالاتر
+            از آن، مسیر فراخوانی متدها نشان داده می‌شود. برای مبتدی، مهم‌ترین خط، همان خط اولی
+            است که به کد خودتان اشاره می‌کند.
+        </div>
+
+        <h3>خطاهای منطقی</h3>
+        <p>
+            این سخت‌ترین دسته است. برنامه کامپایل می‌شود، اجرا هم می‌شود، هیچ خطایی نمی‌دهد،
+            اما خروجی اشتباه است. برای پیدا کردن این خطاها، به Debugger نیاز دارید.
+        </p>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — نمونه خطای منطقی</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>int score = 95;
+
+if (score >= 60) {
+    System.out.println("Pass");
+} else if (score >= 90) {
+    System.out.println("Excellent");
+}</code></pre>
+        </div>
+
+        <p>
+            برای نمره ۹۵، خروجی <code>Pass</code> است، نه <code>Excellent</code>. چون شرط اول
+            <code>score >= 60</code> برای ۹۵ هم درست است و برنامه به شاخه دوم نمی‌رسد. رفع
+            مشکل، جابه‌جا کردن ترتیب است: شرط سخت‌گیرانه‌تر بالا، کلی‌تر پایین.
+        </p>
+
+        <h3>Breakpoint چیست؟</h3>
+        <p>
+            <strong>Breakpoint</strong> یک نشانه است که روی یک خط از کد می‌گذارید. وقتی برنامه
+            در حالت Debug اجرا می‌شود و به آن خط می‌رسد، اجرا متوقف می‌شود و شما می‌توانید
+            وضعیت همه متغیرها را ببینید. در IntelliJ IDEA، برای گذاشتن Breakpoint کافی است روی
+            نوار کناری کنار شماره خط کلیک کنید تا یک دایره قرمز ظاهر شود.
+        </p>
+
+        <div class="info-box">
+            <strong>چرا مفید است؟</strong>
+            گاهی خطا پیام نمی‌دهد، فقط خروجی اشتباه است. Breakpoint اجازه می‌دهد قدم‌به‌قدم
+            ببینید مقادیر متغیرها در هر لحظه چه هستند و کجا مقدار غیرمنتظره ظاهر می‌شود.
+        </div>
+
+        <h3>ابزارهای قدم‌به‌قدم</h3>
+        <p>
+            وقتی برنامه در یک Breakpoint متوقف شد، چند دکمه دارید که با آن‌ها اجرا را قدم‌به‌قدم
+            جلو می‌برید.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>دکمه</th>
+                        <th>کلید میانبر</th>
+                        <th>کاری که می‌کند</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Step Over</strong></td>
+                        <td><code>F8</code></td>
+                        <td>خط فعلی را کامل اجرا می‌کند و به خط بعدی می‌رود. اگر خط فعلی فراخوانی متد باشد، وارد متد نمی‌شود.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Step Into</strong></td>
+                        <td><code>F7</code></td>
+                        <td>اگر خط فعلی فراخوانی متد باشد، وارد بدنه آن متد می‌شود تا داخلش را ببینید.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Step Out</strong></td>
+                        <td><code>Shift+F8</code></td>
+                        <td>از متد فعلی بیرون می‌آید و به فراخواننده بازمی‌گردد.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Resume</strong></td>
+                        <td><code>F9</code></td>
+                        <td>ادامه می‌دهد تا Breakpoint بعدی یا پایان برنامه.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>یک مثال عملی</h3>
+
+        <div class="code-block">
+            <div class="code-head">
+                <span class="code-lang">Java — DebuggerDemo.java</span>
+                <button class="copy-btn">کپی</button>
+            </div>
+            <pre><code>public class DebuggerDemo {
+    public static void main(String[] args) {
+        String text = "Java";
+        int position = text.indexOf("v");
+        String result = getLetter(text, position);
+        System.out.println(result);
+    }
+
+    static String getLetter(String text, int index) {
+        return String.valueOf(text.charAt(index));
+    }
+}</code></pre>
+        </div>
+
+        <p>برای عیب‌یابی این برنامه با Debugger، این مراحل را دنبال کنید:</p>
+
+        <ol class="steps">
+            <li><span class="step-num">۱</span><div class="step-body">فایل را در IntelliJ IDEA باز کنید.</div></li>
+            <li><span class="step-num">۲</span><div class="step-body">در نوار کناری، کنار خط <code>String result = ...</code> کلیک کنید تا Breakpoint قرمز ظاهر شود.</div></li>
+            <li><span class="step-num">۳</span><div class="step-body">از منوی Run گزینه Debug را انتخاب کنید (یا <code>Shift+F9</code>).</div></li>
+            <li><span class="step-num">۴</span><div class="step-body">برنامه در Breakpoint متوقف می‌شود. در پنل Variables می‌بینید که <code>text = "Java"</code> و <code>position = 2</code>.</div></li>
+            <li><span class="step-num">۵</span><div class="step-body">با <code>F8</code> (Step Over) از روی خط فراخوانی عبور کنید. نتیجه <code>v</code> در متغیر <code>result</code> ذخیره می‌شود.</div></li>
+            <li><span class="step-num">۶</span><div class="step-body">اگر می‌خواهید داخل <code>getLetter</code> را ببینید، برنامه را دوباره اجرا کنید و به‌جای F8 از <code>F7</code> (Step Into) استفاده کنید.</div></li>
+            <li><span class="step-num">۷</span><div class="step-body">با <code>F9</code> (Resume) تا پایان برنامه ادامه دهید.</div></li>
+        </ol>
+
+        <div class="warn-box">
+            <strong>تمرین تشخیصی</strong>
+            فرض کنید <code>indexOf("x")</code> را جایگزین کرده‌اید. حالا <code>position</code>
+            برابر <code>-1</code> می‌شود. اگر Breakpoint را روی خط <code>String result = ...</code>
+            بگذارید، قبل از اجرای آن متوقف می‌شوید و می‌بینید <code>position = -1</code>. اینجا
+            یک فرصت عالی برای پیش‌بینی خطا دارید: <code>charAt(-1)</code> باعث
+            <code>StringIndexOutOfBoundsException</code> می‌شود. بدون Debugger هم می‌توانستید این
+            را پیش‌بینی کنید، اما Debugger با نشان دادن مقدار واقعی، اطمینان می‌دهد.
+        </div>
+
+        <h3>روال کوتاه عیب‌یابی</h3>
+
+        <ol class="steps">
+            <li><span class="step-num">۱</span><div class="step-body">اولین پیام کامپایلر یا اولین خط مهم Stack Trace را بخوانید.</div></li>
+            <li><span class="step-num">۲</span><div class="step-body">نام کلاس Exception و شماره خط را پیدا کنید.</div></li>
+            <li><span class="step-num">۳</span><div class="step-body">مقادیر متغیرهای همان لحظه را با Debugger بررسی کنید.</div></li>
+            <li><span class="step-num">۴</span><div class="step-body">برای خطای منطقی، مسیر شاخه‌ها را با یک نمونه کوچک دنبال کنید.</div></li>
+            <li><span class="step-num">۵</span><div class="step-body">اصلاح را دوباره اجرا کنید و حالت‌های مرزی مثل متن خالی، جستجوی ناموفق و اندیس صفر را هم آزمایش کنید.</div></li>
+        </ol>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۸ — تمرین‌ها
+============================================================ -->
+<section class="section s8" id="exercises">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۸</span>
+            <div>
+                <h2>تمرین‌ها و پروژه</h2>
+                <p>یک پروژه کلاسی و دو تمرین منزل برای تثبیت مطالب</p>
+            </div>
+        </div>
+
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge project">پروژه کلاسی</span>
+                <h3>سامانه مدیریت نمرات دانشجویان</h3>
+            </div>
+
+            <p class="ex-desc">
+                برنامه‌ای بنویسید که نمرات چند دانشجو را از کاربر دریافت کند و در آرایه ذخیره کند.
+                سپس با متدهای جداگانه، سه کار زیر را انجام دهد: محاسبه میانگین کلاس، پیدا کردن
+                بالاترین و پایین‌ترین نمره به همراه نام دانشجو، و مرتب‌سازی نمرات از بزرگ به کوچک.
+                نام هر دانشجو باید همراه با نمره‌اش حفظ شود و ترتیب نام‌ها و نمرات در همه محاسبات
+                هماهنگ بماند.
+            </p>
+
+            <div class="algo">
+                <strong style="display:block;margin-bottom:6px;color:var(--tc);">ساختار پیشنهادی</strong>
+                <ol>
+                    <li>دو آرایه هم‌اندازه: یکی برای نام دانشجوها، یکی برای نمره‌ها.</li>
+                    <li>سه متد جداگانه: یکی برای میانگین، یکی برای پیدا کردن بالاترین و پایین‌ترین، یکی برای مرتب‌سازی.</li>
+                    <li>در پایان، خروجی‌ها با پیام‌های واضح چاپ شوند.</li>
+                </ol>
+            </div>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">ابتدا تعداد دانشجوها را با <code>Scanner</code> از کاربر بگیرید.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">دو آرایه بسازید: <code>String[] names = new String[count];</code> و <code>double[] scores = new double[count];</code>.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">با یک حلقه <code>for</code> از ۰ تا <code>count - 1</code>، در هر دور نام و نمره یک دانشجو را بگیرید و در خانه‌های متناظر ذخیره کنید. دقت کنید اندیس‌های دو آرایه هماهنگ باشند.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">متدی به نام <code>calculateAverage(double[] scores)</code> بنویسید که مجموع نمرات را حساب کند و با <code>(double) sum / scores.length</code> میانگین را برگرداند.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">متدی به نام <code>findMaxMin(String[] names, double[] scores)</code> بنویسید که با یک حلقه، اندیس بزرگ‌ترین و کوچک‌ترین نمره را پیدا کند و سپس نام و نمره هر کدام را چاپ کند.</div></li>
+                        <li><span class="step-num">۶</span><div class="step-body">متدی به نام <code>sortDescending(String[] names, double[] scores)</code> بنویسید که نمرات را از بزرگ به کوچک مرتب کند. برای هر جابه‌جایی نمره، نام متناظر را هم در همان اندیس جابه‌جا کنید تا هماهنگی حفظ شود. یک روش ساده: پیدا کردن بزرگ‌ترین مقدار در هر دور و جابه‌جایی با جایگاه فعلی.</div></li>
+                        <li><span class="step-num">۷</span><div class="step-body">در <code>main</code>، متدها را به ترتیب صدا بزنید و خروجی‌ها را با پیام‌های مناسب چاپ کنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>فراموش کردن هماهنگی نام و نمره:</strong> هنگام مرتب‌سازی، فقط نمرات را جابه‌جا کنید و نام‌ها را نه، نتیجه این می‌شود که بعد از مرتب‌سازی، نام‌ها با نمرات هماهنگ نیستند. باید هر جابه‌جایی نمره، نام متناظر را هم جابه‌جا کند.</li>
+                        <li><strong>مقدار اولیه اشتباه برای ماکس و مین:</strong> برای پیدا کردن بزرگ‌ترین نمره، از <code>scores[0]</code> شروع کنید، نه صفر. اگر همه نمرات مثبت باشند مشکلی پیش نمی‌آید، اما برای حالت‌های مرزی درست نیست.</li>
+                        <li><strong>تقسیم صحیح در میانگین:</strong> اگر بنویسید <code>sum / scores.length</code> و هر دو از نوع <code>int</code> باشند، نتیجه اعشاری نخواهد بود. حتماً یکی را به <code>double</code> تبدیل کنید.</li>
+                        <li><strong>استفاده از <code>nextInt</code> بعد از <code>nextLine</code> یا برعکس:</strong> بعد از دریافت نام با <code>nextLine</code>، اگر می‌خواهید نمره بگیرید با <code>nextDouble</code> مشکلی نیست. اما اگر ترتیب برعکس باشد، باید یک <code>nextLine</code> اضافه در وسط بگذارید تا Enter باقی‌مانده پاک شود.</li>
+                        <li><strong>خطای اندیس در حلقه مرتب‌سازی:</strong> در حلقه‌های مرتب‌سازی، مرزها را با دقت بنویسید. اندیس داخلی نباید از طول آرایه بیشتر شود. از <code>&lt;</code> استفاده کنید، نه <code>&lt;=</code>.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۱</span>
+                <h3>بررسی رشته پالیندروم</h3>
+            </div>
+
+            <p class="ex-desc">
+                برنامه‌ای بنویسید که یک رشته از کاربر دریافت کند و بررسی کند آیا آن رشته
+                پالیندروم (آینه‌ای) است یا نه. پالیندروم یعنی از دو طرف که بخوانید یکسان
+                باشد؛ مثل <code>radar</code> یا <code>level</code>.
+            </p>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">رشته را با <code>Scanner</code> و <code>nextLine()</code> بگیرید تا فاصله‌ها هم اگر بود دریافت شوند.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">رشته را با <code>toLowerCase()</code> به حروف کوچک تبدیل کنید تا مقایسه به بزرگی و کوچکی حساس نباشد. نتیجه را در یک متغیر جدید ذخیره کنید.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">دو اندیس در نظر بگیرید: یکی از ابتدا (<code>0</code>) و یکی از انتها (<code>length() - 1</code>).</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">با یک حلقه <code>while</code>، تا وقتی اندیس چپ کوچک‌تر از راست است، کاراکترهای متناظر را با <code>charAt</code> مقایسه کنید. اگر جایی تفاوت دیدید، یعنی پالیندروم نیست و باید از حلقه خارج شوید.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">در هر دور، اندیس چپ یکی زیاد و اندیس راست یکی کم می‌شود.</div></li>
+                        <li><span class="step-num">۶</span><div class="step-body">بعد از حلقه، بر اساس نتیجه پیام مناسب چاپ کنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>مقایسه با <code>==</code> به‌جای <code>equals</code>:</strong> اگر رشته‌ها را با <code>==</code> مقایسه کنید، ممکن است نتیجه غلط بگیرید. برای مقایسه محتوای رشته همیشه از <code>equals</code> یا <code>equalsIgnoreCase</code> استفاده کنید.</li>
+                        <li><strong>عدم تبدیل به حروف کوچک:</strong> اگر رشته را به حروف کوچک تبدیل نکنید، «Radar» پالیندروم تشخیص داده نمی‌شود، چون «R» با «r» برابر نیست.</li>
+                        <li><strong>شرط حلقه اشتباه:</strong> باید تا وقتی اندیس چپ کوچک‌تر است ادامه دهید. اگر <code>&lt;=</code> بنویسید، وسط رشته یک مقایسه اضافه انجام می‌شود که اشکالی ندارد، اما بهتر است <code>&lt;</code> باشد.</li>
+                        <li><strong>فراموش کردن حالت خالی:</strong> اگر رشته خالی باشد، <code>length()</code> صفر است و حلقه اصلاً اجرا نمی‌شود. رشته خالی معمولاً پالیندروم در نظر گرفته می‌شود، اما بهتر است با یک پیام روشن به کاربر اعلام شود.</li>
+                        <li><strong>مقایسه فاصله‌ها:</strong> اگر رشته حاوی فاصله باشد، ممکن است پالیندروم تشخیص داده نشود. برای تمرین‌های اولیه، ورودی را بدون فاصله فرض کنید.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <div class="ex-card">
+            <div class="ex-head">
+                <span class="ex-badge homework">تمرین منزل ۲</span>
+                <h3>ضرب دو ماتریس ۳×۳</h3>
+            </div>
+
+            <p class="ex-desc">
+                برنامه‌ای بنویسید که دو ماتریس ۳×۳ (آرایه دوبعدی) را از کاربر دریافت کند و
+                حاصل‌ضرب آن‌ها را محاسبه و چاپ کند. ماتریس حاصل هم ۳×۳ است.
+            </p>
+
+            <details class="acc-guide">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>راهنمای گام‌به‌گام</span>
+                </summary>
+                <div class="details-content">
+                    <ol class="steps">
+                        <li><span class="step-num">۱</span><div class="step-body">دو آرایه دوبعدی <code>int[3][3]</code> تعریف کنید: یکی برای ماتریس اول، یکی برای دوم.</div></li>
+                        <li><span class="step-num">۲</span><div class="step-body">با دو حلقه تودرتو، مقادیر هر دو ماتریس را از کاربر بگیرید. برای هر خانه، شماره سطر و ستون را از کاربر بپرسید تا بداند کجاست.</div></li>
+                        <li><span class="step-num">۳</span><div class="step-body">یک آرایه سوم <code>int[3][3]</code> برای نتیجه بسازید. جاوا آن را به‌طور خودکار با صفر پر می‌کند.</div></li>
+                        <li><span class="step-num">۴</span><div class="step-body">برای محاسبه هر خانه از حاصل‌ضرب، به سه حلقه تودرتو نیاز دارید: یک حلقه بیرونی روی سطرهای نتیجه، یک حلقه وسط روی ستون‌های نتیجه، و یک حلقه درونی روی اندیس مشترک <code>k</code>.</div></li>
+                        <li><span class="step-num">۵</span><div class="step-body">درونی‌ترین حلقه، مقدار هر خانه را این‌طور به‌روزرسانی می‌کند: <code>result[i][j] += a[i][k] * b[k][j];</code></div></li>
+                        <li><span class="step-num">۶</span><div class="step-body">در پایان، ماتریس نتیجه را با دو حلقه تودرتو چاپ کنید.</div></li>
+                    </ol>
+                </div>
+            </details>
+
+            <details class="acc-mistakes">
+                <summary>
+                    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    <span>اشتباهات رایج و خطاهای احتمالی</span>
+                </summary>
+                <div class="details-content">
+                    <ul class="dot-list">
+                        <li><strong>اشتباه در ترتیب اندیس‌ها:</strong> در فرمول ضرب ماتریس، <code>a[i][k]</code> و <code>b[k][j]</code> درست است. اگر جای i و j را عوض کنید، نتیجه غلط می‌شود.</li>
+                        <li><strong>فراموش کردن مقدار اولیه صفر:</strong> خانه‌های آرایه نتیجه باید قبل از جمع با محصولات جدید، صفر باشند. اگر مقدار اولیه دیگری داشته باشند، نتیجه اشتباه می‌شود. خوشبختانه جاوا به‌طور خودکار صفر می‌گذارد.</li>
+                        <li><strong>مخلوط کردن اندیس سطر و ستون در چاپ:</strong> هنگام چاپ، اول سطر و بعد ستون. یعنی <code>result[i][j]</code> نه <code>result[j][i]</code>.</li>
+                        <li><strong>تعداد حلقه‌ها:</strong> ضرب ماتریس سه حلقه لازم دارد، نه دو. اگر فقط دو حلقه بنویسید، نمی‌توانید محصول را به‌درستی جمع کنید.</li>
+                        <li><strong>استفاده از <code>nextLine</code> بعد از <code>nextInt</code> بدون پاک‌سازی:</strong> اگر بعد از گرفتن عدد، بخواهید متن بگیرید، باید یک <code>nextLine</code> اضافه بگذارید. اما در این تمرین همه ورودی‌ها عدد هستند، پس این مشکل پیش نمی‌آید.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۹ — پرسش و پاسخ
+============================================================ -->
+<section class="section s9" id="qa">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۹</span>
+            <div>
+                <h2>پرسش و پاسخ</h2>
+                <p>پرسش‌های پرتکرار این هفته و پاسخ روشن آن‌ها</p>
+            </div>
+        </div>
+
+        <p>
+            این بخش جمع‌بندی پرسش‌هایی است که معمولاً در هفته چهارم برای دانشجویان پیش می‌آید.
+            اگر پرسشی مشابه داشتید، پاسخ آن را همین‌جا پیدا می‌کنید.
+        </p>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: تفاوت <code>int[] a = {1, 2, 3};</code> با <code>int[] a = new int[]{1, 2, 3};</code> چیست؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> از نظر عملکرد و نتیجه، این دو شکل کاملاً یکسان هستند. هر دو یک آرایه سه‌عضوی می‌سازند و مقادیر ۱، ۲ و ۳ را در آن قرار می‌دهند. تفاوت فقط در شکل نوشتن است. شکل اول برای وقتی است که آرایه را در همان خط اعلان می‌کنید. شکل دوم وقتی مفید است که می‌خواهید آرایه را در یک خط جدید یا در جای دیگری مقداردهی کنید. مثلاً <code>int[] a; a = new int[]{1, 2, 3};</code>. در هر دو حالت، طول آرایه برابر ۳ است.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چرا آرایه‌ای که به متد می‌فرستم داخل متد تغییر می‌کند، ولی متغیر ساده این‌طور نیست؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> در جاوا، متغیرهای ساده (مثل <code>int</code>) به‌صورت مقدار (by value) فرستاده می‌شوند. یعنی یک کپی از مقدار گرفته می‌شود و متد با آن کپی کار می‌کند. اما آرایه‌ها از نوع ارجاعی هستند. یعنی وقتی آرایه را می‌فرستید، در واقع آدرس حافظه‌اش فرستاده می‌شود. متد از طریق این آدرس به خود آرایه اصلی دسترسی دارد و هر تغییری در محتوای آن، روی آرایه اصلی هم دیده می‌شود. این نکته برای هر شیء دیگری (مثل StringBuilder) هم صدق می‌کند.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چرا وقتی می‌نویسم <code>System.out.println(arr);</code> چیزی شبیه <code>[I@1b6d3586</code> چاپ می‌شود؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> این خروجی، آدرس حافظه و نوع آرایه است، نه محتوای آن. وقتی آرایه را به <code>println</code> می‌دهید، جاوا متد <code>toString</code> را صدا می‌زند. اما آرایه‌ها نسخه اختصاصی خودشان را از <code>toString</code> ندارند و از نسخه پیش‌فرض <code>Object</code> استفاده می‌کنند که آدرس حافظه را برمی‌گرداند. برای دیدن محتوای واقعی آرایه، همیشه از <code>Arrays.toString(arr)</code> استفاده کنید. این متد آرایه را به شکل خوانا مثل <code>[1, 2, 3]</code> برمی‌گرداند.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: تفاوت <code>String s = "Java";</code> با <code>String s = new String("Java");</code> چیست؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> در حالت اول، جاوا ابتدا به String Pool نگاه می‌کند. اگر رشته‌ای با محتوای "Java" در Pool باشد، همان شیء استفاده می‌شود. اگر نباشد، یک شیء جدید ساخته و در Pool ذخیره می‌شود. در حالت دوم، همیشه یک شیء جدید در Heap بیرون از Pool ساخته می‌شود، حتی اگر رشته‌ای با همان محتوا در Pool وجود داشته باشد. نتیجه عملی این است که دو متغیر ساخته‌شده با literal ممکن است به یک شیء اشاره کنند، ولی یکی که با <code>new</code> ساخته شده به شیء جداگانه. برای مقایسه محتوا فرقی نمی‌کند، اما برای کارایی و مصرف حافظه، استفاده از literal بهتر است.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: کِی از StringBuilder استفاده کنم و کِی از String؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> قاعده ساده این است: اگر قرار است متن را یک بار بسازید و بعد فقط بخوانید، <code>String</code> انتخاب طبیعی و ساده‌ای است. اما اگر قرار است متن را در حلقه یا در چند مرحله پیوسته تغییر بدهید (مثلاً ساخت خروجی یک گزارش با هزار خط، یا پیوند دادن مکرر رشته در حلقه)، از <code>StringBuilder</code> استفاده کنید. تفاوت در مصرف حافظه و سرعت است. هر تغییر در <code>String</code> یک شیء جدید می‌سازد، اما <code>StringBuilder</code> در همان شیء تغییر می‌دهد. برای مقایسه دو <code>StringBuilder</code>، همیشه اول به <code>String</code> تبدیل کنید و بعد <code>equals</code> بزنید.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چرا نتیجه <code>5 / 2</code> برابر ۲ است، نه ۲.۵؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> وقتی هر دو طرف تقسیم از نوع صحیح (<code>int</code>، <code>byte</code>، <code>short</code> یا <code>long</code>) باشند، جاوا تقسیم صحیح انجام می‌دهد و بخش اعشاری را حذف می‌کند. این رفتار به این دلیل است که جاوا به نوع عملوندها وفادار می‌ماند. برای گرفتن نتیجه اعشاری، حداقل یکی از طرفین باید <code>double</code> یا <code>float</code> باشد. مثلاً <code>5.0 / 2</code> نتیجه <code>2.5</code> می‌دهد. اگر هر دو طرف متغیر باشند، می‌توانید یکی را با <code>(double)</code> تبدیل کنید: <code>(double) a / b</code>. توجه کنید که <code>(double) (a / b)</code> نتیجه را عوض نمی‌کند، چون اول تقسیم صحیح انجام می‌شود و بعد نتیجه به double تبدیل می‌شود.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: چطور بفهمم خطای برنامه‌ام از نوع کامپایل است یا زمان اجرا؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> ساده‌ترین راه این است که ببینید برنامه اصلاً شروع می‌شود یا نه. اگر برنامه شروع نشد و کامپایلر خطا داد، خطای کامپایل است. اگر برنامه شروع شد ولی در وسط کار متوقف شد و پیام خطایی با کلمه <code>Exception</code> نمایش داده شد، خطای زمان اجرا است. برای تمرین، عمداً یک خطای کامپایل (مثلاً جا انداختن یک سمی‌کالن) و یک خطای زمان اجرا (مثلاً دسترسی به اندیس آرایه خارج از محدوده) بسازید و تفاوت را ببینید. این تجربه به شما کمک می‌کند در آینده سریع‌تر دسته خطا را تشخیص دهید.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: تفاوت Step Over و Step Into چیست و کدام را انتخاب کنم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> <code>Step Over</code> (F8) خط فعلی را کامل اجرا می‌کند و به خط بعدی می‌رود. اگر خط فعلی فراخوانی یک متد باشد، متد اجرا می‌شود اما بدون توقف داخل آن. <code>Step Into</code> (F7) اگر خط فعلی فراخوانی متد باشد، وارد بدنه آن متد می‌شود و اولین خط متد را نشان می‌دهد. انتخاب بستگی به این دارد که آیا می‌خواهید داخل متد را ببینید یا نه. اگر مطمئن هستید متد درست کار می‌کند، Step Over بزنید. اگر شک دارید یا می‌خواهید منطق متد را بررسی کنید، Step Into بزنید. برای شروع، معمولاً از Step Over استفاده می‌کنید و فقط وقتی به متد مشکوک شدید، Step Into می‌زنید.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: آیا حتماً باید از IntelliJ IDEA برای Debugger استفاده کنم؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> خیر. اکثر محیط‌های برنامه‌نویسی جاوا (IntelliJ IDEA، Eclipse، NetBeans، VS Code با افزونه) یک Debugger دارند. مفاهیم پایه مثل Breakpoint، Step Over، Step Into و Resume در همه این‌ها مشترک است. فقط نام منوها و کلیدهای میانبر ممکن است کمی متفاوت باشد. اگر IntelliJ IDEA نصب دارید، از آن استفاده کنید. اگر محیط دیگری دارید، همان را استفاده کنید. مهم این است که مفهوم Debugger را درک کنید، نه ابزار خاص.</p>
+            </div>
+        </details>
+
+        <details class="acc-qa">
+            <summary>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                <span>پرسش: در آرایه دوبعدی، <code>table.length</code> چه چیزی را برمی‌گرداند؟</span>
+            </summary>
+            <div class="details-content">
+                <p><strong>پاسخ:</strong> <code>table.length</code> تعداد سطرها را برمی‌گرداند، نه تعداد کل خانه‌ها. مثلاً در یک آرایه ۳×۴، <code>table.length</code> برابر ۳ است. برای گرفتن تعداد ستون‌های یک سطر خاص، باید از <code>table[row].length</code> استفاده کنید. در آرایه‌های مستطیلی همه سطرها طول یکسان دارند، اما در آرایه‌های دندانه‌دار (jagged) هر سطر می‌تواند طول متفاوتی داشته باشد، پس همیشه بهتر است در حلقه داخلی از <code>table[row].length</code> استفاده کنید. این نکته جلوی خطای <code>ArrayIndexOutOfBoundsException</code> را می‌گیرد.</p>
+            </div>
+        </details>
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش ۱۰ — جمع‌بندی
+============================================================ -->
+<section class="section s10" id="summary">
+    <div class="container">
+        <div class="sec-head">
+            <span class="sec-num">۱۰</span>
+            <div>
+                <h2>جمع‌بندی و نکات کلیدی</h2>
+                <p>مرور سریع مطالب این هفته</p>
+            </div>
+        </div>
+
+        <div class="cheat">
+            <h3>آرایه‌های یک‌بعدی</h3>
+            <ul class="dot-list">
+                <li>آرایه مجموعه‌ای از مقادیر هم‌نوع است که با یک نام مدیریت می‌شود.</li>
+                <li>سه مرحله: <code>declaration</code>، <code>allocation</code> با <code>new</code>، <code>initialization</code>.</li>
+                <li>اندیس از صفر شروع می‌شود؛ بزرگ‌ترین اندیس معتبر <code>length - 1</code> است.</li>
+                <li>مقدار پیش‌فرض خانه‌ها: صفر برای اعداد، <code>false</code> برای boolean، <code>null</code> برای کلاس‌ها.</li>
+                <li>پیمایش با <code>for</code> (برای تغییر یا نیاز به اندیس) یا <code>enhanced for</code> (برای خواندن).</li>
+                <li>متدهای آماده در <code>Arrays</code>: <code>toString</code>، <code>sort</code>، <code>fill</code>، <code>copyOf</code>، <code>equals</code>.</li>
+                <li>خطای <code>ArrayIndexOutOfBoundsException</code> هنگام دسترسی به اندیس نامعتبر رخ می‌دهد.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>آرایه‌های دوبعدی</h3>
+            <ul class="dot-list">
+                <li>آرایه دوبعدی = آرایه‌ای از آرایه‌ها. هر سطر یک آرایه مستقل است.</li>
+                <li>دسترسی: <code>table[row][col]</code> — اول سطر، بعد ستون.</li>
+                <li>تعداد سطرها: <code>table.length</code>. تعداد ستون‌های یک سطر: <code>table[row].length</code>.</li>
+                <li>آرایه دندانه‌دار: سطرهایی با طول متفاوت. ساخت با <code>new int[n][]</code>، سپس ساختن هر سطر جداگانه.</li>
+                <li>سطر ساخته‌نشده مقدار <code>null</code> دارد و خواندن طولش باعث <code>NullPointerException</code> می‌شود.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>متدها</h3>
+            <ul class="dot-list">
+                <li>متد یک بسته کد نام‌دار است که یک کار مشخص انجام می‌دهد.</li>
+                <li>ساختار: نوع بازگشتی، نام، پارامترها، بدنه، در صورت نیاز <code>return</code>.</li>
+                <li><code>void</code> یعنی چیزی برنمی‌گرداند. برای انواع دیگر، حتماً باید مقدار برگرداند.</li>
+                <li>پارامتر = متغیر در تعریف؛ آرگومان = مقدار در فراخوانی.</li>
+                <li>آرایه با ارجاع به متد فرستاده می‌شود؛ تغییر در متد روی آرایه اصلی اثر می‌گذارد.</li>
+                <li>متغیرهای محلی فقط تا پایان همان متد زنده‌اند (Scope).</li>
+                <li><code>static</code> اجازه می‌دهد متد را بدون ساختن شیء صدا بزنید.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>Overloading و Type Casting</h3>
+            <ul class="dot-list">
+                <li>Overloading = چند متد با نام یکسان و لیست پارامتر متفاوت (تعداد یا نوع).</li>
+                <li>تفاوت فقط در نام پارامتر یا فقط در نوع بازگشتی، overloading نیست و خطا می‌دهد.</li>
+                <li>Widening (مثل int به double) خودکار انجام می‌شود.</li>
+                <li>Narrowing (مثل double به int) نیاز به cast صریح دارد و ممکن است داده از دست برود.</li>
+                <li>تقسیم دو عدد صحیح، نتیجه صحیح می‌دهد. برای نتیجه اعشاری، حداقل یکی را به double تبدیل کنید.</li>
+                <li>ترتیب cast مهم است: <code>(double) a / b</code> با <code>(double) (a / b)</code> متفاوت است.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>رشته‌ها (String)</h3>
+            <ul class="dot-list">
+                <li><code>String</code> یک کلاس است، نه نوع اولیه. تغییرناپذیر (immutable).</li>
+                <li>متدهای مهم: <code>length</code>، <code>charAt</code>، <code>substring</code>، <code>indexOf</code>، <code>replace</code>، <code>split</code>، <code>toLowerCase</code>، <code>toUpperCase</code>، <code>trim</code>، <code>strip</code>، <code>isEmpty</code>، <code>isBlank</code>، <code>equals</code>، <code>equalsIgnoreCase</code>، <code>contains</code>، <code>startsWith</code>، <code>endsWith</code>.</li>
+                <li>مقایسه محتوا با <code>equals</code>، نه <code>==</code>. دام کلاسیک امتحان‌ها.</li>
+                <li><code>substring(a, b)</code>: بازه نیم‌باز، یعنی a شامل، b شامل نیست.</li>
+                <li><code>indexOf</code> در صورت پیدا نشدن مقدار <code>-1</code> می‌دهد.</li>
+                <li>خطای <code>StringIndexOutOfBoundsException</code> هنگام دسترسی به اندیس نامعتبر رخ می‌دهد.</li>
+                <li>String Pool: literalها مشترک ذخیره می‌شوند، <code>new String</code> شیء جداگانه می‌سازد.</li>
+                <li><code>StringBuilder</code> تغییرپذیر است و برای تغییرات زیاد در متن مناسب است.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>StringBuilder</h3>
+            <ul class="dot-list">
+                <li>متدهای مهم: <code>append</code>، <code>insert</code>، <code>delete</code>، <code>replace</code>، <code>reverse</code>، <code>length</code>، <code>charAt</code>، <code>setCharAt</code>، <code>toString</code>.</li>
+                <li>برای مقایسه، اول به <code>String</code> تبدیل کنید و بعد <code>equals</code> بزنید.</li>
+                <li>برای تغییرات زیاد در متن از <code>StringBuilder</code>، برای متن‌های ثابت از <code>String</code>.</li>
+            </ul>
+        </div>
+
+        <div class="cheat">
+            <h3>عیب‌یابی و Debugger</h3>
+            <ul class="dot-list">
+                <li>سه دسته خطا: کامپایل (قبل از اجرا)، زمان اجرا (حین اجرا، با Exception)، منطقی (خروجی اشتباه بدون خطا).</li>
+                <li>خطاهای زمان اجرا رایج: <code>ArrayIndexOutOfBoundsException</code>، <code>NullPointerException</code>، <code>ArithmeticException</code>، <code>NumberFormatException</code>، <code>StringIndexOutOfBoundsException</code>.</li>
+                <li>Stack Trace را بخوانید: نوع خطا و شماره خط.</li>
+                <li>Breakpoint: توقف در نقطه دلخواه برای بررسی متغیرها.</li>
+                <li>Step Over (F8): اجرای یک خط و رفتن به خط بعد. Step Into (F7): ورود به متد. Step Out (Shift+F8): خروج از متد. Resume (F9): ادامه تا Breakpoint بعدی.</li>
+                <li>برای خطای منطقی، Debugger بهترین ابزار است.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="container">
+        <p><strong>هفته چهارم</strong> — آرایه‌ها، متدها، رشته‌ها و عیب‌یابی</p>
+    </div>
+</footer>
+
+<button id="toTop" title="بازگشت به بالای صفحه" aria-label="بازگشت به بالای صفحه">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+    <span class="toTop-text">بازگشت به بالا</span>
+</button>
+
+<script>
+(function () {
+    const root = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+
+    const saved = localStorage.getItem('java-guide-theme');
+    if (saved === 'dark') apply('dark');
+
+    function apply(mode) {
+        if (mode === 'dark') {
+            root.setAttribute('data-theme', 'dark');
+            icon.textContent = '☀️';
+            label.textContent = 'تم روشن';
+        } else {
+            root.removeAttribute('data-theme');
+            icon.textContent = '🌙';
+            label.textContent = 'تم تاریک';
+        }
+    }
+
+    btn.addEventListener('click', function () {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        const next = isDark ? 'light' : 'dark';
+        apply(next);
+        localStorage.setItem('java-guide-theme', next);
+    });
+})();
+
+(function () {
+    const btn = document.getElementById('toTop');
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 400) btn.classList.add('show');
+        else btn.classList.remove('show');
+    });
+    btn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+})();
+
+(function () {
+    function esc(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    const KEYWORDS = new Set([
+        'abstract','assert','boolean','break','byte','case','catch','char','class','const',
+        'continue','default','do','double','else','enum','extends','final','finally','float',
+        'for','if','implements','import','instanceof','int','interface','long','native','new',
+        'package','private','protected','public','return','short','static','strictfp','super',
+        'switch','synchronized','this','throw','throws','transient','try','void','volatile',
+        'while','true','false','null','var','yield',
+        'String','StringBuilder','System','Scanner','Math','Integer','Double','Character','Boolean','Arrays'
+    ]);
+
+    function highlight(code) {
+        const re = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|\b(\d+(?:\.\d+)?[fFdDlL]?)\b|\b([A-Za-z_$][\w$]*)\b/g;
+        let out = '', last = 0, m;
+        while ((m = re.exec(code)) !== null) {
+            out += esc(code.slice(last, m.index));
+            const full = m[0];
+            if (m[1])      out += '<span class="tok-com">' + esc(full) + '</span>';
+            else if (m[2]) out += '<span class="tok-str">' + esc(full) + '</span>';
+            else if (m[3]) out += '<span class="tok-num">' + esc(full) + '</span>';
+            else if (m[4] && KEYWORDS.has(m[4])) out += '<span class="tok-kw">' + esc(full) + '</span>';
+            else           out += esc(full);
+            last = re.lastIndex;
+        }
+        out += esc(code.slice(last));
+        return out;
+    }
+
+    document.querySelectorAll('pre code').forEach(function (block) {
+        if (block.querySelector('span')) return;
+        const raw = block.textContent;
+        block.innerHTML = highlight(raw);
+    });
+})();
+
+(function () {
+    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const code = btn.closest('.code-block').querySelector('code').innerText;
+            const done = function () {
+                const original = btn.textContent;
+                btn.textContent = 'کپی شد ✓';
+                btn.style.background = '#10b981';
+                btn.style.borderColor = '#10b981';
+                btn.style.color = '#fff';
+                setTimeout(function () {
+                    btn.textContent = original;
+                    btn.style.background = '';
+                    btn.style.borderColor = '';
+                    btn.style.color = '';
+                }, 1500);
+            };
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(code).then(done).catch(function () { fallback(code, done); });
+            } else {
+                fallback(code, done);
+            }
+        });
+    });
+
+    function fallback(text, cb) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); cb(); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+    }
+})();
+</script>
+
+</body>
+</html>
